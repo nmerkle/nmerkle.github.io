@@ -1,0 +1,568 @@
+<html>
+	<head>
+		<title>SMAPPI - Smart Apple Picker Agent</title>
+		<script src="plotly-latest.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/p5@0.10.2/lib/p5.js"></script>
+		<script src="rl.js"></script>
+<script>
+let radius = 25;
+let numGreenBalls = 15
+let numRedBalls = 15
+let minX, maxX, minY, maxY;
+let redBalls = []
+let greenBalls = []
+let xDir = 1
+let yDir = 1
+let img;
+let agent;
+let agentWidth = 100
+let agentHeight = 100
+let fontsize = 15
+let stepSize = 1
+let env = {}
+let spec = {}
+let learnRate = 0.01
+let epsilon = 0.2
+let gamma = 0.3
+let jsonFile = 'dqnn.json'
+let rlagent = undefined
+let actions;
+let start = false
+let stop = false
+let moving = true
+let iteration = 0
+let minusOne = 0
+let zero = 0
+let one = 0
+let maxLength = 1000
+
+
+	function setGameConfig() {
+		if(document.getElementById('redApples').value !== "") {
+			numRedBalls = parseFloat(document.getElementById('redApples').value)
+			if(numRedBalls > redBalls.length) {
+				let diff = numRedBalls - redBalls.length
+				for(let i = 0; i < diff; i++) {
+					redBalls[i] = new Ball(random(minX, maxX), random(minY, maxY), '#FF0000')
+				}
+			} else if(numRedBalls < redBalls.length) {
+				let diff = redBalls.length - numRedBalls
+				for(let i = 0; i < diff; i++) {
+					redBalls.pop()
+				}
+			}
+			}
+			if(document.getElementById('greenApples').value !== "") {
+			numGreenBalls = parseFloat(document.getElementById('greenApples').value)
+			if(numGreenBalls > greenBalls.length) {
+				let diff = numGreenBalls - greenBalls.length
+				for(let i = 0; i < diff; i++) {
+					greenBalls[i] = new Ball(random(minX, maxX), random(minY, maxY), '#0f0')
+				}
+			} else if(numGreenBalls < greenBalls.length) {
+				let diff = greenBalls.length - numGreenBalls
+				for(let i = 0; i < diff; i++) {
+					greenBalls.pop()
+				}
+			}
+		}
+		
+		if(document.getElementById('moving').value !== "") {
+			if(document.getElementById('moving').value == "true")
+				moving = true
+			else if(document.getElementById('moving').value == "false")
+				moving = false
+		}
+	
+	}
+	
+	
+	function setHyperParams() {
+		if(document.getElementById('greedy').value !== "") {
+			epsilon = parseFloat(document.getElementById("greedy").value)
+			spec["epsilon"] = epsilon
+		}
+		if(document.getElementById('alpha').value !== "") {
+			learnRate = parseFloat(document.getElementById('alpha').value)
+			spec["alpha"] = learnRate
+		}
+		if(document.getElementById("gamma").value !== "") {
+			gamma = parseFloat(document.getElementById("gamma").value)
+			spec["gamma"] = gamma
+		}
+		
+		env.getNumStates = function() { return (numGreenBalls * 3 + numRedBalls * 3) + 2; }
+		env.getMaxNumActions = function() { return actions.length; }
+		
+		if (document.getElementById('no').checked) {
+			storeJSON()
+		} 
+		rlagent = new RL.DQNAgent(env, spec);
+		let pol = loadDQNN()
+			if(pol !== undefined && pol !== null)
+				rlagent.fromJSON(pol)
+			agent.rlagent = rlagent
+		
+	}
+
+	function moveUp(bot) {
+		bot.centerY -= stepSize
+		if(bot.centerY < agentWidth /2) {
+			bot.centerY = agentWidth / 2
+		}
+	}
+	
+	function moveRightUp(bot) {
+		bot.centerY -= stepSize
+		if(bot.centerY < agentWidth /2) {
+			bot.centerY = agentWidth / 2
+		}
+		bot.centerX += stepSize
+		if(bot.centerX < agentWidth / 2) {
+			bot.centerX = agentWidth / 2
+		}
+	}
+	
+	function moveDown(bot) {
+		bot.centerY += stepSize
+		if(bot.centerY > height-agentWidth /2) {
+			bot.centerY = height - agentWidth / 2
+		}
+	}
+	
+	function moveRightDown(bot) {
+		bot.centerX += stepSize
+		if(bot.centerX < agentWidth / 2) {
+			bot.centerX = agentWidth / 2
+		}
+		bot.centerY += stepSize
+		if(bot.centerY > height-agentWidth /2) {
+			bot.centerY = height - agentWidth / 2
+		}
+	}
+	
+	function moveLeftUp(bot) {
+		bot.centerX -= stepSize
+		if(bot.centerX > width - agentWidth / 2) {
+			bot.centerX = width - agentWidth / 2
+		}
+		bot.centerY -= stepSize
+		if(bot.centerY < agentWidth /2) {
+			bot.centerY = agentWidth / 2
+		}
+	}
+	
+	function moveLeftDown(bot) {
+		bot.centerX -= stepSize
+		if(bot.centerX > width - agentWidth / 2) {
+			bot.centerX = width  - agentWidth / 2
+		}
+		bot.centerY += stepSize 
+		if(bot.centerY > height-agentWidth /2) {
+			bot.centerY = height - agentWidth / 2
+		}
+	}
+	
+	function moveLeft(bot) {
+		bot.centerX -= stepSize 
+		if(bot.centerX > width - agentWidth / 2) {
+			bot.centerX = width - agentWidth / 2 
+		}
+	}
+	
+	function moveRight(bot) {
+		bot.centerX += stepSize
+		if(bot.centerX  < agentWidth / 2) {
+			bot.centerX  = agentWidth / 2
+		}
+	}
+
+function setup() {
+  createCanvas(720, 400)
+  frameRate(30);
+  textSize(fontsize);
+  textAlign(CENTER, CENTER);
+  minX = radius
+  maxX = width - radius
+  minY = radius
+  maxY = height - radius
+  img = loadImage('http://localhost:5000/robot_wiki.png')
+  actions = [moveUp, moveDown, moveLeft, moveRight, moveRightUp, moveRightDown, moveLeftUp, moveLeftDown]
+	env.getNumStates = function() { return (numGreenBalls * 3 + numRedBalls * 3) + 2; }
+	env.getMaxNumActions = function() { return actions.length; }
+	spec["alpha"] = learnRate
+	spec["epsilon"] = greedy
+	spec["gamma"] = gamma 
+	rlagent = new RL.DQNAgent(env, spec);
+	
+  agent = new Agent(width / 2 - 50, height + 50, rlagent, actions, '#00f')
+  for(let i = 0; i < numGreenBalls; i++) {
+	greenBalls[i] = new Ball(random(minX, maxX), random(minY, maxY), '#0f0')
+  } 
+  for(let i = 0; i < numRedBalls; i++) {
+	redBalls[i] = new Ball(random(minX, maxX), random(minY, maxY), '#FF0000')
+  }
+  let p1 = {x: agent.centerX - radius/2, y: agent.centerY + radius/4}
+  let p2 = {x: agent.centerX + radius/2, y: agent.centerY + radius/4}
+  let p3 = {x: agent.centerX, y: agent.centerY - radius/2} 
+  triangle(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y)  
+}
+
+function draw() {
+	background(0);
+	if(start) {
+	if(stop) noLoop()
+	else loop()
+  image(img, agent.centerX - 50, agent.centerY - 50, agentWidth, agentHeight)
+  greenBalls.forEach((ball) => {
+  if(moving) {
+		moveBall(ball)
+	}
+    display(ball)
+  })
+  redBalls.forEach((ball) => {
+  if(moving) {
+		moveBall(ball)
+	}
+	display(ball)
+  })
+  
+  agent.act()
+  iteration += 1
+  //displayAgentCenter(agent)
+  
+  let angle = undefined
+  if(prevAngle.angle !== undefined) {
+	if(prevAngle.action === 'moveUp') {
+		angle = 270
+	} else if(prevAngle.action === 'moveDown') {
+		angle = 90
+	
+	} else if(prevAngle.action === 'moveRight') {
+		angle = 0
+	
+	} else if(prevAngle.action === 'moveLeft') {
+		angle = 180
+	
+	} else if(prevAngle.action === 'moveRightUp') {
+		angle = 315
+	
+	} else if(prevAngle.action === 'moveRightDown') {
+		angle = 45
+	
+	} else if(prevAngle.action === 'moveLeftUp') {
+		angle = 225
+	
+	} else if(prevAngle.action === 'moveLeftDown') {
+		angle = 135
+	}
+  } else angle = 270
+  
+  const r = radians(angle)
+  let p1 = {x: agent.centerX - radius/2, y: agent.centerY + radius/4}
+  let p2 = {x: agent.centerX + radius/2, y: agent.centerY + radius/4}
+  let p3 = {x: agent.centerX, y: agent.centerY - radius/2} 
+  smooth()
+  translate(agent.centerX, agent.centerY)
+  rotate(r)
+  //fill('#ff0')
+  fill(color(agent.color))
+  //stroke('#ff0')
+  stroke(color(agent.color))
+  strokeWeight(1)
+  line(0, 0, width, height)
+  //triangle(0, 0, radius/2, agent.centerY + radius/4, 0, radius/2)
+  triangle(-radius/2, radius/2, radius/2, radius/2, 0, -radius/4)
+  prevAngle.angle = angle
+  prevAngle.action = agent.performedAction
+  }
+  
+}
+
+class Ball {
+	constructor(x, y, color) {
+		this.x = x;
+		this.y = y;
+		this.color = color;
+	}
+}
+
+class Agent {
+	constructor(x, y, rlagent, actions, color) {
+		this.actions = actions
+		this.x = x
+		this.y = y
+		this.score = 0
+		this.centerX = x 
+		this.centerY = y 
+		this.color = color
+		this.action = undefined
+		this.rlagent = rlagent
+		this.performedAction = undefined
+	}
+	
+	euklideanDistance(ball) {
+		let dist = Math.sqrt(Math.pow(this.centerX - ball.x, 2.0) + Math.pow(this.centerY - ball.y, 2.0))
+		return dist 
+	}
+	
+	checkCollision() {
+		let state = []
+		let collide = false
+		state.push(this.centerX)
+		state.push(this.centerY)
+		let numGood = 0
+		let numBad = 0
+		if(this.centerX >= width - agentWidth / 2 || this.centerX  <= agentWidth / 2
+		|| this.centerY >= height - agentHeight /2 || this.centerY <= agentHeight /2) {
+			numBad += 1
+			minusOne += 1
+			plotSuccess(-1)
+			collide = true
+			textSize(fontsize)
+			fill(255)
+			if(this.centerX >= width - agentWidth / 2)
+				text("Shit: -1", this.centerX - agentWidth/2, this.centerY)
+			else if(this.centerX  <= agentWidth / 2)
+				text("Shit: -1", this.centerX + agentWidth/2, this.centerY)
+			else if(this.centerY >= height - agentHeight /2)
+				text("Shit: -1", this.centerX, this.centerY - agentHeight/2)
+			else if(this.centerY <= agentHeight /2)
+				text("Shit: -1", this.centerX, this.centerY + agentHeight/2)
+				
+		}
+		redBalls.forEach((ball) => {
+			let dist = this.euklideanDistance(ball)
+			let angle = this.getRelativeAngle(ball)
+			state.push(dist)
+			state.push(angle)
+			state.push(1)
+			let xDist = ball.x - this.centerX
+			let yDist = ball.y - this.centerY 
+			let distSquare = Math.sqrt(xDist * xDist + yDist * yDist) 
+			let rad = radius + radius 
+			if(distSquare <= rad){
+				collide = true
+				numGood += 1
+				one += 1
+				plotSuccess(1)
+				textSize(fontsize)
+				fill(255)
+				text("Good: +1", this.centerX, this.centerY - 50)
+				ball.x = random(minX, maxX)
+				if(moving)
+					ball.y = minY
+				else
+					ball.y = random(minY, maxY)
+			}
+			
+		})
+		greenBalls.forEach((ball) => {
+			let dist = this.euklideanDistance(ball)
+			let angle = this.getRelativeAngle(ball)
+			state.push(dist)
+			state.push(angle)
+			state.push(0)
+			let xDist = ball.x - this.centerX
+			let yDist = ball.y - this.centerY
+			let distSquare = Math.sqrt(xDist * xDist + yDist * yDist) 
+			let rad = radius + radius
+			if(distSquare <= rad){
+				collide = true
+				numBad += 1
+				minusOne += 1
+				plotSuccess(-1)
+				textSize(fontsize)
+				fill(255)
+				text("Shit: -1", this.centerX, this.centerY - 50)
+				ball.x = random(minX, maxX)
+				if(moving)
+					ball.y = minY
+				else
+					ball.y = random(minY, maxY)
+			}
+		})
+		if(!collide) {
+			zero += 1
+			plotSuccess(0)
+		}
+		textSize(30)
+	    fill(255)
+		this.score += numGood - numBad
+		text("Score: "+this.score, 125, 50)
+		return {reward: numGood - numBad, state: state}
+	}
+	
+	act() {
+		const {reward, state} = this.checkCollision()
+		let action = this.rlagent.act(state)
+		this.performedAction = this.actions[action].name
+		this.actions[action](this)
+		this.rlagent.learn(reward)
+		
+	}
+	
+	getRelativeAngle(ball) {
+		let angle;
+		let v1 = createVector(agent.centerX, agent.centerY)
+		let v2 = createVector(ball.x, ball.y)
+		angle = v1.angleBetween(v2)
+		return angle
+	}
+}
+
+function moveBall(ball) {
+	const speedX = random(1.0, 3.0)
+	const speedY = random(1.0, 3.0)
+	ball.y += speedY * yDir
+	
+	if(ball.y > maxY || ball.y < minY) {
+		ball.y = minY
+	}
+}
+
+function display(ball) {
+  stroke(50);
+  let col = color(ball.color)
+  fill(col)
+  ellipse(ball.x, ball.y, radius, radius);
+}
+
+let prevAngle = {angle: undefined, action: undefined};
+
+function displayAgentCenter(agent) {
+  stroke(50);
+  let col = color(agent.color)
+  fill(col)
+  ellipse(agent.centerX, agent.centerY, radius, radius);
+ }
+ 
+function startGame() {
+	start = true
+	stop = false
+	draw()
+}
+
+function stopGame() {
+	//start = false
+	stop = true
+	//TODO: Store trained DQNN as JSON file
+}
+
+function createPlot() {
+	const data = [{
+		mode: "lines",
+		type: "scatter",
+		line: {color: 'black'},
+		y: []	
+	}]
+	const layout = {
+		title: "Performance Development", 
+		font: {size: 10}, 
+		line: {linewidth: 1},
+		xaxis: {title: "Action Step Size", showgrid: true, zeroline: true},
+		yaxis:{title: "Reward"}
+	}
+	const data2 = [{
+			type: "bar",
+			name: "Negative",
+			y: [],
+			x: ["Negative"],
+			marker: {
+				color: "red"
+			}
+			},
+			{
+			type: "bar",
+			name: "Zero",
+			x: ["Zero"],
+			y: [],
+			marker: {
+				color: "blue"
+			}
+			},
+			{
+				type: "bar",
+				name: "Positive",
+				x: ["Positive"],
+				y: [],
+				marker: {
+					color: "green"
+				}
+			}]
+	const layout2 = {title: "Reward Histogram", font: {size: 10}, xaxis: {title: "Reward", showgrid: true, zeroline: true}, yaxis:{title: "Count"}}
+	
+	Plotly.plot("stats", data, layout)
+	Plotly.plot("histo", data2, layout2)
+}
+
+function plotSuccess(reward) {
+	Plotly.extendTraces("stats", {y: [[reward]]}, [0], maxLength)
+	Plotly.extendTraces("histo", {y: [[minusOne], [zero], [one]]}, [0, 1, 2], 1)
+}
+
+function storeJSON() {
+	let file = rlagent.toJSON()
+	window.localStorage.setItem('json', JSON.stringify(file), null, 2);	
+}
+
+function loadDQNN() {
+	let jsonString = window.localStorage.getItem("json")
+	let obj = JSON.parse(jsonString)
+	return obj
+}
+
+ </script>
+</head>
+<body onload="createPlot();">
+<div id="controlElements" style="position:absolute;top:10;left:750;">
+<h3 align="center">Settings</h3>
+<fieldset>
+<legend>Trained DQN Network</legend>
+<label>Load Trained DQNN: 
+<input type="radio" id="yes" name="radioG" value="yes">True
+<input type="radio" id="no" name="radioG" value="no" checked="checked">False
+</label>
+</fieldset><br><hr><br>
+<fieldset>
+<legend>Hyperparams</legend>
+Learning Rate:
+<input type="number" id="alpha" min="0.001" max="0.9" step="0.001" value="0.01">
+Greedy:
+<input type="number" id="greedy" min="0.0" max="1.0" step="0.1" value="0.2">
+Discount:
+<input type="number" id="gamma" min="0.1" max="1.0" step="0.1" value="0.3">
+</fieldset><br>
+<div align="center">
+<input type="submit" value="Submit" onclick="setHyperParams();">
+</div><br><hr><br>
+<fieldset>
+<legend>Game Configuration</legend>
+<label>Red Apples:
+<input type="number" id="redApples" value="15" min="0" max="50" step="1"></label>
+<label>Green Apples:
+<input type="number" id="greenApples" min="0" max="50" step="1" value="15"></label>
+<label>Moving Apples:
+<select id="moving" size="2">
+<option selected value="true">True</option>
+<option value="false">False</option>
+</select></label>
+<br>
+</fieldset><br>
+<div align="center">
+<input type="submit" value="Submit" onclick="setGameConfig();">
+</div>
+</div><br>
+
+<div style="position:absolute;margin-top:405;width:100%">
+<div style="position:absolute;left:200">
+<input type="submit" value="Start Game" onclick="startGame();">
+<input type="submit" value="Stop Game" onclick="stopGame();">
+<input type="submit" value="Save JSON" onclick="storeJSON();">
+</div>
+<br><br><br>
+<div id="histo" style="width: 50%; height: 300px; float: left"></div>
+<div id="stats" style="width: 50%; height: 300px; float: right;"></div>
+</div>	
+</body>
+</html>
