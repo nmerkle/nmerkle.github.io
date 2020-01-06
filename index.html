@@ -197,7 +197,18 @@ let training = true
 			bot.centerX  = agentWidth / 2
 		}
 	}
-
+	
+function preload() {
+	actions = [moveUp, moveDown, moveLeft, moveRight, moveRightUp, moveRightDown, moveLeftUp, moveLeftDown]
+	env.getNumStates = function() { return (numGreenBalls * 3 + numRedBalls * 3) + 2; }
+	env.getMaxNumActions = function() { return actions.length; }
+	spec["alpha"] = learnRate
+	spec["epsilon"] = greedy
+	spec["gamma"] = gamma 
+	rlagent = new RL.DQNAgent(env, spec);
+	agent = new Agent(width / 2 - 50, height + 50, rlagent, actions, '#00f')
+}
+ 
 function setup() {
   createCanvas(720, 500)
   frameRate(frameSize);
@@ -208,25 +219,12 @@ function setup() {
   minY = radius
   maxY = height - radius
   img = loadImage('https://nmerkle.github.io/robot_wiki.png')
-  actions = [moveUp, moveDown, moveLeft, moveRight, moveRightUp, moveRightDown, moveLeftUp, moveLeftDown]
-	env.getNumStates = function() { return (numGreenBalls * 3 + numRedBalls * 3) + 2; }
-	env.getMaxNumActions = function() { return actions.length; }
-	spec["alpha"] = learnRate
-	spec["epsilon"] = greedy
-	spec["gamma"] = gamma 
-	rlagent = new RL.DQNAgent(env, spec);
-	
-  agent = new Agent(width / 2 - 50, height + 50, rlagent, actions, '#00f')
   for(let i = 0; i < numGreenBalls; i++) {
 	greenBalls[i] = new Ball(random(minX, maxX), random(minY, maxY), '#0f0')
   } 
   for(let i = 0; i < numRedBalls; i++) {
 	redBalls[i] = new Ball(random(minX, maxX), random(minY, maxY), '#FF0000')
-  }
-  let p1 = {x: agent.centerX - radius/2, y: agent.centerY + radius/4}
-  let p2 = {x: agent.centerX + radius/2, y: agent.centerY + radius/4}
-  let p3 = {x: agent.centerX, y: agent.centerY - radius/2} 
-  triangle(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y)  
+  } 
 }
 
 function draw() {
