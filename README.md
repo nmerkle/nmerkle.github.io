@@ -14,4 +14,4 @@ You require the following Javascript libraries:
 * [ReinforceJS](https://github.com/karpathy/reinforcejs/blob/master/index.html) 
 * [p5.js](https://github.com/processing/p5.js)
 
-and a HTTP server. For testing purposes, I utilized the [Serve](https://github.com/zeit/serve) HTTP server which provides by default access at port 5000. In case you would like to utilize another HTTP server, you have to adjust the port number within the [AgentDemo.html](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/AgentDemo.html).ECHO ist eingeschaltet (ON).
+and a HTTP server. For testing purposes, I utilized the [Serve](https://github.com/zeit/serve) HTTP server which provides by default access at port 5000. In case you would like to utilize another HTTP server, you have to adjust the port number within the [AgentDemo.html](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/AgentDemo.html).
