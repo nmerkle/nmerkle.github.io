@@ -38,6 +38,7 @@ let maxLength = 1000
 let frameSize = 30
 let fieldColor = 0
 let white = false
+let training = true
 
 
 	function setGameConfig() {
@@ -86,6 +87,12 @@ let white = false
 			fieldColor = parseFloat(document.getElementById('fieldcolor').value)
 			white = fieldColor == 0 ? false : true
 			background(fieldColor)
+		}
+		
+		if(document.getElementById('removeApples').value !== "") {
+			if(document.getElementById('removeApples').value == 'compete') {
+				training = false
+			} else training = true
 		}
 	
 	}
@@ -346,6 +353,7 @@ class Agent {
 				text("Autsch: -1", this.centerX, this.centerY + agentHeight/2)
 				
 		}
+		let rem = 0
 		redBalls.forEach((ball) => {
 			let dist = this.euklideanDistance(ball)
 			let angle = this.getRelativeAngle(ball)
@@ -366,13 +374,21 @@ class Agent {
 				else fill(255)
 				text("Good: +1", this.centerX, this.centerY - 50)
 				ball.x = random(minX, maxX)
-				if(moving)
-					ball.y = minY
-				else
-					ball.y = random(minY, maxY)
+				if(!training) {
+					rem+=1
+				} else {
+					if(moving)
+						ball.y = minY
+					else
+						ball.y = random(minY, maxY)
+				}
 			}
 			
 		})
+		for(let i = 0; i < rem; i++) {
+			redBalls.pop()
+		}
+		rem = 0
 		greenBalls.forEach((ball) => {
 			let dist = this.euklideanDistance(ball)
 			let angle = this.getRelativeAngle(ball)
@@ -393,12 +409,20 @@ class Agent {
 				else fill(255)
 				text("Shit: -1", this.centerX, this.centerY - 50)
 				ball.x = random(minX, maxX)
-				if(moving)
-					ball.y = minY
-				else
-					ball.y = random(minY, maxY)
+				if(!training) {
+					rem+=1
+				} else {
+					if(moving)
+						ball.y = minY
+					else
+						ball.y = random(minY, maxY)
+				}
 			}
 		})
+		for(let i = 0; i < rem; i++) {
+			greenBalls.pop()
+		}
+		rem = 0
 		if(!collide) {
 			zero += 1
 			plotSuccess(0)
@@ -572,6 +596,12 @@ Discount:
 <select id="fieldcolor" size="2">
 <option selected value="0">Black</option>
 <option value="255">White</option>
+</select>
+</label>
+<label>Mode:
+<select id="removeApples" size="2">
+<option selected value="training">Training</option>
+<option value="compete">Compete</option>
 </select>
 </label>
 <br><br>
