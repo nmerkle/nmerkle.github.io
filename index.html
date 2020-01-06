@@ -186,7 +186,7 @@ function setup() {
   maxX = width - radius
   minY = radius
   maxY = height - radius
-  img = loadImage('http://localhost:5000/robot_wiki.png')
+  img = loadImage('http://localhost/robot_wiki.png')
   actions = [moveUp, moveDown, moveLeft, moveRight, moveRightUp, moveRightDown, moveLeftUp, moveLeftDown]
 	env.getNumStates = function() { return (numGreenBalls * 3 + numRedBalls * 3) + 2; }
 	env.getMaxNumActions = function() { return actions.length; }
