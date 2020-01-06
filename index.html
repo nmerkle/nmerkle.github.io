@@ -354,6 +354,7 @@ class Agent {
 				
 		}
 		let rem = 0
+		let ballIndexes = []
 		redBalls.forEach((ball) => {
 			let dist = this.euklideanDistance(ball)
 			let angle = this.getRelativeAngle(ball)
@@ -375,7 +376,7 @@ class Agent {
 				text("Good: +1", this.centerX, this.centerY - 50)
 				ball.x = random(minX, maxX)
 				if(!training) {
-					rem+=1
+					ballIndexes.push(rem)
 				} else {
 					if(moving)
 						ball.y = minY
@@ -383,12 +384,13 @@ class Agent {
 						ball.y = random(minY, maxY)
 				}
 			}
-			
+			rem += 1
 		})
-		for(let i = 0; i < rem; i++) {
-			redBalls.pop()
+		for(let i = 0; i < ballIndexes; i++) {
+			redBalls.splice(ballIndexes[i], 1)
 		}
 		rem = 0
+		ballIndexes.length = 0
 		greenBalls.forEach((ball) => {
 			let dist = this.euklideanDistance(ball)
 			let angle = this.getRelativeAngle(ball)
@@ -410,7 +412,7 @@ class Agent {
 				text("Shit: -1", this.centerX, this.centerY - 50)
 				ball.x = random(minX, maxX)
 				if(!training) {
-					rem+=1
+					ballIndexes.push(rem)
 				} else {
 					if(moving)
 						ball.y = minY
@@ -418,11 +420,13 @@ class Agent {
 						ball.y = random(minY, maxY)
 				}
 			}
+			rem += 1
 		})
-		for(let i = 0; i < rem; i++) {
-			greenBalls.pop()
+		for(let i = 0; i < ballIndexes; i++) {
+			greenBalls.splice(ballIndexes[i], 1)
 		}
 		rem = 0
+		ballIndexes.length = 0
 		if(!collide) {
 			zero += 1
 			plotSuccess(0)
