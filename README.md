@@ -1,7 +1,7 @@
 # SMAPPI-Smart-Apple-Picker-Agent
 
 The **SMAPPI** (Smart Apple Picker) Agent **(see: [Life Demo](https://nmerkle.github.io))** is a *Deep-Q-Neural-Network* agent that has the task to collect red apples while it has to avoid the poisened green apples and the borders of the playground. SMAPPI can perform eight different actions (e.g. *MoveUp, MoveDown, MoveRight, MoveLeft, MoveUpRight, MoveDownRight, MoveUpLeft, MoveUpRight*) for solving its task. In order to train SMAPPI, it receives reward **(+1)** values, if it collects **red apples** and punishment **(-1)** values if it collects **green poisened apples** or hits the wall (border of the playground). The blue rotating triangle together with the rotating ray indicate the directions (actions), that SMAPPI selects for every moving step. On the right side of the page is a configuration panel where you can set Hyperparameters for the DQNN algorithm such as **learning rate**, **greedy** value and **discount** factor. Moreover, you can set the: 
-* Framerate (default is 30)
+* Framerate of the game (default is 30)
 * Field's background color (black or white)
 * Number of green and red apples
 * Apples' movement status (static or moving)
@@ -17,7 +17,7 @@ Below of the game and the configuration panel, you can find some statistics (e.g
 ![alt text](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/screenshot2.png "Screenshot of the SMAPPI game.")
 
 # The state representation of SMAPPI
-The state vector of SMAPPI consists of the *euklidean* distances to all apples, the *apple color* (1 for red, and 0 for green), the *angles* of the agent relative to every apple and the x and y position of the agent. The number of states is computed by the following equation:
+The state vector of SMAPPI consists of the *euklidean* distances to all apples, the *apple color* (1 for red, and 0 for green), the *angles* of the agent relative to every apple and the ``x`` and ``y`` position of the agent. The number of states is computed by the following equation:
 
 ``` javascript
 const stateVectorNum = (numRedApples * 3) + (numGreenApples * 3) + numAgentCoordinates
