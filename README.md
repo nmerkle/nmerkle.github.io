@@ -30,4 +30,4 @@ You require the following Javascript libraries:
 
 and a HTTP server. For testing purposes, I utilized the [Serve](https://github.com/zeit/serve) HTTP server which provides by default access at port 5000. 
 
-**Note: In case you would like to utilize another domain (instead of localhost) and port, you have to adjust the URL which references the *robot_wiki.png* within the [AgentDemo.html](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/index.html).**
+**Note: In case you would like to utilize another domain (instead of localhost) and port, you have to adjust the URL which references the *robot_wiki.png* within the [index.html](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/index.html).**
