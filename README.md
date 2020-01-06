@@ -18,7 +18,7 @@ const stateVectorNum = (numRedApples * 3) + (numGreenApples * 3) + numAgentCoord
 ```
 For instance, if 20 red and 20 green apples are in the field then the state vector number would be computed by:
 
-```
+``` console
 stateVectorNum = 20 * 3 + 20 * 3 + 2 = 122
 ```
 
@@ -30,4 +30,4 @@ You require the following Javascript libraries:
 
 and a HTTP server. For testing purposes, I utilized the [Serve](https://github.com/zeit/serve) HTTP server which provides by default access at port 5000. 
 
-**Note: In case you would like to utilize another domain (instead of localhost) and port, you have to adjust the URL which references the *robot_wiki.png* within the [index.html](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/index.html).**
+**Note: In case you would like to utilize another domain (instead of localhost) and port, you have to adjust the URL which references the *robot_wiki.png* within the [index.html](https://github.com/nmerkle/nmerkle.github.io/blob/master/index.html).**
