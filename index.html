@@ -353,7 +353,7 @@ class Agent {
 				text("Autsch: -1", this.centerX, this.centerY + agentHeight/2)
 				
 		}
-		
+		let balls2Remove = []
 		redBalls.forEach((ball) => {
 			let dist = this.euklideanDistance(ball)
 			let angle = this.getRelativeAngle(ball)
@@ -375,7 +375,7 @@ class Agent {
 				text("Good: +1", this.centerX, this.centerY - 50)
 				ball.x = random(minX, maxX)
 				if(!training) {
-					delete ball
+					balls2Remove.push(ball)
 		
 				} else {
 					if(moving)
@@ -387,7 +387,8 @@ class Agent {
 			
 		})
 		
-	
+		redBalls = redBalls.filter(val => !(balls2Remove.includes(val)))
+		balls2Remove.length = 0
 		greenBalls.forEach((ball) => {
 			let dist = this.euklideanDistance(ball)
 			let angle = this.getRelativeAngle(ball)
@@ -409,7 +410,7 @@ class Agent {
 				text("Shit: -1", this.centerX, this.centerY - 50)
 				ball.x = random(minX, maxX)
 				if(!training) {
-					delete ball
+					balls2Remove.push(ball)
 				} else {
 					if(moving)
 						ball.y = minY
@@ -419,7 +420,8 @@ class Agent {
 			}
 			
 		})
-		
+		greenBalls = greenBalls.filter(val => !(balls2Remove.includes(val)))
+		balls2Remove.length = 0
 		if(!collide) {
 			zero += 1
 			plotSuccess(0)
