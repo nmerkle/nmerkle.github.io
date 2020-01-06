@@ -6,7 +6,7 @@ The SMAPPI (Smart Apple Picker) Agent **(see: [Life Demo](https://nmerkle.github
 
 ![alt text](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/screenshot1.png "Screenshot of the SMAPPI game.")
 
-Below of the game and the configuration panel, you can find some statistics (e.g. histogram and line chart) about the performans of SMAPPI. The histogram shows how many negative, zero and positive rewards SMAPPI received for all its performed actions. The line chart shows the development of the rewards for every action step. 
+Below of the game and the configuration panel, you can find some statistics (e.g. histogram and line chart) about the performans of SMAPPI. The histogram shows how many negative, zero and positive rewards SMAPPI receives for all its performed actions. The line chart shows the development of the rewards for every action step. 
 
 ![alt text](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/screenshot2.png "Screenshot of the SMAPPI game.")
 
@@ -30,7 +30,7 @@ You require the following Javascript libraries:
 
 and a HTTP server. For testing purposes, I utilized the [Serve](https://github.com/zeit/serve) HTTP server which provides by default access at port 5000. 
 
-**Note: In case you would like to utilize another domain (instead of e.g.loclahost) and port, you have to adjust the URL which references the *robot_wiki.png* within the [index.html](https://github.com/nmerkle/nmerkle.github.io/blob/master/index.html).**
+**Note: In case you would like to utilize another domain (instead of e.g.localhost) and port, you have to adjust the URL which references the *robot_wiki.png* within the [index.html](https://github.com/nmerkle/nmerkle.github.io/blob/master/index.html).**
 
-# A life demo of SMAPPI
-You can access a running life demo of SMAPPI at **[nmerkle.github.io](https://nmerkle.github.io)**. After accessing the page, click ``Start Game``-Button and that's it.
+# Life demo of SMAPPI
+You can access a running life demo of SMAPPI at **[nmerkle.github.io](https://nmerkle.github.io)**. After accessing the page, click ``Start Game``-Button and see how SMAPPI picks :apple:.
