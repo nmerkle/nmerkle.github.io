@@ -35,6 +35,7 @@ let minusOne = 0
 let zero = 0
 let one = 0
 let maxLength = 1000
+let frameSize = 30
 
 
 	function setGameConfig() {
@@ -72,6 +73,11 @@ let maxLength = 1000
 				moving = true
 			else if(document.getElementById('moving').value == "false")
 				moving = false
+		}
+		
+		if(document.getElementById('framesize').value !== "") {
+			frameSize = parseFloat(document.getElementById('framesize').value)
+			frameRate(frameSize)
 		}
 	
 	}
@@ -179,7 +185,7 @@ let maxLength = 1000
 
 function setup() {
   createCanvas(720, 500)
-  frameRate(30);
+  frameRate(frameSize);
   textSize(fontsize);
   textAlign(CENTER, CENTER);
   minX = radius
@@ -547,6 +553,9 @@ Discount:
 <option selected value="true">True</option>
 <option value="false">False</option>
 </select></label>
+<br><br>
+<label>Frame Rate: 
+<input type="number" id="framesize" min="1" max="100" step="1" value="30"></label>
 <br>
 </fieldset><br>
 <div align="center">
