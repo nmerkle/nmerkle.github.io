@@ -36,6 +36,8 @@ let zero = 0
 let one = 0
 let maxLength = 1000
 let frameSize = 30
+let fieldColor = 0
+let white = false
 
 
 	function setGameConfig() {
@@ -78,6 +80,12 @@ let frameSize = 30
 		if(document.getElementById('framesize').value !== "") {
 			frameSize = parseFloat(document.getElementById('framesize').value)
 			frameRate(frameSize)
+		}
+		
+		if(document.getElementById('fieldcolor').value !== "") {
+			fieldColor = parseFloat(document.getElementById('fieldcolor').value)
+			white = fieldColor == 0 ? false : true
+			background(fieldColor)
 		}
 	
 	}
@@ -215,7 +223,7 @@ function setup() {
 }
 
 function draw() {
-	background(0);
+	background(fieldColor);
 	if(start) {
 	if(stop) noLoop()
 	else loop()
@@ -326,7 +334,8 @@ class Agent {
 			plotSuccess(-1)
 			collide = true
 			textSize(fontsize)
-			fill(255)
+			if(white) fill(0)
+			else fill(255)
 			if(this.centerX >= width - agentWidth / 2)
 				text("Autsch: -1", this.centerX - agentWidth/2, this.centerY)
 			else if(this.centerX  <= agentWidth / 2)
@@ -353,7 +362,8 @@ class Agent {
 				one += 1
 				plotSuccess(1)
 				textSize(fontsize)
-				fill(255)
+				if(white) fill(0)
+				else fill(255)
 				text("Good: +1", this.centerX, this.centerY - 50)
 				ball.x = random(minX, maxX)
 				if(moving)
@@ -379,7 +389,8 @@ class Agent {
 				minusOne += 1
 				plotSuccess(-1)
 				textSize(fontsize)
-				fill(255)
+				if(white) fill(0)
+				else fill(255)
 				text("Shit: -1", this.centerX, this.centerY - 50)
 				ball.x = random(minX, maxX)
 				if(moving)
@@ -393,7 +404,8 @@ class Agent {
 			plotSuccess(0)
 		}
 		textSize(30)
-	    fill(255)
+	        if(white) fill(0)
+	        else fill(255)
 		this.score += numGood - numBad
 		text("Score: "+this.score, 125, 50)
 		return {reward: numGood - numBad, state: state}
@@ -548,15 +560,21 @@ Discount:
 <input type="number" id="redApples" value="15" min="0" max="50" step="1"></label>
 <label>Green Apples:
 <input type="number" id="greenApples" min="0" max="50" step="1" value="15"></label>
+<label>Frame Rate: 
+<input type="number" id="framesize" min="1" max="100" step="1" value="30"></label>
+<br><br>
 <label>Moving Apples:
 <select id="moving" size="2">
 <option selected value="true">True</option>
 <option value="false">False</option>
 </select></label>
+<label>Field Color:
+<select id="fieldcolor" size="2">
+<option selected value="0">Black</option>
+<option value="255">White</option>
+</select>
+</label>
 <br><br>
-<label>Frame Rate: 
-<input type="number" id="framesize" min="1" max="100" step="1" value="30"></label>
-<br>
 </fieldset><br>
 <div align="center">
 <input type="submit" value="Submit" onclick="setGameConfig();">
