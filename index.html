@@ -178,7 +178,7 @@ let maxLength = 1000
 	}
 
 function setup() {
-  createCanvas(720, 400)
+  createCanvas(720, 500)
   frameRate(30);
   textSize(fontsize);
   textAlign(CENTER, CENTER);
@@ -515,7 +515,7 @@ function loadDQNN() {
  </script>
 </head>
 <body onload="createPlot();">
-<div id="controlElements" style="position:absolute;top:10;left:750;margin-bottom:300px">
+<div id="controlElements" style="position:absolute;top:10;left:750;">
 <h3 align="center">Settings</h3>
 <fieldset>
 <legend>Trained DQN Network</legend>
@@ -554,7 +554,7 @@ Discount:
 </div>
 </div><br>
 
-<div style="position:absolute;margin-top:405;width:100%">
+<div style="position:absolute;margin-top:505;width:100%">
 <div style="position:absolute;left:200">
 <input type="submit" value="Start Game" onclick="startGame();">
 <input type="submit" value="Stop Game" onclick="stopGame();">
