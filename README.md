@@ -33,4 +33,4 @@ and a HTTP server. For testing purposes, I utilized the [Serve](https://github.c
 **Note: In case you would like to utilize another domain (instead of e.g.localhost) and port, you have to adjust the URL which references the *robot_wiki.png* within the [index.html](https://github.com/nmerkle/nmerkle.github.io/blob/master/index.html).**
 
 # Life demo of SMAPPI
-You can access a running life demo of SMAPPI at **[nmerkle.github.io](https://nmerkle.github.io)**. After accessing the page, click ``Start Game``-Button and see how SMAPPI picks :apple:s.
+You can access a running life demo of SMAPPI at **[nmerkle.github.io](https://nmerkle.github.io)**. After accessing the page, click ``Start Game``-Button and see how SMAPPI picks :apple:s. You can play around with the hyperparameters and the game configuration in order to improve the agent. Good luck! :+1:
