@@ -353,7 +353,7 @@ class Agent {
 				text("Autsch: -1", this.centerX, this.centerY + agentHeight/2)
 				
 		}
-		let rem = 0
+		
 		let ballIndexes = []
 		redBalls.forEach((ball) => {
 			let dist = this.euklideanDistance(ball)
@@ -376,7 +376,7 @@ class Agent {
 				text("Good: +1", this.centerX, this.centerY - 50)
 				ball.x = random(minX, maxX)
 				if(!training) {
-					ballIndexes.push(rem)
+					ballIndexes.push(ball)
 				} else {
 					if(moving)
 						ball.y = minY
@@ -384,12 +384,11 @@ class Agent {
 						ball.y = random(minY, maxY)
 				}
 			}
-			rem += 1
+			
 		})
 		for(let i = 0; i < ballIndexes; i++) {
-			redBalls.splice(ballIndexes[i], 1)
+			redBalls.remove(ballIndexes[i])
 		}
-		rem = 0
 		ballIndexes.length = 0
 		greenBalls.forEach((ball) => {
 			let dist = this.euklideanDistance(ball)
@@ -412,7 +411,7 @@ class Agent {
 				text("Shit: -1", this.centerX, this.centerY - 50)
 				ball.x = random(minX, maxX)
 				if(!training) {
-					ballIndexes.push(rem)
+					ballIndexes.push(ball)
 				} else {
 					if(moving)
 						ball.y = minY
@@ -420,12 +419,12 @@ class Agent {
 						ball.y = random(minY, maxY)
 				}
 			}
-			rem += 1
+			
 		})
 		for(let i = 0; i < ballIndexes; i++) {
-			greenBalls.splice(ballIndexes[i], 1)
+			greenBalls.remove(ballIndexes[i])
 		}
-		rem = 0
+		
 		ballIndexes.length = 0
 		if(!collide) {
 			zero += 1
