@@ -114,12 +114,18 @@ let training = true
 		
 		env.getNumStates = function() { return (numGreenBalls * 3 + numRedBalls * 3) + 2; }
 		env.getMaxNumActions = function() { return actions.length; }
-		rlagent = new RL.DQNAgent(env, spec);
+		
 		if (document.getElementById('yes').checked) {
 			let pol = loadDQNN()
 			if(pol != undefined && pol != null)
 				rlagent.fromJSON(pol)
-		}
+			else
+				storeJSON()
+			rlagent = new RL.DQNAgent(env, spec);
+			pol = loadDQNN()
+			rlagent.fromJSON(pol)
+		} else {rlagent = new RL.DQNAgent(env, spec);}
+			
 		agent.rlagent = rlagent
 		
 	}
