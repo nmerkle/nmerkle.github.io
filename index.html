@@ -470,7 +470,9 @@ class Agent {
 		redBalls.forEach((ball) => {
 			let dist = this.euklideanDistance(ball)
 			let angle = this.getRelativeAngle(ball)
-			ballObjs[dist] = {angle, 1}
+			ballObjs[dist] = []
+			ballObjs[dist].push(angle)
+			ballObjs[dist].push(1)
 			distances.push(dist)
 			let xDist = ball.x - this.centerX
 			let yDist = ball.y - this.centerY 
@@ -505,7 +507,9 @@ class Agent {
 			let dist = this.euklideanDistance(ball)
 			distances.push(dist)
 			let angle = this.getRelativeAngle(ball)
-			ballObjs[dist] = {angle, 0}
+			ballObjs[dist] = []
+			ballObjs[dist].push(angle)
+			ballObjs[dist].push(0)
 			let xDist = ball.x - this.centerX
 			let yDist = ball.y - this.centerY
 			let distSquare = Math.sqrt(xDist * xDist + yDist * yDist) 
