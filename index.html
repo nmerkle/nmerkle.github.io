@@ -131,75 +131,77 @@ let training = true
 	}
 
 	function moveUp(bot) {
-		bot.centerY -= stepSize
 		if(bot.centerY < agentWidth /2) {
 			bot.centerY = agentWidth / 2
 		}
+		bot.centerY -= stepSize
 	}
 	
 	function moveRightUp(bot) {
-		bot.centerY -= stepSize
 		if(bot.centerY < agentWidth /2) {
 			bot.centerY = agentWidth / 2
 		}
-		bot.centerX += stepSize
+		
 		if(bot.centerX < agentWidth / 2) {
 			bot.centerX = agentWidth / 2
 		}
+		bot.centerX += stepSize
+		bot.centerY -= stepSize
 	}
 	
 	function moveDown(bot) {
-		bot.centerY += stepSize
 		if(bot.centerY > height-agentWidth /2) {
 			bot.centerY = height - agentWidth / 2
 		}
+		bot.centerY += stepSize
 	}
 	
 	function moveRightDown(bot) {
-		bot.centerX += stepSize
 		if(bot.centerX < agentWidth / 2) {
 			bot.centerX = agentWidth / 2
 		}
-		bot.centerY += stepSize
 		if(bot.centerY > height-agentWidth /2) {
 			bot.centerY = height - agentWidth / 2
 		}
+		bot.centerX += stepSize
+		bot.centerY += stepSize
 	}
 	
 	function moveLeftUp(bot) {
-		bot.centerX -= stepSize
 		if(bot.centerX > width - agentWidth / 2) {
 			bot.centerX = width - agentWidth / 2
 		}
-		bot.centerY -= stepSize
 		if(bot.centerY < agentWidth /2) {
 			bot.centerY = agentWidth / 2
 		}
+		bot.centerX -= stepSize
+		bot.centerY -= stepSize
 	}
 	
 	function moveLeftDown(bot) {
-		bot.centerX -= stepSize
+		
 		if(bot.centerX > width - agentWidth / 2) {
 			bot.centerX = width  - agentWidth / 2
-		}
-		bot.centerY += stepSize 
+		} 
 		if(bot.centerY > height-agentWidth /2) {
 			bot.centerY = height - agentWidth / 2
 		}
+		bot.centerX -= stepSize
+		bot.centerY += stepSize
 	}
 	
-	function moveLeft(bot) {
-		bot.centerX -= stepSize 
+	function moveLeft(bot) { 
 		if(bot.centerX > width - agentWidth / 2) {
 			bot.centerX = width - agentWidth / 2 
 		}
+		bot.centerX -= stepSize
 	}
 	
 	function moveRight(bot) {
-		bot.centerX += stepSize
 		if(bot.centerX  < agentWidth / 2) {
 			bot.centerX  = agentWidth / 2
 		}
+		bot.centerX += stepSize
 	}
 	
 function preload() {
