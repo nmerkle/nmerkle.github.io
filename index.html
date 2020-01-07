@@ -39,7 +39,6 @@ let frameSize = 30
 let fieldColor = 0
 let white = false
 let training = true
-let state = null
 
 	function getRandomInt(min, max) {
 	  min = Math.ceil(min);
@@ -330,6 +329,7 @@ class Agent {
 		this.action = undefined
 		this.rlagent = rlagent
 		this.performedAction = undefined
+		this.currentState = undefined
 	}
 	
 	euklideanDistance(ball) {
@@ -446,14 +446,14 @@ class Agent {
 	
 	act() {
 		let action = undefined
-		if(state == undefined) {
+		if(currentState == undefined) {
 			action = getRandomInt(0, actions.length)
 		} else {
-			action = this.rlagent.act(state)
+			action = this.rlagent.act(currentState)
 		}
 		this.performedAction = this.actions[action].name
 		this.actions[action](this)
-		const {reward, state} = this.checkCollision()
+		const {reward, currentState} = this.checkCollision()
 		this.rlagent.learn(reward)
 		
 	}
