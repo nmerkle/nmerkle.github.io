@@ -454,8 +454,13 @@ class Agent {
 		this.performedAction = this.actions[action].name
 		this.actions[action](this)
 		const {reward, state} = this.checkCollision()
-		this.currentState = state
-		this.rlagent.learn(reward)
+		if(this.currentState == undefined) {
+			this.currentState = state
+			this.rlagent.act(this.currentState)
+		} else {
+			this.currentState = state
+			this.rlagent.learn(reward)
+		}
 		
 	}
 	
