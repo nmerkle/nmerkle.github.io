@@ -560,7 +560,7 @@ class Agent {
 		
 	}
 	
-	act() {
+	/* act() {
 		let action = undefined
 		if(this.currentState == undefined) {
 			action = getRandomInt(0, actions.length)
@@ -588,7 +588,43 @@ class Agent {
 		
 		}
 		
+	}*/
+	
+	act() {
+	let action undefined
+	if(this.currentState == undefined) {
+		if(training) {
+			const {reward, state} = this.checkCollision()
+			action = this.rlagent.act(state)
+			this.performedAction = this.actions[action].name
+			this.actions[action](this)
+			this.currentState = state
+			this.rlagent.learn(reward)
+			
+		} else {
+			const {reward, state} = this.checkCollisionForCompeteMode()
+			action = this.rlagent.act(state)
+			this.performedAction = this.actions[action].name
+			this.actions[action](this)
+			this.currentState = state
+			this.rlagent.learn(reward)
+		}
+	} else {
+		action = this.rlagent.act(this.currentState)
+		this.performedAction = this.actions[action].name
+		this.actions[action](this)
+		if(training) {
+			const {reward, state} = this.checkCollision()
+			this.currentState = state
+			this.rlagent.learn(reward)
+		} else {
+			const {reward, state} = this.checkCollisionForCompeteMode()
+			this.currentState = state
+			this.rlagent.learn(reward)
+		}
+		
 	}
+}
 	
 	getRelativeAngle(ball) {
 		let angle;
