@@ -573,21 +573,19 @@ class Agent {
 		if(training) {
 			const {reward, state} = this.checkCollision()
 			if(this.currentState == undefined) {
-			this.currentState = state
-			this.rlagent.act(this.currentState)
-		} else {
+				this.rlagent.act(state)
+			} 
 			this.currentState = state
 			this.rlagent.learn(reward)
-		}
+		
 		} else {
 			const {reward, state} = this.checkCollisionForCompeteMode()
 			if(this.currentState == undefined) {
-			this.currentState = state
-			this.rlagent.act(this.currentState)
-		} else {
+				this.rlagent.act(state)
+			} 
 			this.currentState = state
 			this.rlagent.learn(reward)
-		}
+		
 		}
 		
 	}
