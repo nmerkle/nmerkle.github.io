@@ -117,8 +117,8 @@ let training = true
 			spec["gamma"] = gamma
 		}
 		
-		env.getNumStates = function() { return (numGreenBalls * 3 + numRedBalls * 3) + 2; }
-		env.getMaxNumActions = function() { return actions.length; }
+		//env.getNumStates = function() { return (numGreenBalls * 3 + numRedBalls * 3) + 2; }
+		//env.getMaxNumActions = function() { return actions.length; }
 		
 		if (document.getElementById('yes').checked) {
 			let pol = loadDQNN()
