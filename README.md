@@ -18,7 +18,11 @@ Below of the game and the configuration panel, you can find some statistics (e.g
 ![The statistic panel of the game](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/screenshot2.png "Screenshot of the SMAPPI game.")
 
 # The state representation of SMAPPI
-The state vector of SMAPPI consists of the *euklidean* distances to all apples, the *apple color* (1 for red, and 0 for green), the *angles* of the agent relative to every apple and the ``x`` and ``y`` position of the agent. The number of states is computed by the following equation:
+There are 2 different state vector representations depending on the game mode:
+
+* In ``compete`` mode the state vector consists of 5 features (the *euklidean distance* and *angle* to the ``nearest apple``, the ``color`` of the nearest apple (0 = green,1 = red) and the ``x,y position`` of the agent. 
+
+* In ``trainging`` mode the state vector consists of the *euklidean* distances to ``all apples``, the *apple color* (1 for red, and 0 for green), the *angles* of the agent relative to every apple and the ``x`` and ``y`` position of the agent. The number of states in the  training mode is computed by the following equation:
 
 ``` javascript
 const stateVectorNum = (numRedApples * 3) + (numGreenApples * 3) + numAgentCoordinates
