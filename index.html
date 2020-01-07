@@ -42,7 +42,7 @@ let training = true
 
 
 	function setGameConfig() {
-		if(document.getElementById('redApples').value !== "") {
+		if(document.getElementById('redApples').value != "") {
 			numRedBalls = parseFloat(document.getElementById('redApples').value)
 			if(numRedBalls > redBalls.length) {
 				let diff = numRedBalls - redBalls.length
@@ -56,7 +56,7 @@ let training = true
 				}
 			}
 			}
-			if(document.getElementById('greenApples').value !== "") {
+			if(document.getElementById('greenApples').value != "") {
 			numGreenBalls = parseFloat(document.getElementById('greenApples').value)
 			if(numGreenBalls > greenBalls.length) {
 				let diff = numGreenBalls - greenBalls.length
@@ -71,25 +71,25 @@ let training = true
 			}
 		}
 		
-		if(document.getElementById('moving').value !== "") {
+		if(document.getElementById('moving').value != "") {
 			if(document.getElementById('moving').value == "true")
 				moving = true
 			else if(document.getElementById('moving').value == "false")
 				moving = false
 		}
 		
-		if(document.getElementById('framesize').value !== "") {
+		if(document.getElementById('framesize').value != "") {
 			frameSize = parseFloat(document.getElementById('framesize').value)
 			frameRate(frameSize)
 		}
 		
-		if(document.getElementById('fieldcolor').value !== "") {
+		if(document.getElementById('fieldcolor').value != "") {
 			fieldColor = parseFloat(document.getElementById('fieldcolor').value)
 			white = fieldColor == 0 ? false : true
 			background(fieldColor)
 		}
 		
-		if(document.getElementById('removeApples').value !== "") {
+		if(document.getElementById('removeApples').value != "") {
 			if(document.getElementById('removeApples').value == 'compete') {
 				training = false
 			} else training = true
@@ -99,15 +99,15 @@ let training = true
 	
 	
 	function setHyperParams() {
-		if(document.getElementById('greedy').value !== "") {
+		if(document.getElementById('greedy').value != "") {
 			epsilon = parseFloat(document.getElementById("greedy").value)
 			spec["epsilon"] = epsilon
 		}
-		if(document.getElementById('alpha').value !== "") {
+		if(document.getElementById('alpha').value != "") {
 			learnRate = parseFloat(document.getElementById('alpha').value)
 			spec["alpha"] = learnRate
 		}
-		if(document.getElementById("gamma").value !== "") {
+		if(document.getElementById("gamma").value != "") {
 			gamma = parseFloat(document.getElementById("gamma").value)
 			spec["gamma"] = gamma
 		}
@@ -117,7 +117,7 @@ let training = true
 		rlagent = new RL.DQNAgent(env, spec);
 		if (document.getElementById('yes').checked) {
 			let pol = loadDQNN()
-			if(pol !== undefined && pol !== null)
+			if(pol != undefined && pol != null)
 				rlagent.fromJSON(pol)
 		}
 		agent.rlagent = rlagent
