@@ -343,6 +343,191 @@ class Agent {
 		return dist 
 	}
 	
+	checkCollisionBySensors() {
+	let state = []
+		let collide = false
+		let numGood = 0
+		let numBad = 0
+		if(this.centerX >= width - agentWidth / 2 || this.centerX  <= agentWidth / 2
+		|| this.centerY >= height - agentHeight /2 || this.centerY <= agentHeight /2) {
+			numBad += 1
+			minusOne += 1
+			plotSuccess(-1)
+			collide = true
+			textSize(fontsize)
+			if(white) fill(0)
+			else fill(255)
+			if(this.centerX >= width - agentWidth / 2)
+				text("Autsch: -1", this.centerX - agentWidth/2, this.centerY)
+			else if(this.centerX  <= agentWidth / 2)
+				text("Autsch: -1", this.centerX + agentWidth/2, this.centerY)
+			else if(this.centerY >= height - agentHeight /2)
+				text("Autsch: -1", this.centerX, this.centerY - agentHeight/2)
+			else if(this.centerY <= agentHeight /2)
+				text("Autsch: -1", this.centerX, this.centerY + agentHeight/2)
+				
+		}
+		let balls2Remove = []
+		let degreeIndexes = [[0, 45], [45, 90], [90, 135], [135,180], [180, 225], [225, 270], [270, 315], [315, 360]]
+		let sensors = []
+		for(let i = 0; i < 8; i++) {
+			sensors.push([])
+		}
+		
+		//For each wall set distance, angle and color
+		if(Math.abs(width - agent.centerX) <= 150 || Math.abs(height - agent.centerY) <= 150 
+		|| agent.centerX <= 150 || agent.centerY <= 150) {
+			let wallDistances = []
+			let wallObjs = {}
+			
+			let dist1 = this.euklideanDistance({x: agent.centerX, y: height})
+			wallDistances.push(dist1)
+			wallObjs[dist1] = this.getRelativeAngle({x: agent.centerX, y: height})
+			
+			let dist2 = this.euklideanDistance({x: width, y: agentCenterY})
+			wallDistances.push(dist2)
+			wallObjs[dist2] = this.getRelativeAngle({x: width, y: agentCenterY})
+			
+			let dist3 = this.euklideanDistance({x: 0, y: agent.centerY})
+			wallDistances.push(dist3)
+			wallObjs[dist3] = this.getRelativeAngle({x: 0, y: agent.centerY})
+			
+			let dist4 = this.euklideanDistance({x: agent.centerX, y: 0})
+			wallDistances.push(dist4)
+			wallObjs[dist4] = this.getRelativeAngle({x: agent.centerX, y: 0})
+			
+			wallDistances.sort((a, b) => a - b)
+			
+			let dist = wallDistances[0]
+			let rad = wallObjs[dist]
+			let degree = degrees(rad)
+			let degIndex = undefined
+			let counter = 0
+			degreeIndexes.forEach((degs) => {
+				if(degree <= degs[1]) {
+					degIndex = counter
+				}
+				counter += 1
+			})
+			sensors[counter].push(dist)
+			sensors[counter].push(rad)
+			sensors[counter].push(0)
+			sensors[counter].push(0)
+			sensors[counter].push(1)
+			
+		}
+		redBalls.forEach((ball) => {
+			if(Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY <= 100)) {
+				let dist = this.euklideanDistance(ball)
+				let rad = this.getRelativeAngle(ball)
+				let degree = degrees(rad)
+				let degIndex = undefined
+				let counter = 0
+				degreeIndexes.forEach((degs) => {
+					if(degree <= degs[1]) {
+						degIndex = counter
+					}
+					counter += 1
+				})
+				sensors[counter].push(dist)
+				sensors[counter].push(rad)
+				sensors[counter].push(1)
+				sensors[counter].push(0)
+				sensors[counter].push(0)
+			
+				let xDist = ball.x - this.centerX
+				let yDist = ball.y - this.centerY 
+				let distSquare = Math.sqrt(xDist * xDist + yDist * yDist) 
+				let rad = radius + radius 
+				if(distSquare <= rad){
+					collide = true
+					numGood += 1
+					one += 1
+					plotSuccess(1)
+					textSize(fontsize)
+					if(white) fill(0)
+					else fill(255)
+					text("Good: +1", this.centerX, this.centerY - 50)
+					ball.x = random(minX, maxX)
+					if(!training) {
+						balls2Remove.push(ball)
+			
+					} else {
+						if(moving)
+							ball.y = minY
+						else
+							ball.y = random(minY, maxY)
+					}
+				}
+			}
+			
+		})
+		redBalls = redBalls.filter(val => !(balls2Remove.includes(val)))
+		balls2Remove.length = 0
+		
+		greenBalls.forEach((ball) => {
+			if(Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY) <= 100) {
+				let dist = this.euklideanDistance(ball)
+				let rad = this.getRelativeAngle(ball)
+				let degree = degrees(rad)
+				let degIndex = undefined
+				let counter = 0
+				degreeIndexes.forEach((degs) => {
+					if(degree <= degs[1]) {
+						degIndex = counter
+					}
+					counter += 1
+				})
+				sensors[counter].push(dist)
+				sensors[counter].push(rad)
+				sensors[counter].push(0)
+				sensors[counter].push(1)
+				sensors[counter].push(0)
+				
+				let xDist = ball.x - this.centerX
+				let yDist = ball.y - this.centerY
+				let distSquare = Math.sqrt(xDist * xDist + yDist * yDist) 
+				let rad = radius + radius
+				if(distSquare <= rad){
+					collide = true
+					numBad += 1
+					minusOne += 1
+					plotSuccess(-1)
+					textSize(fontsize)
+					if(white) fill(0)
+					else fill(255)
+					text("Shit: -1", this.centerX, this.centerY - 50)
+					ball.x = random(minX, maxX)
+					if(!training) {
+						balls2Remove.push(ball)
+					} else {
+						if(moving)
+							ball.y = minY
+						else
+							ball.y = random(minY, maxY)
+					}
+				}
+			}
+			
+		})
+		greenBalls = greenBalls.filter(val => !(balls2Remove.includes(val)))
+		balls2Remove.length = 0
+		
+		if(!collide) {
+			zero += 1
+			plotSuccess(0)
+		}
+		textSize(30)
+	        if(white) fill(0)
+	        else fill(255)
+		this.score += numGood - numBad
+		text("Score: "+this.score, 125, 50)
+		sensors.forEach((sensor) => {
+			state.concat(sensor)
+		})
+		return {reward: numGood - numBad, state: state}
+}
+	
 	checkCollision() {
 		let state = []
 		let collide = false
