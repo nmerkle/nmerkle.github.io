@@ -131,15 +131,15 @@ let training = true
 	}
 
 	function moveUp(bot) {
-		if(bot.centerY < agentWidth /2) {
-			bot.centerY = agentWidth / 2
+		if(bot.centerY < agentHeight /2) {
+			bot.centerY = agentHeight / 2
 		}
 		bot.centerY -= stepSize
 	}
 	
 	function moveRightUp(bot) {
-		if(bot.centerY < agentWidth /2) {
-			bot.centerY = agentWidth / 2
+		if(bot.centerY < agentHeight /2) {
+			bot.centerY = agentHeight / 2
 		}
 		
 		if(bot.centerX < agentWidth / 2) {
@@ -150,8 +150,8 @@ let training = true
 	}
 	
 	function moveDown(bot) {
-		if(bot.centerY > height-agentWidth /2) {
-			bot.centerY = height - agentWidth / 2
+		if(bot.centerY > height-agentHeight /2) {
+			bot.centerY = height - agentHeight / 2
 		}
 		bot.centerY += stepSize
 	}
@@ -160,8 +160,8 @@ let training = true
 		if(bot.centerX < agentWidth / 2) {
 			bot.centerX = agentWidth / 2
 		}
-		if(bot.centerY > height-agentWidth /2) {
-			bot.centerY = height - agentWidth / 2
+		if(bot.centerY > height-agentHeight /2) {
+			bot.centerY = height - agentHeight / 2
 		}
 		bot.centerX += stepSize
 		bot.centerY += stepSize
@@ -171,8 +171,8 @@ let training = true
 		if(bot.centerX > width - agentWidth / 2) {
 			bot.centerX = width - agentWidth / 2
 		}
-		if(bot.centerY < agentWidth /2) {
-			bot.centerY = agentWidth / 2
+		if(bot.centerY < agentHeight /2) {
+			bot.centerY = agentHeight / 2
 		}
 		bot.centerX -= stepSize
 		bot.centerY -= stepSize
@@ -183,8 +183,8 @@ let training = true
 		if(bot.centerX > width - agentWidth / 2) {
 			bot.centerX = width  - agentWidth / 2
 		} 
-		if(bot.centerY > height-agentWidth /2) {
-			bot.centerY = height - agentWidth / 2
+		if(bot.centerY > height-agentHeight /2) {
+			bot.centerY = height - agentHeight / 2
 		}
 		bot.centerX -= stepSize
 		bot.centerY += stepSize
