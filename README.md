@@ -11,11 +11,11 @@ Below of the playground, you find three buttons (e.g. ``Stop Game``, ``Start Gam
 
 **NOTE: The Demo is only implemented and tested with Chrome and Firefox browser. It can happen, that in other browsers the page looks different.**
 
-![alt text](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/screenshot1.png "Screenshot of the SMAPPI game.")
+![A screenshot of the game](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/screenshot1.png "Screenshot of the SMAPPI game.")
 
 Below of the game and the configuration panel, you can find some statistics (e.g. histogram and line chart) about the performans of SMAPPI. The histogram shows how many negative, zero and positive rewards SMAPPI receives for all its performed actions. The line chart shows the development of the rewards for every action step. 
 
-![alt text](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/screenshot2.png "Screenshot of the SMAPPI game.")
+![The statistic panel of the game](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/screenshot2.png "Screenshot of the SMAPPI game.")
 
 # The state representation of SMAPPI
 The state vector of SMAPPI consists of the *euklidean* distances to all apples, the *apple color* (1 for red, and 0 for green), the *angles* of the agent relative to every apple and the ``x`` and ``y`` position of the agent. The number of states is computed by the following equation:
@@ -32,7 +32,7 @@ stateVectorNum = 20 * 3 + 20 * 3 + 2 = 122
 # How2Run SMAPPI
 You require the following Javascript libraries:
 * [PlotlyJS](https://github.com/plotly/plotly.js/) for plotting the statistics.
-* [ReinforceJS](https://github.com/karpathy/reinforcejs/blob/master/index.html) for the DQNN algorithm.
+* [ReinforceJS](https://github.com/karpathy/reinforcejs) for the DQNN algorithm.
 * [p5.js](https://github.com/processing/p5.js) for the game representation.
 
 and a HTTP server. For testing purposes, I utilized the [Serve](https://github.com/zeit/serve) HTTP server which provides by default access at port 5000. 
