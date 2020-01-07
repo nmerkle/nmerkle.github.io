@@ -41,6 +41,11 @@ let white = false
 let training = true
 let state = undefined
 
+	function getRandomInt(min, max) {
+	  min = Math.ceil(min);
+	  max = Math.floor(max);
+	  return Math.floor(Math.random() * (max - min)) + min;
+	}
 
 	function setGameConfig() {
 		if(document.getElementById('redApples').value != "") {
@@ -442,7 +447,7 @@ class Agent {
 	act() {
 		let action = undefined
 		if(state == undefined) {
-			action = Math.random(0, actions.length)
+			action = getRandomInt(0, actions.length)
 		} else {
 			action = this.rlagent.act(state)
 		}
