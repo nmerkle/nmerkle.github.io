@@ -39,6 +39,7 @@ let frameSize = 30
 let fieldColor = 0
 let white = false
 let training = true
+let state = undefined
 
 
 	function setGameConfig() {
@@ -439,10 +440,15 @@ class Agent {
 	}
 	
 	act() {
-		const {reward, state} = this.checkCollision()
-		let action = this.rlagent.act(state)
+		let action = undefined
+		if(state == undefined) {
+			action = Math.random(0, actions.length)
+		} else {
+			action = this.rlagent.act(state)
+		}
 		this.performedAction = this.actions[action].name
 		this.actions[action](this)
+		const {reward, state} = this.checkCollision()
 		this.rlagent.learn(reward)
 		
 	}
