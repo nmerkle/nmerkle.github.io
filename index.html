@@ -118,12 +118,10 @@ let training = true
 		}
 		if(training) {
 			env.getNumStates = function() { return (numGreenBalls * 3 + numRedBalls * 3) + 2; }
-			env.getMaxNumActions = function() { return actions.length; }
 		} else {
 			env.getNumStates = function() { return 5}
-			env.getMaxNumActions = function() { return actions.length; }
 		}
-		
+		env.getMaxNumActions = function() { return actions.length; }
 		if (document.getElementById('yes').checked) {
 			let pol = loadDQNN()
 			if(pol != undefined && pol != null)
@@ -215,7 +213,11 @@ let training = true
 	
 function preload() {
 	actions = [moveUp, moveDown, moveLeft, moveRight, moveRightUp, moveRightDown, moveLeftUp, moveLeftDown]
-	env.getNumStates = function() { return (numGreenBalls * 3 + numRedBalls * 3) + 2; }
+	if(training) {
+		env.getNumStates = function() { return (numGreenBalls * 3 + numRedBalls * 3) + 2; }
+	} else {
+		env.getNumStates = function() { return 5 }
+	}
 	env.getMaxNumActions = function() { return actions.length; }
 	spec["alpha"] = learnRate
 	spec["epsilon"] = greedy
@@ -539,7 +541,7 @@ class Agent {
 		balls2Remove.length = 0
 		
 		//Order distances and select the nearest one to push it to the state vector
-		distances.sort((a, b) => b - a);
+		distances.sort((a, b) => a - b);
 		let ang = ballObjs[distances[0]][0]
 		let col = ballObjs[distances[0]][1]
 		state.push(parseFloat(distances[0]))
