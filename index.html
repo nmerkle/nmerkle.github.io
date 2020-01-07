@@ -446,14 +446,15 @@ class Agent {
 	
 	act() {
 		let action = undefined
-		if(currentState == undefined) {
+		if(this.currentState == undefined) {
 			action = getRandomInt(0, actions.length)
 		} else {
-			action = this.rlagent.act(currentState)
+			action = this.rlagent.act(this.currentState)
 		}
 		this.performedAction = this.actions[action].name
 		this.actions[action](this)
-		const {reward, currentState} = this.checkCollision()
+		const {reward, state} = this.checkCollision()
+		this.currentState = state
 		this.rlagent.learn(reward)
 		
 	}
