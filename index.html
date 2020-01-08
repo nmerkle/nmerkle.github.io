@@ -435,7 +435,8 @@ class Agent {
 					sensors[degIndex][3] = 0
 					sensors[degIndex][4] = 0
 				} 
-			
+				
+				if(ball.y >= this.centerY) {
 				let xDist = ball.x - this.centerX
 				let yDist = ball.y - this.centerY 
 				let distSquare = Math.sqrt(xDist * xDist + yDist * yDist) 
@@ -460,6 +461,7 @@ class Agent {
 							ball.y = random(minY, maxY)
 					}
 				}
+			}
 			}
 			
 		})
@@ -490,6 +492,7 @@ class Agent {
 					sensors[degIndex][3] = 1
 					sensors[degIndex][4] = 0
 				}
+				if(ball.y >= this.centerY) {
 				let xDist = ball.x - this.centerX
 				let yDist = ball.y - this.centerY
 				let distSquare = Math.sqrt(xDist * xDist + yDist * yDist) 
@@ -512,6 +515,7 @@ class Agent {
 						else
 							ball.y = random(minY, maxY)
 					}
+				}
 				}
 			}
 			
