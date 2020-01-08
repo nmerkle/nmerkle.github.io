@@ -400,11 +400,11 @@ class Agent {
 				}
 				counter += 1
 			})
-			sensors[counter].push(dist)
-			sensors[counter].push(rad)
-			sensors[counter].push(0)
-			sensors[counter].push(0)
-			sensors[counter].push(1)
+			sensors[degIndex].push(dist)
+			sensors[degIndex].push(rad)
+			sensors[degIndex].push(0)
+			sensors[degIndex].push(0)
+			sensors[degIndex].push(1)
 			
 		}
 		redBalls.forEach((ball) => {
@@ -420,11 +420,11 @@ class Agent {
 					}
 					counter += 1
 				})
-				sensors[counter].push(dist)
-				sensors[counter].push(angle)
-				sensors[counter].push(1)
-				sensors[counter].push(0)
-				sensors[counter].push(0)
+				sensors[degIndex].push(dist)
+				sensors[degIndex].push(angle)
+				sensors[degIndex].push(1)
+				sensors[degIndex].push(0)
+				sensors[degIndex].push(0)
 			
 				let xDist = ball.x - this.centerX
 				let yDist = ball.y - this.centerY 
@@ -469,11 +469,11 @@ class Agent {
 					}
 					counter += 1
 				})
-				sensors[counter].push(dist)
-				sensors[counter].push(angle)
-				sensors[counter].push(0)
-				sensors[counter].push(1)
-				sensors[counter].push(0)
+				sensors[degIndex].push(dist)
+				sensors[degIndex].push(angle)
+				sensors[degIndex].push(0)
+				sensors[degIndex].push(1)
+				sensors[degIndex].push(0)
 				
 				let xDist = ball.x - this.centerX
 				let yDist = ball.y - this.centerY
