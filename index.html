@@ -392,6 +392,8 @@ class Agent {
 			let dist = wallDistances[0]
 			let rad = wallObjs[dist]
 			let degree = degrees(rad)
+			if(degree < 0) 
+				degree += 360
 			let degIndex = undefined
 			let counter = 0
 			degreeIndexes.forEach((degs) => {
@@ -414,6 +416,8 @@ class Agent {
 				let dist = this.euklideanDistance(ball)
 				let angle = this.getRelativeAngle(ball)
 				let degree = degrees(angle)
+				if(degree < 0) 
+					degree += 360
 				let degIndex = undefined
 				let counter = 0
 				degreeIndexes.forEach((degs) => {
@@ -468,6 +472,8 @@ class Agent {
 				let dist = this.euklideanDistance(ball)
 				let angle = this.getRelativeAngle(ball)
 				let degree = degrees(angle)
+				if(degree < 0) 
+					degree += 360
 				let degIndex = undefined
 				let counter = 0
 				degreeIndexes.forEach((degs) => {
