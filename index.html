@@ -99,6 +99,9 @@ let training = true
 				training = false
 			} else training = true
 		}
+		if(document.getElementById('speed').value != "") {
+			stepSize = parseFloat(document.getElementById('speed').value)
+		}
 	
 	}
 	
@@ -943,9 +946,11 @@ Discount:
 <label>Red Apples:
 <input type="number" id="redApples" value="15" min="0" max="1000" step="1"></label>
 <label>Green Apples:
-<input type="number" id="greenApples" min="0" max="1000" step="1" value="15"></label>
+<input type="number" id="greenApples" min="0" max="1000" step="1" value="15"></label><br>
 <label>Frame Rate: 
 <input type="number" id="framesize" min="1" max="100" step="1" value="30"></label>
+<label>Speed: 
+<input type="number" id="speed" min="1" max="100" step="1" value="1"></label>
 <br><br>
 <label>Moving Apples:
 <select id="moving" size="2">
