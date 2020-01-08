@@ -460,7 +460,7 @@ class Agent {
 			if(Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY) <= 100) {
 				let dist = this.euklideanDistance(ball)
 				let angle = this.getRelativeAngle(ball)
-				let degree = degrees(rad)
+				let degree = degrees(angle)
 				let degIndex = undefined
 				let counter = 0
 				degreeIndexes.forEach((degs) => {
