@@ -410,8 +410,8 @@ class Agent {
 		redBalls.forEach((ball) => {
 			if(Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY <= 100)) {
 				let dist = this.euklideanDistance(ball)
-				let rad = this.getRelativeAngle(ball)
-				let degree = degrees(rad)
+				let angle = this.getRelativeAngle(ball)
+				let degree = degrees(angle)
 				let degIndex = undefined
 				let counter = 0
 				degreeIndexes.forEach((degs) => {
@@ -421,7 +421,7 @@ class Agent {
 					counter += 1
 				})
 				sensors[counter].push(dist)
-				sensors[counter].push(rad)
+				sensors[counter].push(angle)
 				sensors[counter].push(1)
 				sensors[counter].push(0)
 				sensors[counter].push(0)
@@ -459,7 +459,7 @@ class Agent {
 		greenBalls.forEach((ball) => {
 			if(Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY) <= 100) {
 				let dist = this.euklideanDistance(ball)
-				let rad = this.getRelativeAngle(ball)
+				let angle = this.getRelativeAngle(ball)
 				let degree = degrees(rad)
 				let degIndex = undefined
 				let counter = 0
@@ -470,7 +470,7 @@ class Agent {
 					counter += 1
 				})
 				sensors[counter].push(dist)
-				sensors[counter].push(rad)
+				sensors[counter].push(angle)
 				sensors[counter].push(0)
 				sensors[counter].push(1)
 				sensors[counter].push(0)
