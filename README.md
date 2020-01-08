@@ -18,20 +18,18 @@ Below of the game and the configuration panel, you can find some statistics (e.g
 ![The statistic panel of the game](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/screenshot2.png "Screenshot of the SMAPPI game.")
 
 # The state representation of SMAPPI
-There are 2 different state vector representations depending on the game mode:
+The SMAPPI agent has three different sensors (angle, distance and color sensor) pointing to 8 different directions with a range of 45°. This means that the state vector consists of ``5 * 8 = 40`` dimensions. The sensed color is represent by an one-hot encoded vector with 3 dimensions. Only the nearest objects (apple/wall) are considered in the state vector.
 
-* In ``compete`` mode the state vector consists of 5 features (the *euklidean distance* and *angle* to the ``nearest apple``, the ``color`` of the nearest apple (0 = green,1 = red) and the ``x,y position`` of the agent. 
-
-* In ``trainging`` mode the state vector consists of the *euklidean* distances to ``all apples``, the *apple color* (1 for red, and 0 for green), the *angles* of the agent relative to every apple and the ``x`` and ``y`` position of the agent. The number of states in the  training mode is computed by the following equation:
-
-``` javascript
-const stateVectorNum = (numRedApples * 3) + (numGreenApples * 3) + numAgentCoordinates
-```
-For instance, if 20 red and 20 green apples are in the field then the state vector number would be computed by:
-
-``` console
-stateVectorNum = 20 * 3 + 20 * 3 + 2 = 122
-```
+| Sensors / Range | Distance | Radians | Color red (Apples) | Color green (Apples) | Color black (Wall) |
+|-----------------|----------|---------|--------------------|----------------------|--------------------|
+| S1 (0°-44°)     |          |         |                    |                      |                    |
+| S2 (45°-89°)    |          |         |                    |                      |                    |
+| S3 (90°-134°)   |          |         |                    |                      |                    |
+| S4 (135°-179°)  |          |         |                    |                      |                    |
+| S5 (180°-224°)  |          |         |                    |                      |                    |
+| S6 (225°-269°)  |          |         |                    |                      |                    |
+| S7 (270°-314°)  |          |         |                    |                      |                    |
+| S8 (315°-360°)  |          |         |                    |                      |                    |
 
 # How2Run SMAPPI
 You require the following Javascript libraries:
