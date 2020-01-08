@@ -396,7 +396,9 @@ class Agent {
 			let counter = 0
 			degreeIndexes.forEach((degs) => {
 				if(degree <= degs[1] && degree >= degs[0]) {
-					degIndex = counter
+					if(degIndex == undefined) {
+						degIndex = counter
+					   }
 				}
 				counter += 1
 			})
@@ -416,7 +418,9 @@ class Agent {
 				let counter = 0
 				degreeIndexes.forEach((degs) => {
 					if(degree <= degs[1] && degree >= degs[0]) {
-						degIndex = counter
+						if(degIndex == undefined) {
+							degIndex = counter
+						}
 					}
 					counter += 1
 				})
@@ -468,7 +472,9 @@ class Agent {
 				let counter = 0
 				degreeIndexes.forEach((degs) => {
 					if(degree <= degs[1] && degree >= degs[0]) {
-						degIndex = counter
+						if(degIndex == undefined) {
+							degIndex = counter
+						}
 					}
 					counter += 1
 				})
