@@ -375,9 +375,9 @@ class Agent {
 			wallDistances.push(dist1)
 			wallObjs[dist1] = this.getRelativeAngle({x: agent.centerX, y: height})
 			
-			let dist2 = this.euklideanDistance({x: width, y: agentCenterY})
+			let dist2 = this.euklideanDistance({x: width, y: agent.centerY})
 			wallDistances.push(dist2)
-			wallObjs[dist2] = this.getRelativeAngle({x: width, y: agentCenterY})
+			wallObjs[dist2] = this.getRelativeAngle({x: width, y: agent.centerY})
 			
 			let dist3 = this.euklideanDistance({x: 0, y: agent.centerY})
 			wallDistances.push(dist3)
