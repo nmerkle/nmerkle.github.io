@@ -244,7 +244,7 @@ function draw() {
 	if(start) {
 	if(stop) noLoop()
 	else loop()
-  image(img, agent.centerX - 50, agent.centerY - 50, agentWidth, agentHeight)
+  
   greenBalls.forEach((ball) => {
   if(moving) {
 		moveBall(ball)
@@ -259,6 +259,7 @@ function draw() {
   })
   
   agent.act()
+  image(img, agent.centerX - 50, agent.centerY - 50, agentWidth, agentHeight)
   iteration += 1
   
   let angle = undefined
