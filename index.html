@@ -420,7 +420,7 @@ class Agent {
 					}
 					counter += 1
 				})
-				if((sensors[degIndex].length > 0 && dist < sensors[degIndex][0]) 
+				if((sensors[degIndex].length >= 5 && dist < sensors[degIndex][0]) 
 				   || sensors[degIndex].length <= 0) {
 					sensors[degIndex][0] = dist
 					sensors[degIndex][1] = angle
@@ -472,7 +472,7 @@ class Agent {
 					}
 					counter += 1
 				})
-				if((sensors[degIndex].length > 0 && dist < sensors[degIndex][0]) 
+				if((sensors[degIndex].length >= 5 && dist < sensors[degIndex][0]) 
 				   || sensors[degIndex].length <= 0) {
 					sensors[degIndex][0] = dist
 					sensors[degIndex][1] = angle
@@ -520,7 +520,7 @@ class Agent {
 		text("Score: "+this.score, 125, 50)
 		sensors.forEach((sensor) => {
 			if(sensor.length == 5) {
-				state.concat(sensor)
+				state = state.concat(sensor)
 			} else {
 				for(let j = 0; j < 5; j++) {
 					state.push(0)
