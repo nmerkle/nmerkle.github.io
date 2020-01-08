@@ -391,7 +391,7 @@ class Agent {
 			
 			let dist = wallDistances[0]
 			let rad = wallObjs[dist]
-			let degree = degrees(rad)
+			let degree = round(degrees(rad))
 			if(degree < 0) 
 				degree += 360
 			let degIndex = undefined
@@ -413,7 +413,7 @@ class Agent {
 			if(Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY <= 100)) {
 				let dist = this.euklideanDistance(ball)
 				let angle = this.getRelativeAngle(ball)
-				let degree = degrees(angle)
+				let degree = round(degrees(angle))
 				if(degree < 0) 
 					degree += 360
 				let degIndex = undefined
@@ -467,7 +467,7 @@ class Agent {
 			if(Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY) <= 100) {
 				let dist = this.euklideanDistance(ball)
 				let angle = this.getRelativeAngle(ball)
-				let degree = degrees(angle)
+				let degree = round(degrees(angle))
 				if(degree < 0) 
 					degree += 360
 				let degIndex = undefined
