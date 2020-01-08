@@ -359,7 +359,7 @@ class Agent {
 				
 		}
 		let balls2Remove = []
-		let degreeIndexes = [[0, 45], [45, 90], [90, 135], [135,180], [180, 225], [225, 270], [270, 315], [315, 360]]
+		let degreeIndexes = [[0, 44], [45, 89], [90, 134], [135,179], [180, 224], [225, 269], [270, 314], [315, 360]]
 		let sensors = []
 		for(let i = 0; i < 8; i++) {
 			sensors.push([])
@@ -398,9 +398,7 @@ class Agent {
 			let counter = 0
 			degreeIndexes.forEach((degs) => {
 				if(degree <= degs[1] && degree >= degs[0]) {
-					if(degIndex == undefined) {
-						degIndex = counter
-					   }
+					degIndex = counter
 				}
 				counter += 1
 			})
@@ -422,9 +420,7 @@ class Agent {
 				let counter = 0
 				degreeIndexes.forEach((degs) => {
 					if(degree <= degs[1] && degree >= degs[0]) {
-						if(degIndex == undefined) {
-							degIndex = counter
-						}
+						degIndex = counter	
 					}
 					counter += 1
 				})
@@ -478,9 +474,8 @@ class Agent {
 				let counter = 0
 				degreeIndexes.forEach((degs) => {
 					if(degree <= degs[1] && degree >= degs[0]) {
-						if(degIndex == undefined) {
-							degIndex = counter
-						}
+						degIndex = counter
+						
 					}
 					counter += 1
 				})
