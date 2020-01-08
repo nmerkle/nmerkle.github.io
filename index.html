@@ -441,7 +441,7 @@ class Agent {
 				let xDist = ball.x - this.centerX
 				let yDist = ball.y - this.centerY 
 				let distSquare = Math.sqrt(xDist * xDist + yDist * yDist) 
-				let rad = radius + radius 
+				let rad = radius + radius + radius
 				if(distSquare <= rad){
 					collide = true
 					numGood += 1
@@ -497,7 +497,7 @@ class Agent {
 				let xDist = ball.x - this.centerX
 				let yDist = ball.y - this.centerY
 				let distSquare = Math.sqrt(xDist * xDist + yDist * yDist) 
-				let rad = radius + radius
+				let rad = radius + radius + radius
 				if(distSquare <= rad){
 					collide = true
 					numBad += 1
