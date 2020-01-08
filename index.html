@@ -422,11 +422,11 @@ class Agent {
 				})
 				if((sensors[degIndex].length > 0 && dist < sensors[degIndex][0]) 
 				   || sensors[degIndex].length <= 0) {
-					sensors[degIndex].push(dist)
-					sensors[degIndex].push(angle)
-					sensors[degIndex].push(1)
-					sensors[degIndex].push(0)
-					sensors[degIndex].push(0)
+					sensors[degIndex][0] = dist
+					sensors[degIndex][1] = angle
+					sensors[degIndex][2] = 1
+					sensors[degIndex][3] = 0
+					sensors[degIndex][4] = 0
 				} 
 			
 				let xDist = ball.x - this.centerX
@@ -474,11 +474,11 @@ class Agent {
 				})
 				if((sensors[degIndex].length > 0 && dist < sensors[degIndex][0]) 
 				   || sensors[degIndex].length <= 0) {
-					sensors[degIndex].push(dist)
-					sensors[degIndex].push(angle)
-					sensors[degIndex].push(0)
-					sensors[degIndex].push(1)
-					sensors[degIndex].push(0)
+					sensors[degIndex][0] = dist
+					sensors[degIndex][1] = angle
+					sensors[degIndex][2] = 0
+					sensors[degIndex][3] = 1
+					sensors[degIndex][4] = 0
 				}
 				let xDist = ball.x - this.centerX
 				let yDist = ball.y - this.centerY
