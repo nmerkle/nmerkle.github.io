@@ -420,11 +420,14 @@ class Agent {
 					}
 					counter += 1
 				})
-				sensors[degIndex].push(dist)
-				sensors[degIndex].push(angle)
-				sensors[degIndex].push(1)
-				sensors[degIndex].push(0)
-				sensors[degIndex].push(0)
+				if((sensors[degIndex].length > 0 && dist < sensors[degIndex][0]) 
+				   || sensors[degIndex].length <= 0) {
+					sensors[degIndex].push(dist)
+					sensors[degIndex].push(angle)
+					sensors[degIndex].push(1)
+					sensors[degIndex].push(0)
+					sensors[degIndex].push(0)
+				} 
 			
 				let xDist = ball.x - this.centerX
 				let yDist = ball.y - this.centerY 
@@ -469,12 +472,14 @@ class Agent {
 					}
 					counter += 1
 				})
-				sensors[degIndex].push(dist)
-				sensors[degIndex].push(angle)
-				sensors[degIndex].push(0)
-				sensors[degIndex].push(1)
-				sensors[degIndex].push(0)
-				
+				if((sensors[degIndex].length > 0 && dist < sensors[degIndex][0]) 
+				   || sensors[degIndex].length <= 0) {
+					sensors[degIndex].push(dist)
+					sensors[degIndex].push(angle)
+					sensors[degIndex].push(0)
+					sensors[degIndex].push(1)
+					sensors[degIndex].push(0)
+				}
 				let xDist = ball.x - this.centerX
 				let yDist = ball.y - this.centerY
 				let distSquare = Math.sqrt(xDist * xDist + yDist * yDist) 
