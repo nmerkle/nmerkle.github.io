@@ -366,7 +366,7 @@ class Agent {
 		let degreeIndexes = [[0, 44], [45, 89], [90, 134], [135,179], [180, 224], [225, 269], [270, 314], [315, 360]]
 		let sensors = []
 		for(let i = 0; i < degreeIndexes.length; i++) {
-			sensors.push([])
+			sensors.push([undefined, undefined, undefined, undefined, undefined, undefined])
 		}
 		
 		//For each wall set distance, angle and color
@@ -445,7 +445,7 @@ class Agent {
 						sensors[degIndex][2] = dist
 						sensors[degIndex][3] = 1 
 					}
-				} 
+				}
 				
 				if(ball.y >= this.centerY + 50) {
 				let xDist = ball.x - this.centerX
@@ -557,14 +557,13 @@ class Agent {
 		this.score += numGood - numBad
 		text("Score: "+this.score, 125, 50)
 		sensors.forEach((sensor) => {
-			if(sensor.length == 6) {
-				state = state.concat(sensor)
-			} 
-			/*else {
-				for(let j = 0; j < 4; j++) {
+			sensor.forEach((feat) => {
+				if(feat !== undefined) {
+					state.push(feat)
+				} else {
 					state.push(0)
 				}
-			} */
+			})
 		})
 		return {reward: numGood - numBad, state: state}
 }
