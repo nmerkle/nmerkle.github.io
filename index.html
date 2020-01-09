@@ -226,10 +226,10 @@ function setup() {
   frameRate(frameSize);
   textSize(fontsize);
   textAlign(CENTER, CENTER);
-  minX = radius * 4
-  maxX = width - (radius * 4)
-  minY = radius * 4
-  maxY = height - (radius*4)
+  minX = radius * 2
+  maxX = width - (radius * 2)
+  minY = radius * 2
+  maxY = height - (radius*2)
   img = loadImage('https://nmerkle.github.io/robot_wiki.png')
   for(let i = 0; i < numGreenBalls; i++) {
 	greenBalls[i] = new Ball(random(minX, maxX), random(minY, maxY), '#0f0')
