@@ -259,7 +259,10 @@ function draw() {
   })
   
   agent.act()
-  image(img, agent.centerX - 50, agent.centerY - 50, agentWidth, agentHeight)
+	if(iteration == 0)
+		image(img, (width/2)-50, (height/2)-50, agentWidth, agentHeigt)
+  	else 
+		image(img, agent.centerX - 50, agent.centerY - 50, agentWidth, agentHeight)
   iteration += 1
   
   let angle = undefined
