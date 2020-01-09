@@ -212,7 +212,7 @@ let training = true
 	
 function preload() {
 	actions = [moveUp, moveDown, moveLeft, moveRight, moveRightUp, moveRightDown, moveLeftUp, moveLeftDown]
-	env.getNumStates = function() { return 8 * 5}
+	env.getNumStates = function() { return 8 * 6}
 	env.getMaxNumActions = function() { return actions.length; }
 	spec["alpha"] = learnRate
 	spec["epsilon"] = greedy
@@ -365,7 +365,7 @@ class Agent {
 		let balls2Remove = []
 		let degreeIndexes = [[0, 44], [45, 89], [90, 134], [135,179], [180, 224], [225, 269], [270, 314], [315, 360]]
 		let sensors = []
-		for(let i = 0; i < 8; i++) {
+		for(let i = 0; i < degreeIndexes.length; i++) {
 			sensors.push([])
 		}
 		
@@ -406,12 +406,16 @@ class Agent {
 				}
 				counter += 1
 			})
-			sensors[degIndex].push(dist)
-			sensors[degIndex].push(rad)
-			sensors[degIndex].push(0)
-			sensors[degIndex].push(0)
-			sensors[degIndex].push(1)
+			sensors[degIndex][0] = dist
+			sensors[degIndex][1] = 1.0 //Indicates if sensor value is available
+			//sensors[degIndex].push(rad)
+			//sensors[degIndex].push(0)
+			//sensors[degIndex].push(0)
+			//sensors[degIndex].push(1)
 			
+		} else {
+			sensors[degIndex][0] = 0
+			sensors[degIndex][1] = 0
 		}
 		redBalls.forEach((ball) => {
 			if(Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY <= 100)) {
@@ -428,16 +432,19 @@ class Agent {
 					}
 					counter += 1
 				})
-				if((sensors[degIndex].length >= 5 && dist < sensors[degIndex][0]) 
-				   || sensors[degIndex].length <= 0) {
-					sensors[degIndex][0] = dist
-					sensors[degIndex][1] = angle
-					sensors[degIndex][2] = 1
+				if(dist < sensors[degIndex][2]) {
+					sensors[degIndex][2] = dist
+					sensors[degIndex][3] = 1
+					//sensors[degIndex][1] = angle
+					//sensors[degIndex][2] = 1
+					//sensors[degIndex][3] = 0
+					//sensors[degIndex][4] = 0
+				} else {
+					sensors[degIndex][2] = 0
 					sensors[degIndex][3] = 0
-					sensors[degIndex][4] = 0
-				} 
+				}
 				
-				if(ball.y >= this.centerY) {
+				if(ball.y >= this.centerY + 50) {
 				let xDist = ball.x - this.centerX
 				let yDist = ball.y - this.centerY 
 				let distSquare = Math.sqrt(xDist * xDist + yDist * yDist) 
@@ -485,15 +492,18 @@ class Agent {
 					}
 					counter += 1
 				})
-				if((sensors[degIndex].length >= 5 && dist < sensors[degIndex][0]) 
-				   || sensors[degIndex].length <= 0) {
-					sensors[degIndex][0] = dist
-					sensors[degIndex][1] = angle
-					sensors[degIndex][2] = 0
-					sensors[degIndex][3] = 1
+				if(dist < sensors[degIndex][4]) {
+					sensors[degIndex][4] = dist
+					sensors[degIndex][5] = 1
+					//sensors[degIndex][1] = angle
+					//sensors[degIndex][2] = 0
+					//sensors[degIndex][3] = 1
+					//sensors[degIndex][4] = 0
+				} else {
 					sensors[degIndex][4] = 0
+					sensors[degIndex][5] = 0
 				}
-				if(ball.y >= this.centerY) {
+				if(ball.y >= this.centerY+50) {
 				let xDist = ball.x - this.centerX
 				let yDist = ball.y - this.centerY
 				let distSquare = Math.sqrt(xDist * xDist + yDist * yDist) 
@@ -534,13 +544,14 @@ class Agent {
 		this.score += numGood - numBad
 		text("Score: "+this.score, 125, 50)
 		sensors.forEach((sensor) => {
-			if(sensor.length == 5) {
+			if(sensor.length == 6) {
 				state = state.concat(sensor)
-			} else {
-				for(let j = 0; j < 5; j++) {
+			} 
+			/*else {
+				for(let j = 0; j < 4; j++) {
 					state.push(0)
 				}
-			}
+			} */
 		})
 		return {reward: numGood - numBad, state: state}
 }
