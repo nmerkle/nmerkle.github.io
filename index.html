@@ -370,6 +370,7 @@ class Agent {
 		}
 		
 		//For each wall set distance, angle and color
+		let degIndex = undefined
 		if(Math.abs(width - agent.centerX) <= 150 || Math.abs(height - agent.centerY) <= 150 
 		|| agent.centerX <= 150 || agent.centerY <= 150) {
 			let wallDistances = []
@@ -398,7 +399,7 @@ class Agent {
 			let degree = round(degrees(rad))
 			if(degree < 0) 
 				degree += 360
-			let degIndex = undefined
+
 			let counter = 0
 			degreeIndexes.forEach((degs) => {
 				if(degree <= degs[1] && degree >= degs[0]) {
@@ -417,14 +418,16 @@ class Agent {
 			sensors[degIndex][0] = 0
 			sensors[degIndex][1] = 0
 		}
+		
 		redBalls.forEach((ball) => {
+			let degIndex = undefined
 			if(Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY <= 100)) {
 				let dist = this.euklideanDistance(ball)
 				let angle = this.getRelativeAngle(ball)
 				let degree = round(degrees(angle))
 				if(degree < 0) 
 					degree += 360
-				let degIndex = undefined
+				
 				let counter = 0
 				degreeIndexes.forEach((degs) => {
 					if(degree <= degs[1] && degree >= degs[0]) {
@@ -482,13 +485,14 @@ class Agent {
 		balls2Remove.length = 0
 		
 		greenBalls.forEach((ball) => {
+			let degIndex = undefined
 			if(Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY) <= 100) {
 				let dist = this.euklideanDistance(ball)
 				let angle = this.getRelativeAngle(ball)
 				let degree = round(degrees(angle))
 				if(degree < 0) 
 					degree += 360
-				let degIndex = undefined
+			
 				let counter = 0
 				degreeIndexes.forEach((degs) => {
 					if(degree <= degs[1] && degree >= degs[0]) {
