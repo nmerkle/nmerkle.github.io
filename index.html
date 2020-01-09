@@ -437,19 +437,15 @@ class Agent {
 					}
 					counter += 1
 				})
-				if(sensors[degIndex][2] !== undefined) {
+				if(sensors[degIndex][2] == undefined) {
+					sensors[degIndex][2] = dist
+					sensors[degIndex][3] = 1 
+				} else {
 					if(dist < sensors[degIndex][2]) {
 						sensors[degIndex][2] = dist
-						sensors[degIndex][3] = 1
+						sensors[degIndex][3] = 1 
 					}
-					//sensors[degIndex][1] = angle
-					//sensors[degIndex][2] = 1
-					//sensors[degIndex][3] = 0
-					//sensors[degIndex][4] = 0
-				} else {
-					sensors[degIndex][2] = dist
-					sensors[degIndex][3] = 1
-				}
+				} 
 				
 				if(ball.y >= this.centerY + 50) {
 				let xDist = ball.x - this.centerX
@@ -505,19 +501,16 @@ class Agent {
 					}
 					counter += 1
 				})
-				if(sensors[degIndex][4] !== undefined) {
+				if(sensors[degIndex][4] == undefined) {
+					sensors[degIndex][4] = dist
+					sensors[degIndex][5] = 1
+				} else {
 					if(dist < sensors[degIndex][4]) {
 						sensors[degIndex][4] = dist
 						sensors[degIndex][5] = 1
 					}
-					//sensors[degIndex][1] = angle
-					//sensors[degIndex][2] = 0
-					//sensors[degIndex][3] = 1
-					//sensors[degIndex][4] = 0
-				} else {
-					sensors[degIndex][4] = dist
-					sensors[degIndex][5] = 1
-				}
+					
+				} 
 				if(ball.y >= this.centerY+50) {
 				let xDist = ball.x - this.centerX
 				let yDist = ball.y - this.centerY
