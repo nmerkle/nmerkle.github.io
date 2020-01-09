@@ -211,7 +211,7 @@ let training = true
 	}
 	
 function preload() {
-	actions = [moveUp, moveDown, moveLeft, moveRight, moveRightUp, moveRightDown, moveLeftUp, moveLeftDown]
+	actions = [moveUp, moveDown, moveLeft, moveRight/*, moveRightUp, moveRightDown, moveLeftUp, moveLeftDown*/]
 	env.getNumStates = function() { return 8 * 6}
 	env.getMaxNumActions = function() { return actions.length; }
 	spec["alpha"] = learnRate
@@ -415,17 +415,12 @@ class Agent {
 			//sensors[degIndex].push(1)
 			
 		} 
-		/*else {
-			for(let i = 0; i < degreeIndexes.length; i++) {
-				sensors[i][0] = 0
-				sensors[i][1] = 0
-			}
-		}*/
 		
 		redBalls.forEach((ball) => {
 			let degIndex = undefined
-			if(Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY <= 100)) {
-				let dist = this.euklideanDistance(ball)
+			let dist = this.euklideanDistance(ball)
+			if(dist <= 100 /*Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY <= 100)*/) {
+				
 				let angle = this.getRelativeAngle(ball)
 				let degree = round(degrees(angle))
 				if(degree < 0) 
@@ -448,7 +443,7 @@ class Agent {
 					}
 				}
 				
-				if(ball.y >= this.centerY + 50) {
+				if(ball.y >= this.centerY + 25) {
 				let xDist = ball.x - this.centerX
 				let yDist = ball.y - this.centerY 
 				let distSquare = Math.sqrt(xDist * xDist + yDist * yDist) 
@@ -475,12 +470,6 @@ class Agent {
 				}
 			}
 			} 
-			/*else {
-				for(let i = 0; i < degreeIndexes.length; i++) {
-					sensors[i][2] = 0
-					sensors[i][3] = 0
-				}
-			}*/
 			
 		})
 		redBalls = redBalls.filter(val => !(balls2Remove.includes(val)))
@@ -488,8 +477,9 @@ class Agent {
 		
 		greenBalls.forEach((ball) => {
 			let degIndex = undefined
-			if(Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY) <= 100) {
-				let dist = this.euklideanDistance(ball)
+			let dist = this.euklideanDistance(ball)
+			if(dist <= 100/*Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY) <= 100*/) {
+				
 				let angle = this.getRelativeAngle(ball)
 				let degree = round(degrees(angle))
 				if(degree < 0) 
@@ -513,38 +503,32 @@ class Agent {
 					}
 					
 				} 
-				if(ball.y >= this.centerY+50) {
-				let xDist = ball.x - this.centerX
-				let yDist = ball.y - this.centerY
-				let distSquare = Math.sqrt(xDist * xDist + yDist * yDist) 
-				let rad = radius + radius + 10
-				if(distSquare <= rad){
-					collide = true
-					numBad += 1
-					minusOne += 1
-					plotSuccess(-1)
-					textSize(fontsize)
-					if(white) fill(0)
-					else fill(255)
-					text("Shit: -1", this.centerX, this.centerY - 50)
-					ball.x = random(minX, maxX)
-					if(!training) {
-						balls2Remove.push(ball)
-					} else {
-						if(moving)
-							ball.y = minY
-						else
-							ball.y = random(minY, maxY)
+				if(ball.y >= this.centerY + 25) {
+					let xDist = ball.x - this.centerX
+					let yDist = ball.y - this.centerY
+					let distSquare = Math.sqrt(xDist * xDist + yDist * yDist) 
+					let rad = radius + radius + 10
+					if(distSquare <= rad){
+						collide = true
+						numBad += 1
+						minusOne += 1
+						plotSuccess(-1)
+						textSize(fontsize)
+						if(white) fill(0)
+						else fill(255)
+						text("Shit: -1", this.centerX, this.centerY - 50)
+						ball.x = random(minX, maxX)
+						if(!training) {
+							balls2Remove.push(ball)
+						} else {
+							if(moving)
+								ball.y = minY
+							else
+								ball.y = random(minY, maxY)
+						}
 					}
 				}
-				}
 			} 
-			/*else {
-				for(let i = 0; i < degreeIndexes.length; i++) {
-					sensors[i][4] = 0
-					sensors[i][5] = 0
-				}
-			}*/
 			
 		})
 		greenBalls = greenBalls.filter(val => !(balls2Remove.includes(val)))
