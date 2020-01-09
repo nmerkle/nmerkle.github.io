@@ -1,6 +1,6 @@
 # SMAPPI-Smart-Apple-Picker-Agent
 
-The **SMAPPI** (Smart Apple Picker) Agent **(see: [Life Demo](https://nmerkle.github.io))** is a *Deep-Q-Neural-Network* agent that has the task to collect red apples while it has to avoid the poisened green apples and the borders of the playground. SMAPPI can perform eight different actions (e.g. *MoveUp, MoveDown, MoveRight, MoveLeft, MoveUpRight, MoveDownRight, MoveUpLeft, MoveUpRight*) for solving its task. In order to train SMAPPI, it receives reward **(+1)** values, if it collects **red apples** and punishment **(-1)** values if it collects **green poisened apples** or hits the wall (border of the playground). The blue rotating triangle together with the rotating ray indicate the directions (actions), that SMAPPI selects for every moving step. On the right side of the page is a configuration panel where you can set Hyperparameters for the DQNN algorithm such as **learning rate**, **greedy** value and **discount** factor. Moreover, you can set the: 
+The **SMAPPI** (Smart Apple Picker) Agent **(see: [Life Demo](https://nmerkle.github.io))** is a *Deep-Q-Neural-Network* agent that has the task to collect red apples while it has to avoid the poisened green apples and the borders of the playground. SMAPPI can perform four different actions (e.g. *MoveUp, MoveDown, MoveRight, MoveLeft*) for solving its task. In order to train SMAPPI, it receives reward **(+1)** values, if it collects **red apples** and punishment **(-1)** values if it collects **green poisened apples** or hits the wall (border of the playground). The blue rotating triangle together with the rotating ray indicate the directions (actions), that SMAPPI selects for every moving step. On the right side of the page is a configuration panel where you can set Hyperparameters for the DQNN algorithm such as **learning rate**, **greedy** value and **discount** factor. Moreover, you can set the: 
 * Framerate of the game (default is 30)
 * Field's background color (black or white)
 * Number of green and red apples
@@ -19,18 +19,18 @@ Below of the game and the configuration panel, you can find some statistics (e.g
 ![The statistic panel of the game](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/screenshot2.png "Screenshot of the SMAPPI game.")
 
 # The state representation of SMAPPI
-The SMAPPI agent has three different sensors (angle, distance and color sensor) pointing to 8 different directions with a range of 45° and a distance range of 1 meter (= 100px). This means that the state vector consists of ``5 * 8 = 40`` dimensions. The sensed color is represented by an one-hot encoded vector with 3 dimensions. Only the nearest objects (apple/wall) are considered in the state vector.
+The SMAPPI agent has two different sensors (distance and color sensor) pointing to 8 different directions with a range of 45° and a distance range of 1 meter (= 100px). This means that the state vector consists of ``6 * 8 = 48`` dimensions. For every distance measure a categorical dimension indicates whether the given measure is in range of the distance sensor and therefore available. Only the nearest objects (apple/wall) are considered in the state vector.
 
-| Sensors / Range | Distance | Radians | Color red (Apples) | Color green (Apples) | Color black (Wall) |
-|-----------------|----------|---------|--------------------|----------------------|--------------------|
-| S1 (0°-44°)     |          |         |                    |                      |                    |
-| S2 (45°-89°)    |          |         |                    |                      |                    |
-| S3 (90°-134°)   |          |         |                    |                      |                    |
-| S4 (135°-179°)  |          |         |                    |                      |                    |
-| S5 (180°-224°)  |          |         |                    |                      |                    |
-| S6 (225°-269°)  |          |         |                    |                      |                    |
-| S7 (270°-314°)  |          |         |                    |                      |                    |
-| S8 (315°-360°)  |          |         |                    |                      |                    |
+| Sensor/Range     | Distance to Wall | Measure available | Distance to red apple | Measure available | Distance to green apple | Measure available |
+|------------------|------------------|-------------------|-----------------------|-------------------|-------------------------|-------------------|
+| S1 (0°-44°)    | <= 100 px        | 1 or 0            | <= 100 px             | 1 or 0            | <= 100 px               | 1 or 0            |
+| S2 (45°-89°)   |                  |                   |                       |                   |                         |                   |
+| S3 (90°-134°)  |                  |                   |                       |                   |                         |                   |
+| S4 (135°-179°) |                  |                   |                       |                   |                         |                   |
+| S5 (180°-224°) |                  |                   |                       |                   |                         |                   |
+| S6 (225°-269°) |                  |                   |                       |                   |                         |                   |
+| S7 (270°-314°) |                  |                   |                       |                   |                         |                   |
+| S8 (315°-360°) |                  |                   |                       |                   |                         |                   |
 
 # How2Run SMAPPI
 You require the following Javascript libraries:
