@@ -366,7 +366,7 @@ class Agent {
 		let degreeIndexes = [[0, 44], [45, 89], [90, 134], [135,179], [180, 224], [225, 269], [270, 314], [315, 360]]
 		let sensors = []
 		for(let i = 0; i < degreeIndexes.length; i++) {
-			sensors.push([])
+			sensors.push([0, 0, 0, 0, 0, 0])
 		}
 		
 		//For each wall set distance, angle and color
@@ -432,16 +432,18 @@ class Agent {
 					}
 					counter += 1
 				})
-				if(dist < sensors[degIndex][2]) {
-					sensors[degIndex][2] = dist
-					sensors[degIndex][3] = 1
+				if(sensors[degIndex][2] !== undefinedd) {
+					if(dist < sensors[degIndex][2]) {
+						sensors[degIndex][2] = dist
+						sensors[degIndex][3] = 1
+					}
 					//sensors[degIndex][1] = angle
 					//sensors[degIndex][2] = 1
 					//sensors[degIndex][3] = 0
 					//sensors[degIndex][4] = 0
 				} else {
-					sensors[degIndex][2] = 0
-					sensors[degIndex][3] = 0
+					sensors[degIndex][2] = dist
+					sensors[degIndex][3] = 1
 				}
 				
 				if(ball.y >= this.centerY + 50) {
@@ -470,6 +472,9 @@ class Agent {
 					}
 				}
 			}
+			} else {
+				sensors[degIndex][2] = 0
+				sensors[degIndex][3] = 0
 			}
 			
 		})
@@ -492,16 +497,18 @@ class Agent {
 					}
 					counter += 1
 				})
-				if(dist < sensors[degIndex][4]) {
-					sensors[degIndex][4] = dist
-					sensors[degIndex][5] = 1
+				if(sensors[degIndex][4] !== undefined) {
+					if(dist < sensors[degIndex][4]) {
+						sensors[degIndex][4] = dist
+						sensors[degIndex][5] = 1
+					}
 					//sensors[degIndex][1] = angle
 					//sensors[degIndex][2] = 0
 					//sensors[degIndex][3] = 1
 					//sensors[degIndex][4] = 0
 				} else {
-					sensors[degIndex][4] = 0
-					sensors[degIndex][5] = 0
+					sensors[degIndex][4] = dist
+					sensors[degIndex][5] = 1
 				}
 				if(ball.y >= this.centerY+50) {
 				let xDist = ball.x - this.centerX
@@ -528,6 +535,9 @@ class Agent {
 					}
 				}
 				}
+			} else {
+				sensors[degIndex][4] = 0
+				sensors[degIndex][5] = 0
 			}
 			
 		})
