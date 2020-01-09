@@ -226,10 +226,10 @@ function setup() {
   frameRate(frameSize);
   textSize(fontsize);
   textAlign(CENTER, CENTER);
-  minX = radius
-  maxX = width - radius
-  minY = radius
-  maxY = height - radius
+  minX = radius * 4
+  maxX = width - (radius * 4)
+  minY = radius * 4
+  maxY = height - (radius*4)
   img = loadImage('https://nmerkle.github.io/robot_wiki.png')
   for(let i = 0; i < numGreenBalls; i++) {
 	greenBalls[i] = new Ball(random(minX, maxX), random(minY, maxY), '#0f0')
@@ -951,7 +951,7 @@ function loadDQNN() {
  </script>
 </head>
 <body onload="createPlot();">
-<div id="controlElements" style="position:absolute;top:10;left:750;">
+<div id="controlElements" style="position:absolute;top:10px;left:750px;">
 <h3 align="center">Settings</h3>
 <fieldset>
 <legend>Trained DQN Network</legend>
@@ -1007,8 +1007,8 @@ Discount:
 </div>
 </div><br>
 
-<div style="position:absolute;margin-top:515;width:100%;">
-<div style="position:absolute;left:200;">
+<div style="position:absolute;margin-top:515px;width:100%;">
+<div style="position:absolute;left:200px;">
 <input type="submit" value="Start Game" onclick="startGame();">
 <input type="submit" value="Stop Game" onclick="stopGame();">
 <input type="submit" value="Save JSON" onclick="storeJSON();">
