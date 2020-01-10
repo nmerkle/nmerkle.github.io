@@ -226,10 +226,10 @@ function setup() {
   frameRate(frameSize);
   textSize(fontsize);
   textAlign(CENTER, CENTER);
-  minX = radius * 2
-  maxX = width - (radius * 2)
-  minY = radius * 2
-  maxY = height - (radius*2)
+  minX = radius * 4
+  maxX = width - (radius * 4)
+  minY = radius * 4
+  maxY = height - (radius * 4)
   img = loadImage('https://nmerkle.github.io/robot_wiki.png')
   for(let i = 0; i < numGreenBalls; i++) {
 	greenBalls[i] = new Ball(random(minX, maxX), random(minY, maxY), '#0f0')
@@ -990,11 +990,11 @@ function loadDQNN() {
 <fieldset>
 <legend>Hyperparams</legend>
 Learning Rate:
-<input type="number" id="alpha" min="0.001" max="0.9" step="0.001" value="0.01">
+<input type="number" id="alpha" min="0.000" max="1.0" step="0.001" value="0.01">
 Greedy:
 <input type="number" id="greedy" min="0.0" max="1.0" step="0.1" value="0.2">
 Discount:
-<input type="number" id="gamma" min="0.1" max="1.0" step="0.1" value="0.3">
+<input type="number" id="gamma" min="0.0" max="1.0" step="0.1" value="0.3">
 </fieldset><br>
 <div align="center">
 <input type="submit" value="Submit" onclick="setHyperParams();">
