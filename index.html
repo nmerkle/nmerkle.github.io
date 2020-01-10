@@ -817,6 +817,8 @@ class Agent {
 			this.performedAction = this.actions[action].name
 			this.currentState = state
 			this.rlagent.learn(reward)
+		} else {
+			this.rlagent.learn(-1)
 		}
 			
 	} else {
@@ -828,6 +830,8 @@ class Agent {
 			const {reward, state} = this.checkCollisionBySensors()
 			this.currentState = state
 			this.rlagent.learn(reward)
+		} else {
+			this.rlagent.learn(-1)
 		}
 	
 	}
