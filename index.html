@@ -819,7 +819,17 @@ class Agent {
 			this.rlagent.learn(reward)
 		} else {
 			this.rlagent.learn(-1)
-			text("Contradicting Action: -1", this.centerX, this.centerY + agentHeight/2)
+			textSize(fontsize)
+			if(white) fill(0)
+			else fill(255)
+			if(this.centerX >= width - agentWidth / 2)
+				text("Contradicting Action: -1", this.centerX - agentWidth/2, this.centerY)
+			else if(this.centerX  <= agentWidth / 2)
+				text("Contradicting Action: -1", this.centerX + agentWidth/2, this.centerY)
+			else if(this.centerY >= height - agentHeight /2)
+				text("Contradicting Action: -1", this.centerX, this.centerY - agentHeight/2)
+			else if(this.centerY <= agentHeight /2)
+				text("Contradicting Action: -1", this.centerX, this.centerY + agentHeight/2)
 		}
 			
 	} else {
@@ -833,7 +843,17 @@ class Agent {
 			this.rlagent.learn(reward)
 		} else {
 			this.rlagent.learn(-1)
-			text("Contradicting Action: -1", this.centerX, this.centerY + agentHeight/2)
+			textSize(fontsize)
+			if(white) fill(0)
+			else fill(255)
+			if(this.centerX >= width - agentWidth / 2)
+				text("Contradicting Action: -1", this.centerX - agentWidth/2, this.centerY)
+			else if(this.centerX  <= agentWidth / 2)
+				text("Contradicting Action: -1", this.centerX + agentWidth/2, this.centerY)
+			else if(this.centerY >= height - agentHeight /2)
+				text("Contradicting Action: -1", this.centerX, this.centerY - agentHeight/2)
+			else if(this.centerY <= agentHeight /2)
+				text("Contradicting Action: -1", this.centerX, this.centerY + agentHeight/2)
 		}
 	
 	}
