@@ -334,6 +334,7 @@ class Agent {
 		this.rlagent = rlagent
 		this.performedAction = undefined
 		this.currentState = undefined
+		this.contradictingActions = {'moveUp': 'moveDown', 'moveDown': 'moveUp', 'moveLeft': 'moveRight', 'moveRight': 'moveLeft'}
 	}
 	
 	euklideanDistance(ball) {
@@ -810,18 +811,25 @@ class Agent {
 	if(this.currentState == undefined) {
 		const {reward, state} = this.checkCollisionBySensors()
 		action = this.rlagent.act(state)
-		this.performedAction = this.actions[action].name
-		this.actions[action](this)
-		this.currentState = state
-		this.rlagent.learn(reward)
+		let name = this.actions[action].name
+		if(this.contradictingActions[this.performedAction] !== name){
+			this.actions[action](this)
+			this.performedAction = this.actions[action].name
+			this.currentState = state
+			this.rlagent.learn(reward)
+		}
 			
 	} else {
 		action = this.rlagent.act(this.currentState)
-		this.performedAction = this.actions[action].name
-		this.actions[action](this)
-		const {reward, state} = this.checkCollisionBySensors()
-		this.currentState = state
-		this.rlagent.learn(reward)
+		let name = this.actions[action].name
+		if(this.contradictingActions[this.performedAction] !== name){
+			this.actions[action](this)
+			this.performedAction = this.actions[action].name
+			const {reward, state} = this.checkCollisionBySensors()
+			this.currentState = state
+			this.rlagent.learn(reward)
+		}
+	
 	}
 }
 	
