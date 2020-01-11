@@ -39,6 +39,15 @@ let frameSize = 30
 let fieldColor = 0
 let white = false
 let training = true
+let episodes = []
+let episodeCounter = 0
+
+	function computeMeanRewardForEpisode(episode) {
+		let accu = episode.reduce((acc, curr) => {
+			return acc + curr
+		})
+		return accu / episode.length
+	}
 
 	function getRandomInt(min, max) {
 	  min = Math.ceil(min);
@@ -219,6 +228,16 @@ function preload() {
 	spec["gamma"] = gamma 
 	rlagent = new RL.DQNAgent(env, spec);
 	agent = new Agent(width / 2 - 50, height + 50, rlagent, actions, '#00f')
+	episodes.push([])
+}
+	
+function createApples() {
+	for(let i = 0; i < numGreenBalls; i++) {
+		greenBalls[i] = new Ball(random(minX, maxX), random(minY, maxY), '#0f0')
+	} 
+	for(let i = 0; i < numRedBalls; i++) {
+		redBalls[i] = new Ball(random(minX, maxX), random(minY, maxY), '#FF0000')
+	} 
 }
  
 function setup() {
@@ -231,85 +250,95 @@ function setup() {
   minY = radius * 4
   maxY = height - (radius * 4)
   img = loadImage('https://nmerkle.github.io/robot_wiki.png')
-  for(let i = 0; i < numGreenBalls; i++) {
-	greenBalls[i] = new Ball(random(minX, maxX), random(minY, maxY), '#0f0')
-  } 
-  for(let i = 0; i < numRedBalls; i++) {
-	redBalls[i] = new Ball(random(minX, maxX), random(minY, maxY), '#FF0000')
-  } 
+  createApples()
 }
 
 function draw() {
 	background(fieldColor);
 	if(start) {
-	if(stop) noLoop()
-	else loop()
-  
-  greenBalls.forEach((ball) => {
-  if(moving) {
-		moveBall(ball)
+		if(stop) noLoop()
+		else loop()
+
+		  greenBalls.forEach((ball) => {
+		  if(moving) {
+				moveBall(ball)
+			}
+		    display(ball)
+		  })
+		  redBalls.forEach((ball) => {
+		  if(moving) {
+				moveBall(ball)
+			}
+			display(ball)
+		  })
+
+		  let rew = agent.act()
+		  if(!training)
+		  	episodes[episodeCounter].push(rew)
+		
+			if(iteration == 0)
+				image(img, (width/2)-50, (height/2)-50, agentWidth, agentHeight)
+			else 
+				image(img, agent.centerX - 50, agent.centerY - 50, agentWidth, agentHeight)
+		  iteration += 1
+
+		  let angle = undefined
+		  if(prevAngle.angle !== undefined) {
+			if(prevAngle.action === 'moveUp') {
+				angle = 270
+			} else if(prevAngle.action === 'moveDown') {
+				angle = 90
+
+			} else if(prevAngle.action === 'moveRight') {
+				angle = 0
+
+			} else if(prevAngle.action === 'moveLeft') {
+				angle = 180
+
+			} else if(prevAngle.action === 'moveRightUp') {
+				angle = 315
+
+			} else if(prevAngle.action === 'moveRightDown') {
+				angle = 45
+
+			} else if(prevAngle.action === 'moveLeftUp') {
+				angle = 225
+
+			} else if(prevAngle.action === 'moveLeftDown') {
+				angle = 135
+			}
+		  } else angle = 270
+
+		  const r = radians(angle)
+		  let p1 = {x: agent.centerX - radius/2, y: agent.centerY + radius/4}
+		  let p2 = {x: agent.centerX + radius/2, y: agent.centerY + radius/4}
+		  let p3 = {x: agent.centerX, y: agent.centerY - radius/2} 
+		  smooth()
+		  translate(agent.centerX, agent.centerY)
+		  rotate(r)
+		  //fill('#ff0')
+		  fill(color(agent.color))
+		  //stroke('#ff0')
+		  stroke(color(agent.color))
+		  strokeWeight(1)
+		  line(0, 0, width, height)
+		  //triangle(0, 0, radius/2, agent.centerY + radius/4, 0, radius/2)
+		  triangle(-radius/2, radius/2, radius/2, radius/2, 0, -radius/4)
+		  prevAngle.angle = angle
+		  prevAngle.action = agent.performedAction
+		
+		if(!training && redBalls.length == 0 && greenBalls.length == 0) {
+			let meanEpisodeReward = computeMeanRewardForEpisode(episodes[episodeCounter])
+			plotEpisodeSuccess(episodeCounter+1, meanEpisodeReward)
+			episodeCounter += 1
+			episodes[episodeCounter] = []
+			createApples()
+			textSize(30)
+			if(white) fill(0)
+			else fill(255)
+			text("Episode: "+episodeCounter, width - 200, 50)
+		}
 	}
-    display(ball)
-  })
-  redBalls.forEach((ball) => {
-  if(moving) {
-		moveBall(ball)
-	}
-	display(ball)
-  })
-  
-  agent.act()
-	if(iteration == 0)
-		image(img, (width/2)-50, (height/2)-50, agentWidth, agentHeight)
-  	else 
-		image(img, agent.centerX - 50, agent.centerY - 50, agentWidth, agentHeight)
-  iteration += 1
-  
-  let angle = undefined
-  if(prevAngle.angle !== undefined) {
-	if(prevAngle.action === 'moveUp') {
-		angle = 270
-	} else if(prevAngle.action === 'moveDown') {
-		angle = 90
-	
-	} else if(prevAngle.action === 'moveRight') {
-		angle = 0
-	
-	} else if(prevAngle.action === 'moveLeft') {
-		angle = 180
-	
-	} else if(prevAngle.action === 'moveRightUp') {
-		angle = 315
-	
-	} else if(prevAngle.action === 'moveRightDown') {
-		angle = 45
-	
-	} else if(prevAngle.action === 'moveLeftUp') {
-		angle = 225
-	
-	} else if(prevAngle.action === 'moveLeftDown') {
-		angle = 135
-	}
-  } else angle = 270
-  
-  const r = radians(angle)
-  let p1 = {x: agent.centerX - radius/2, y: agent.centerY + radius/4}
-  let p2 = {x: agent.centerX + radius/2, y: agent.centerY + radius/4}
-  let p3 = {x: agent.centerX, y: agent.centerY - radius/2} 
-  smooth()
-  translate(agent.centerX, agent.centerY)
-  rotate(r)
-  //fill('#ff0')
-  fill(color(agent.color))
-  //stroke('#ff0')
-  stroke(color(agent.color))
-  strokeWeight(1)
-  line(0, 0, width, height)
-  //triangle(0, 0, radius/2, agent.centerY + radius/4, 0, radius/2)
-  triangle(-radius/2, radius/2, radius/2, radius/2, 0, -radius/4)
-  prevAngle.angle = angle
-  prevAngle.action = agent.performedAction
-  }
   
 }
 
@@ -351,7 +380,9 @@ class Agent {
 		|| this.centerY >= height - agentHeight /2 - 5|| this.centerY <= agentHeight /2 + 5) {
 			numBad += 1
 			minusOne += 1
-			plotSuccess(-1)
+			if(training)
+				plotSuccess(-1)
+			plotHistogram()
 			collide = true
 			textSize(fontsize)
 			if(white) fill(0)
@@ -453,7 +484,9 @@ class Agent {
 					collide = true
 					numGood += 1
 					one += 1
-					plotSuccess(1)
+					if(training)
+						plotSuccess(1)
+					plotHistogram()
 					textSize(fontsize)
 					if(white) fill(0)
 					else fill(255)
@@ -513,7 +546,9 @@ class Agent {
 						collide = true
 						numBad += 1
 						minusOne += 1
-						plotSuccess(-1)
+						if(training)
+							plotSuccess(-1)
+						plotHistogram()
 						textSize(fontsize)
 						if(white) fill(0)
 						else fill(255)
@@ -537,7 +572,9 @@ class Agent {
 		
 		if(!collide) {
 			zero += 1
-			plotSuccess(0)
+			if(training)
+				plotSuccess(0)
+			plotHistogram()
 		}
 		textSize(30)
 	        if(white) fill(0)
@@ -805,6 +842,7 @@ class Agent {
 	
 	act() {
 	let action = undefined
+	let rew = undefined
 	if(this.currentState == undefined) {
 		const {reward, state} = this.checkCollisionBySensors()
 		action = this.rlagent.act(state)
@@ -814,11 +852,13 @@ class Agent {
 			this.performedAction = this.actions[action].name
 			this.currentState = state
 			this.rlagent.learn(reward)
+			rew = reward
 		} else {
 			this.actions[action](this)
 			this.performedAction = this.actions[action].name
 			const {reward, state} = this.checkCollisionBySensors()
 			this.rlagent.learn(-1 + reward)
+			rew = -1 + reward
 			this.currentState = state
 			this.score += -1
 			textSize(fontsize)
@@ -846,12 +886,14 @@ class Agent {
 			const {reward, state} = this.checkCollisionBySensors()
 			this.currentState = state
 			this.rlagent.learn(reward)
+			rew = reward
 		} else {
 			this.actions[action](this)
 			this.performedAction = this.actions[action].name
 			const {reward, state} = this.checkCollisionBySensors()
 			this.currentState = state
 			this.rlagent.learn(-1+reward)
+			rew = -1 + reward
 			this.score += -1
 			textSize(fontsize)
 			if(white) fill(0)
@@ -869,7 +911,7 @@ class Agent {
 			text("Contradicting Action: -1", x, y)
 		}
 	
-	}
+	}  return rew
 }
 	
 	getRelativeAngle(ball) {
@@ -930,8 +972,8 @@ function createPlot() {
 		title: "Performance Development", 
 		font: {size: 10}, 
 		line: {linewidth: 1},
-		xaxis: {title: "Action Step Size", showgrid: true, zeroline: true},
-		yaxis:{title: "Reward"}
+		xaxis: {title: training ? "Action Step Size" : "Episode", showgrid: true, zeroline: true},
+		yaxis:{title: training ? "Reward": "Mean Reward"}
 	}
 	const data2 = [{
 			type: "bar",
@@ -968,7 +1010,14 @@ function createPlot() {
 
 function plotSuccess(reward) {
 	Plotly.extendTraces("stats", {y: [[reward]]}, [0], maxLength)
+}
+	
+function plotHistogram() {
 	Plotly.extendTraces("histo", {y: [[minusOne], [zero], [one]]}, [0, 1, 2], 1)
+}
+
+function plotEpisodeSuccess(episode, meanReward) {
+	Plotly.extendTraces('stats', {y: [[meanReward]], [0], episode})
 }
 
 function storeJSON() {
