@@ -137,48 +137,48 @@ let training = true
 	}
 
 	function moveUp(bot) {
-		if(bot.centerY < agentHeight /2) {
-			bot.centerY = agentHeight / 2
+		if(bot.centerY < agentHeight /2 + 5) {
+			bot.centerY = agentHeight / 2 + 5
 		}
 		bot.centerY -= stepSize
 	}
 	
 	function moveRightUp(bot) {
-		if(bot.centerY < agentHeight /2) {
-			bot.centerY = agentHeight / 2
+		if(bot.centerY < agentHeight /2 + 5) {
+			bot.centerY = agentHeight / 2 + 5
 		}
 		
-		if(bot.centerX < agentWidth / 2) {
-			bot.centerX = agentWidth / 2
+		if(bot.centerX < agentWidth / 2 + 5) {
+			bot.centerX = agentWidth / 2 + 5
 		}
 		bot.centerX += stepSize
 		bot.centerY -= stepSize
 	}
 	
 	function moveDown(bot) {
-		if(bot.centerY > height-agentHeight /2) {
-			bot.centerY = height - agentHeight / 2
+		if(bot.centerY > height - (agentHeight /2 + 5)) {
+			bot.centerY = height - (agentHeight / 2 + 5)
 		}
 		bot.centerY += stepSize
 	}
 	
 	function moveRightDown(bot) {
-		if(bot.centerX < agentWidth / 2) {
-			bot.centerX = agentWidth / 2
+		if(bot.centerX < agentWidth / 2 + 5) {
+			bot.centerX = agentWidth / 2 + 5
 		}
-		if(bot.centerY > height-agentHeight /2) {
-			bot.centerY = height - agentHeight / 2
+		if(bot.centerY > height- (agentHeight /2 + 5)) {
+			bot.centerY = height - (agentHeight / 2 + 5)
 		}
 		bot.centerX += stepSize
 		bot.centerY += stepSize
 	}
 	
 	function moveLeftUp(bot) {
-		if(bot.centerX > width - agentWidth / 2) {
-			bot.centerX = width - agentWidth / 2
+		if(bot.centerX > width - (agentWidth / 2 + 5)) {
+			bot.centerX = width - (agentWidth / 2 + 5)
 		}
-		if(bot.centerY < agentHeight /2) {
-			bot.centerY = agentHeight / 2
+		if(bot.centerY < agentHeight / 2 + 5) {
+			bot.centerY = agentHeight / 2 + 5
 		}
 		bot.centerX -= stepSize
 		bot.centerY -= stepSize
@@ -186,26 +186,26 @@ let training = true
 	
 	function moveLeftDown(bot) {
 		
-		if(bot.centerX > width - agentWidth / 2) {
-			bot.centerX = width  - agentWidth / 2
+		if(bot.centerX > width - agentWidth / 2 - 5) {
+			bot.centerX = width  - agentWidth / 2 - 5
 		} 
-		if(bot.centerY > height-agentHeight /2) {
-			bot.centerY = height - agentHeight / 2
+		if(bot.centerY > height-agentHeight /2 - 5) {
+			bot.centerY = height - agentHeight / 2 - 5
 		}
 		bot.centerX -= stepSize
 		bot.centerY += stepSize
 	}
 	
 	function moveLeft(bot) { 
-		if(bot.centerX > width - agentWidth / 2) {
-			bot.centerX = width - agentWidth / 2 
+		if(bot.centerX > width - agentWidth / 2 -5) {
+			bot.centerX = width - agentWidth / 2 - 5
 		}
 		bot.centerX -= stepSize
 	}
 	
 	function moveRight(bot) {
-		if(bot.centerX  < agentWidth / 2) {
-			bot.centerX  = agentWidth / 2
+		if(bot.centerX  < agentWidth / 2 + 5) {
+			bot.centerX  = agentWidth / 2 + 5
 		}
 		bot.centerX += stepSize
 	}
@@ -347,8 +347,8 @@ class Agent {
 		let collide = false
 		let numGood = 0
 		let numBad = 0
-		if(this.centerX >= width - agentWidth / 2 || this.centerX  <= agentWidth / 2
-		|| this.centerY >= height - agentHeight /2 || this.centerY <= agentHeight /2) {
+		if(this.centerX >= width - agentWidth / 2 - 5 || this.centerX  <= agentWidth / 2 + 5
+		|| this.centerY >= height - agentHeight /2 - 5|| this.centerY <= agentHeight /2 + 5) {
 			numBad += 1
 			minusOne += 1
 			plotSuccess(-1)
@@ -356,14 +356,17 @@ class Agent {
 			textSize(fontsize)
 			if(white) fill(0)
 			else fill(255)
-			if(this.centerX >= width - agentWidth / 2)
-				text("Autsch: -1", this.centerX - agentWidth/2, this.centerY)
-			else if(this.centerX  <= agentWidth / 2)
-				text("Autsch: -1", this.centerX + agentWidth/2, this.centerY)
-			else if(this.centerY >= height - agentHeight /2)
-				text("Autsch: -1", this.centerX, this.centerY - agentHeight/2)
-			else if(this.centerY <= agentHeight /2)
-				text("Autsch: -1", this.centerX, this.centerY + agentHeight/2)
+			let x = undefined
+			let y = undefined
+			if(this.centerX >= width - agentWidth / 2 - 5)
+				x = this.centerX - agentWidth/2 - 5
+			else if(this.centerX  <= agentWidth / 2 + 5)
+				x = this.centerX + agentWidth/2 + 5
+			else if(this.centerY >= height - agentHeight /2 - 5)
+				y = this.centerY - agentHeight/2 - 5
+			else if(this.centerY <= agentHeight /2 + 5)
+				y = this.centerY + agentHeight/2 +5
+			text("Autsch: -1", x, y)
 				
 		}
 		let balls2Remove = []
@@ -373,7 +376,6 @@ class Agent {
 			sensors.push([undefined, undefined, undefined, undefined, undefined, undefined])
 		}
 		
-		//For each wall set distance, angle and color
 		let degIndex = undefined
 		if(Math.abs(width - agent.centerX) <= 150 || Math.abs(height - agent.centerY) <= 150 
 		|| agent.centerX <= 150 || agent.centerY <= 150) {
@@ -413,11 +415,6 @@ class Agent {
 			})
 			sensors[degIndex][0] = dist
 			sensors[degIndex][1] = 1.0 //Indicates if sensor value is available
-			//sensors[degIndex].push(rad)
-			//sensors[degIndex].push(0)
-			//sensors[degIndex].push(0)
-			//sensors[degIndex].push(1)
-			
 		} 
 		
 		redBalls.forEach((ball) => {
@@ -818,21 +815,26 @@ class Agent {
 			this.currentState = state
 			this.rlagent.learn(reward)
 		} else {
-			this.rlagent.learn(-1)
+			this.actions[action](this)
+			this.performedAction = this.actions[action].name
+			const {reward, state} = this.checkCollisionBySensors()
+			this.rlagent.learn(-1 + reward)
+			this.currentState = state
 			this.score += -1
 			textSize(fontsize)
 			if(white) fill(0)
 			else fill(255)
-			if(this.centerX >= width - agentWidth / 2)
-				text("Contradicting Action: -1", this.centerX - agentWidth/2, this.centerY)
-			else if(this.centerX  <= agentWidth / 2)
-				text("Contradicting Action: -1", this.centerX + agentWidth/2, this.centerY)
-			else if(this.centerY >= height - agentHeight /2)
-				text("Contradicting Action: -1", this.centerX, this.centerY - agentHeight/2)
-			else if(this.centerY <= agentHeight /2)
-				text("Contradicting Action: -1", this.centerX, this.centerY + agentHeight/2)
-			else 
-				text("Contradicting Action: -1", this.centerX-25, this.centerY - 60)
+			let x = undefined
+			let y = undefined
+			if(this.centerX >= width - agentWidth / 2 - 5)
+				x = this.centerX - agentWidth/2 - 5
+			else if(this.centerX  <= agentWidth / 2 + 5)
+				x = this.centerX + agentWidth/2 + 5
+			else if(this.centerY >= height - agentHeight /2 - 5)
+				y = this.centerY - agentHeight/2 - 5
+			else if(this.centerY <= agentHeight /2 + 5)
+				y = this.centerY + agentHeight/2 +5
+			text("Contradicting Action: -1", x, y)
 		}
 			
 	} else {
@@ -845,21 +847,26 @@ class Agent {
 			this.currentState = state
 			this.rlagent.learn(reward)
 		} else {
-			this.rlagent.learn(-1)
+			this.actions[action](this)
+			this.performedAction = this.actions[action].name
+			const {reward, state} = this.checkCollisionBySensors()
+			this.currentState = state
+			this.rlagent.learn(-1+reward)
 			this.score += -1
 			textSize(fontsize)
 			if(white) fill(0)
 			else fill(255)
-			if(this.centerX >= width - agentWidth / 2)
-				text("Contradicting Action: -1", this.centerX - agentWidth/2, this.centerY)
-			else if(this.centerX  <= agentWidth / 2)
-				text("Contradicting Action: -1", this.centerX + agentWidth/2, this.centerY)
-			else if(this.centerY >= height - agentHeight /2)
-				text("Contradicting Action: -1", this.centerX, this.centerY - agentHeight/2)
-			else if(this.centerY <= agentHeight /2)
-				text("Contradicting Action: -1", this.centerX, this.centerY + agentHeight/2)
-			else 
-				text("Contradicting Action: -1", this.centerX-25, this.centerY - 60)
+			let x = undefined
+			let y = undefined
+			if(this.centerX >= width - agentWidth / 2 - 5)
+				x = this.centerX - agentWidth/2 - 5
+			else if(this.centerX  <= agentWidth / 2 + 5)
+				x = this.centerX + agentWidth/2 + 5
+			else if(this.centerY >= height - agentHeight /2 - 5)
+				y = this.centerY - agentHeight/2 - 5
+			else if(this.centerY <= agentHeight /2 + 5)
+				y = this.centerY + agentHeight/2 +5
+			text("Contradicting Action: -1", x, y)
 		}
 	
 	}
