@@ -335,6 +335,7 @@ function draw() {
 			let meanEpisodeReward = computeMeanRewardForEpisode(episodes[episodeCounter])
 			plotEpisodeSuccess(episodeCounter+1, meanEpisodeReward)
 			episodeCounter += 1
+			agent.score = 0
 			episodes[episodeCounter] = []
 			createApples()
 		}
