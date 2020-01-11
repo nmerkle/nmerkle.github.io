@@ -1017,7 +1017,7 @@ function plotHistogram() {
 }
 
 function plotEpisodeSuccess(episode, meanReward) {
-	Plotly.extendTraces('stats', {y: [[meanReward]], [0], episode})
+	Plotly.extendTraces('stats', {y: [[meanReward]]}, [0], episode)
 }
 
 function storeJSON() {
