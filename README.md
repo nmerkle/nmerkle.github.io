@@ -6,7 +6,7 @@ The **SMAPPI** (Smart Apple Picker) Agent **(see: [Life Demo](https://nmerkle.gi
 * Number of green and red apples
 * Apples' movement status (static or moving)
 * Speed (step size) of the agent
-* Training or Compete mode. In ``compete`` mode every collected apple is removed from the field while in ``training`` mode the apples never get less but change randomly their position.
+* Training or Compete mode. In ``compete`` mode every collected apple is removed from the field while in ``training`` mode the apples never get less but change randomly their position. If all given red apples in the field are collected by the agent a new episode with the pre-configured number of apples starts automatically (only) in ``compete`` mode.
 
 Below of the playground, you find three buttons (e.g. ``Stop Game``, ``Start Game`` ``Save JSON``). The names of the buttons are self-evident. Clicking the ``Stop Game`` Button freezes the game. With ``Start Game`` you can start and continue the game. ``Save JSON`` saves the trained DQNN as JSON file on the local storage of the browser. You can reload this JSON file for configuring the agent by selecting the radio button with label *true*  on the configuration panel. By default *false* is selected which means that the agent learns its DQNN from scratch without using a pretrained DQNN.
 
