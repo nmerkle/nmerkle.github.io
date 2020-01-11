@@ -161,8 +161,8 @@ let episodeCounter = 0
 			bot.centerY = agentHeight / 2 + 5
 		}
 		
-		if(bot.centerX < agentWidth / 2 + 5) {
-			bot.centerX = agentWidth / 2 + 5
+		if(bot.centerX < agentWidth) {
+			bot.centerX = agentWidth
 		}
 		bot.centerX += stepSize
 		bot.centerY -= stepSize
@@ -176,8 +176,8 @@ let episodeCounter = 0
 	}
 	
 	function moveRightDown(bot) {
-		if(bot.centerX < agentWidth / 2 + 5) {
-			bot.centerX = agentWidth / 2 + 5
+		if(bot.centerX < agentWidth) {
+			bot.centerX = agentWidth
 		}
 		if(bot.centerY > height- (agentHeight /2 + 5)) {
 			bot.centerY = height - (agentHeight / 2 + 5)
@@ -187,8 +187,8 @@ let episodeCounter = 0
 	}
 	
 	function moveLeftUp(bot) {
-		if(bot.centerX > width - (agentWidth / 2 + 5)) {
-			bot.centerX = width - (agentWidth / 2 + 5)
+		if(bot.centerX > width - (agentWidth)) {
+			bot.centerX = width - (agentWidth)
 		}
 		if(bot.centerY < agentHeight / 2 + 5) {
 			bot.centerY = agentHeight / 2 + 5
@@ -199,8 +199,8 @@ let episodeCounter = 0
 	
 	function moveLeftDown(bot) {
 		
-		if(bot.centerX > width - agentWidth / 2 - 5) {
-			bot.centerX = width  - agentWidth / 2 - 5
+		if(bot.centerX > width - agentWidth) {
+			bot.centerX = width  - agentWidth
 		} 
 		if(bot.centerY > height-agentHeight /2 - 5) {
 			bot.centerY = height - agentHeight / 2 - 5
@@ -210,15 +210,15 @@ let episodeCounter = 0
 	}
 	
 	function moveLeft(bot) { 
-		if(bot.centerX > width - agentWidth / 2 -5) {
-			bot.centerX = width - agentWidth / 2 - 5
+		if(bot.centerX > width - agentWidth) {
+			bot.centerX = width - agentWidth
 		}
 		bot.centerX -= stepSize
 	}
 	
 	function moveRight(bot) {
-		if(bot.centerX  < agentWidth / 2 + 5) {
-			bot.centerX  = agentWidth / 2 + 5
+		if(bot.centerX  < agentWidth) {
+			bot.centerX  = agentWidth
 		}
 		bot.centerX += stepSize
 	}
@@ -231,7 +231,7 @@ function preload() {
 	spec["epsilon"] = greedy
 	spec["gamma"] = gamma 
 	rlagent = new RL.DQNAgent(env, spec);
-	agent = new Agent(width / 2 - 50, height + 50, rlagent, actions, '#00f')
+	agent = new Agent((width / 2= - 50, (height / 2) + 50, rlagent, actions, '#00f')
 	episodes.push([])
 }
 	
@@ -337,6 +337,8 @@ function draw() {
 			episodeCounter += 1
 			episodes[episodeCounter] = []
 			createApples()
+		}
+		if(!training) {	
 			textSize(30)
 			if(white) fill(0)
 			else fill(255)
@@ -380,7 +382,7 @@ class Agent {
 		let collide = false
 		let numGood = 0
 		let numBad = 0
-		if(this.centerX >= width - agentWidth / 2 - 5 || this.centerX  <= agentWidth / 2 + 5
+		if(this.centerX >= width - agentWidth || this.centerX  <= agentWidth
 		|| this.centerY >= height - agentHeight /2 - 5|| this.centerY <= agentHeight /2 + 5) {
 			numBad += 1
 			minusOne += 1
@@ -393,10 +395,10 @@ class Agent {
 			else fill(255)
 			let x = this.centerX
 			let y = this.centerY + 55
-			if(this.centerX >= width - agentWidth / 2 - 5)
-				x = this.centerX - agentWidth/2 - 5
-			else if(this.centerX  <= agentWidth / 2 + 5)
-				x = this.centerX + agentWidth/2 + 5
+			if(this.centerX >= width - agentWidth)
+				x = this.centerX - agentWidth
+			else if(this.centerX  <= agentWidth)
+				x = this.centerX + agentWidth
 			else if(this.centerY >= height - agentHeight /2 - 5)
 				y = this.centerY - agentHeight/2 - 5
 			else if(this.centerY <= agentHeight /2 + 5)
@@ -869,11 +871,11 @@ class Agent {
 			if(white) fill(0)
 			else fill(255)
 			let x = this.centerX
-			let y = this.centerY + 55
-			if(this.centerX >= width - agentWidth / 2 - 5)
-				x = this.centerX - agentWidth/2 - 5
-			else if(this.centerX  <= agentWidth / 2 + 5)
-				x = this.centerX + agentWidth/2 + 5
+			let y = this.centerY
+			if(this.centerX >= width - agentWidth)
+				x = this.centerX - agentWidth
+			else if(this.centerX  <= agentWidth)
+				x = this.centerX + agentWidth
 			else if(this.centerY >= height - agentHeight /2 - 5)
 				y = this.centerY - agentHeight/2 - 5
 			else if(this.centerY <= agentHeight /2 + 5)
@@ -903,11 +905,11 @@ class Agent {
 			if(white) fill(0)
 			else fill(255)
 			let x = this.centerX
-			let y = this.centerY + 55
-			if(this.centerX >= width - agentWidth / 2 - 5)
-				x = this.centerX - agentWidth/2 - 5
-			else if(this.centerX  <= agentWidth / 2 + 5)
-				x = this.centerX + agentWidth/2 + 5
+			let y = this.centerY
+			if(this.centerX >= width - agentWidth)
+				x = this.centerX - agentWidth
+			else if(this.centerX  <= agentWidth)
+				x = this.centerX + agentWidth
 			else if(this.centerY >= height - agentHeight /2 - 5)
 				y = this.centerY - agentHeight/2 - 5
 			else if(this.centerY <= agentHeight /2 + 5)
