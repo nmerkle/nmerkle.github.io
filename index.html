@@ -106,7 +106,11 @@ let episodeCounter = 0
 		if(document.getElementById('removeApples').value != "") {
 			if(document.getElementById('removeApples').value == 'compete') {
 				training = false
-			} else training = true
+				createPlot()
+			} else { 
+				training = true
+				createPlot()
+			}
 		}
 		if(document.getElementById('speed').value != "") {
 			stepSize = parseFloat(document.getElementById('speed').value)
