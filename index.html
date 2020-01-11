@@ -106,10 +106,10 @@ let episodeCounter = 0
 		if(document.getElementById('removeApples').value != "") {
 			if(document.getElementById('removeApples').value == 'compete') {
 				training = false
-				createPlot()
+				recreatePlot()
 			} else { 
 				training = true
-				createPlot()
+				recreatePlot()
 			}
 		}
 		if(document.getElementById('speed').value != "") {
@@ -1007,9 +1007,27 @@ function createPlot() {
 				}
 			}]
 	const layout2 = {title: "Reward Histogram", font: {size: 10}, xaxis: {title: "Reward", showgrid: true, zeroline: true}, yaxis:{title: "Count"}}
-	
+		
 	Plotly.plot("stats", data, layout)
 	Plotly.plot("histo", data2, layout2)
+}
+	
+function recreatePlot() {
+	const data = [{
+		mode: "lines",
+		type: "scatter",
+		line: {color: 'black'},
+		y: []	
+	}]
+	const layout = {
+		title: "Performance Development", 
+		font: {size: 10}, 
+		line: {linewidth: 1},
+		xaxis: {title: training ? "Action Step Size" : "Episode", showgrid: true, zeroline: true},
+		yaxis:{title: training ? "Reward": "Mean Reward"}
+	}
+	
+	Plotly.react("stats", data, layout)
 }
 
 function plotSuccess(reward) {
