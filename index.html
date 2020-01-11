@@ -331,7 +331,7 @@ function draw() {
 		  prevAngle.angle = angle
 		  prevAngle.action = agent.performedAction
 		
-		if(!training && redBalls.length == 0 && greenBalls.length == 0) {
+		if(!training && redBalls.length == 0) {
 			let meanEpisodeReward = computeMeanRewardForEpisode(episodes[episodeCounter])
 			plotEpisodeSuccess(episodeCounter+1, meanEpisodeReward)
 			episodeCounter += 1
