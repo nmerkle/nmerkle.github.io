@@ -132,19 +132,15 @@ let episodeCounter = 0
 			gamma = parseFloat(document.getElementById("gamma").value)
 			spec["gamma"] = gamma
 		}
-		//env.getNumStates = function() { return 8 * 5}
-		//env.getMaxNumActions = function() { return actions.length; }
 		if (document.getElementById('yes').checked) {
 			let pol = loadDQNN()
-			if(pol != undefined && pol != null)
-				rlagent.fromJSON(pol)
-			else
+			if(pol == undefined || pol == null) {
 				storeJSON()
+				pol = loadDQNN()
+			}
 			rlagent = new RL.DQNAgent(env, spec);
-			pol = loadDQNN()
 			rlagent.fromJSON(pol)
-		} else {rlagent = new RL.DQNAgent(env, spec);}
-			
+		} else {rlagent = new RL.DQNAgent(env, spec);}	
 		agent.rlagent = rlagent
 		
 	}
