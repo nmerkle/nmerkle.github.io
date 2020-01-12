@@ -406,8 +406,11 @@ class Agent {
 		}
 		
 		let degIndex = undefined
-		if(Math.abs(width - agent.centerX) <= 150 || Math.abs(height - agent.centerY) <= 150 
-		|| agent.centerX <= 150 || agent.centerY <= 150) {
+		let w1 = this.euklideanDistance({x: this.centerX, y: height})
+		let w2 = this.euklideanDistance({x: width, y: this.centerY})
+		let w3 = this.euklideanDistance({x: 0, y: this.centerY})
+		let w4 = this.euklideanDistance({x: this.centerX, y: 0})
+		if(w1 <= 300 || w2 <= 300 || w3 <= 300 || w4 <= 300) {
 			let wallDistances = []
 			let wallObjs = {}
 			
@@ -432,8 +435,10 @@ class Agent {
 			let dist = wallDistances[0]
 			let rad = wallObjs[dist]
 			let degree = round(degrees(rad))
-			if(degree < 0) 
+			if(degree < 0) {
 				degree += 360
+				degree = 180 - degree
+			}
 
 			let counter = 0
 			degreeIndexes.forEach((degs) => {
@@ -449,12 +454,14 @@ class Agent {
 		redBalls.forEach((ball) => {
 			let degIndex = undefined
 			let dist = this.euklideanDistance(ball)
-			if(dist <= 100 /*Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY <= 100)*/) {
+			if(dist <= 300) {
 				
 				let angle = this.getRelativeAngle(ball)
 				let degree = round(degrees(angle))
-				if(degree < 0) 
+				if(degree < 0) {
 					degree += 360
+					degree = 180 - degree
+				}
 				
 				let counter = 0
 				degreeIndexes.forEach((degs) => {
@@ -510,12 +517,14 @@ class Agent {
 		greenBalls.forEach((ball) => {
 			let degIndex = undefined
 			let dist = this.euklideanDistance(ball)
-			if(dist <= 100/*Math.abs(ball.x - agent.centerX) <= 100 || Math.abs(ball.y - agent.centerY) <= 100*/) {
+			if(dist <= 300) {
 				
 				let angle = this.getRelativeAngle(ball)
 				let degree = round(degrees(angle))
-				if(degree < 0) 
+				if(degree < 0) {
 					degree += 360
+					degree = 180 - degree
+				}
 			
 				let counter = 0
 				degreeIndexes.forEach((degs) => {
@@ -850,19 +859,15 @@ class Agent {
 		const {reward, state} = this.checkCollisionBySensors()
 		action = this.rlagent.act(state)
 		let name = this.actions[action].name
+		this.actions[action](this)
+		this.performedAction = this.actions[action].name
+		this.currentState = state
 		if(this.contradictingActions[this.performedAction] !== name){
-			this.actions[action](this)
-			this.performedAction = this.actions[action].name
-			this.currentState = state
 			this.rlagent.learn(reward)
 			rew = reward
 		} else {
-			this.actions[action](this)
-			this.performedAction = this.actions[action].name
-			const {reward, state} = this.checkCollisionBySensors()
 			this.rlagent.learn(-1 + reward)
 			rew = -1 + reward
-			this.currentState = state
 			this.score += -1
 			textSize(fontsize)
 			if(white) fill(0)
@@ -883,18 +888,15 @@ class Agent {
 	} else {
 		action = this.rlagent.act(this.currentState)
 		let name = this.actions[action].name
+		this.actions[action](this)
+		this.performedAction = this.actions[action].name
+		const {reward, state} = this.checkCollisionBySensors()
+		this.currentState = state
+		
 		if(this.contradictingActions[this.performedAction] !== name){
-			this.actions[action](this)
-			this.performedAction = this.actions[action].name
-			const {reward, state} = this.checkCollisionBySensors()
-			this.currentState = state
 			this.rlagent.learn(reward)
 			rew = reward
 		} else {
-			this.actions[action](this)
-			this.performedAction = this.actions[action].name
-			const {reward, state} = this.checkCollisionBySensors()
-			this.currentState = state
 			this.rlagent.learn(-1+reward)
 			rew = -1 + reward
 			this.score += -1
