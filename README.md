@@ -19,7 +19,7 @@ Below of the game and the configuration panel, you can find some statistics (e.g
 ![The statistic panel of the game](https://github.com/nmerkle/SMAPPI-Smart-Apple-Picker-Agent/blob/master/screenshot2.png "Screenshot of the SMAPPI game.")
 
 # The state representation of SMAPPI
-The SMAPPI agent has two different sensors (distance and color sensor) pointing to 8 different directions with a range of 45° and a distance range of 1 meter (= 100px). This means that the state vector consists of ``6 * 8 = 48`` dimensions. For every distance measure a categorical dimension indicates whether the given measure is in range of the distance sensor and therefore available. Only the nearest objects (apple/wall) are considered in the state vector.
+The SMAPPI agent has two different sensors (distance and color sensor) pointing to 8 different directions with a range of 45° and a distance range of 3 meter (= 300px). This means that the state vector consists of ``6 * 8 = 48`` dimensions. For every distance measure a categorical dimension indicates whether the given measure is in range of the distance sensor and therefore available. Only the nearest objects (apple/wall) are considered in the state vector.
 
 | Sensor/Range     | Distance to Wall | Measure available | Distance to red apple | Measure available | Distance to green apple | Measure available |
 |------------------|------------------|-------------------|-----------------------|-------------------|-------------------------|-------------------|
