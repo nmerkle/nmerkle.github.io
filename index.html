@@ -18,7 +18,7 @@ let agent;
 let agentWidth = 100
 let agentHeight = 100
 let fontsize = 15
-let stepSize = 1
+let stepSize = 10
 let env = {}
 let spec = {}
 let learnRate = 0.01
@@ -227,7 +227,7 @@ function preload() {
 	spec["epsilon"] = greedy
 	spec["gamma"] = gamma 
 	rlagent = new RL.DQNAgent(env, spec);
-	agent = new Agent((500 / 2) - 50, (720 / 2) + 50, rlagent, actions, '#00f')
+	agent = new Agent((720 / 2) - 50, (500 / 2) + 50, rlagent, actions, '#00f')
 	episodes.push([])
 }
 	
@@ -322,12 +322,26 @@ function draw() {
 		  stroke(color(agent.color))
 		  strokeWeight(1)
 		  line(0, 0, width, height)
-		  //triangle(0, 0, radius/2, agent.centerY + radius/4, 0, radius/2)
 		  triangle(-radius/2, radius/2, radius/2, radius/2, 0, -radius/4)
 		  prevAngle.angle = angle
 		  prevAngle.action = agent.performedAction
 		
-		if(!training && redBalls.length == 0) {
+		if(!training && redBalls.length == 0 || iteration == 200) {
+			if(iteration == 200 && redBalls.length > 0) {
+				textSize(30)
+				if(white) fill(0)
+				else fill(255)
+				text("You have lost this episode!", 300, 250)
+				episodes[episodeCounter].push(-10)
+				agent.rlagent.learn(-10)
+			} else if(iteration < 200 && redBalls.length <= 0) {
+				agent.rlagent.learn(10)
+				textSize(30)
+				if(white) fill(0)
+				else fill(255)
+				text("You won this episode!", 300, 250)
+				episodes[episodeCounter].push(10)
+			}
 			let meanEpisodeReward = computeMeanRewardForEpisode(episodes[episodeCounter])
 			plotEpisodeSuccess(episodeCounter+1, meanEpisodeReward)
 			episodeCounter += 1
@@ -1084,7 +1098,7 @@ Discount:
 <label>Frame Rate: 
 <input type="number" id="framesize" min="1" max="100" step="1" value="30"></label>
 <label>Speed: 
-<input type="number" id="speed" min="1" max="5" step="1" value="1"></label>
+<input type="number" id="speed" min="10" max="50" step="1" value="1"></label>
 <br><br>
 <label>Moving Apples:
 <select id="moving" size="2">
