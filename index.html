@@ -326,9 +326,7 @@ function draw() {
 		  smooth()
 		  translate(agent.centerX, agent.centerY)
 		  rotate(r)
-		  //fill('#ff0')
 		  fill(color(agent.color))
-		  //stroke('#ff0')
 		  stroke(color(agent.color))
 		  strokeWeight(1)
 		  line(0, 0, width, height)
@@ -338,12 +336,6 @@ function draw() {
 		
 		if(!training) {
 			if(iteration == maxActionSteps && redBalls.length > 0) {
-				textSize(30)
-				if(white) fill(0)
-				else fill(255)
-				text("You have lost this episode!", 300, 250)
-				//episodes[episodeCounter].push(-10)
-				//agent.rlagent.learn(-10)
 				let meanEpisodeReward = computeMeanRewardForEpisode(episodes[episodeCounter])
 				plotEpisodeSuccess(meanEpisodeReward)
 				episodeCounter += 1
@@ -352,12 +344,6 @@ function draw() {
 				episodes[episodeCounter] = []
 				createApples()
 			} else if(iteration <= maxActionSteps && redBalls.length <= 0) {
-				agent.rlagent.learn(10)
-				textSize(30)
-				if(white) fill(0)
-				else fill(255)
-				text("You won this episode!", 300, 250)
-				//episodes[episodeCounter].push(10)
 				let meanEpisodeReward = computeMeanRewardForEpisode(episodes[episodeCounter])
 				plotEpisodeSuccess(meanEpisodeReward)
 				episodeCounter += 1
