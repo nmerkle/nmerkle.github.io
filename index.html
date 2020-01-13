@@ -32,6 +32,7 @@ let stop = false
 let moving = true
 let iteration = 0
 let minusOne = 0
+let maxActionSteps = 100
 let zero = 0
 let one = 0
 let maxLength = 1000
@@ -105,15 +106,20 @@ let episodeCounter = 0
 		
 		if(document.getElementById('removeApples').value != "") {
 			if(document.getElementById('removeApples').value == 'compete') {
+				if(training)
+					recreatePlot()
 				training = false
-				recreatePlot()
 			} else { 
+				if(!training)
+					recreatePlot()
 				training = true
-				recreatePlot()
 			}
 		}
 		if(document.getElementById('speed').value != "") {
 			stepSize = parseFloat(document.getElementById('speed').value)
+		}
+		if(document.getElementById('maxActionSteps').value != "") {
+			maxActionSteps = parseFloat(document.getElementById('maxActionSteps').value)
 		}
 	
 	}
@@ -326,21 +332,21 @@ function draw() {
 		  prevAngle.angle = angle
 		  prevAngle.action = agent.performedAction
 		
-		if(!training && redBalls.length == 0 || iteration == 200) {
-			if(iteration == 200 && redBalls.length > 0) {
+		if(!training && redBalls.length == 0 || iteration == maxActionSteps) {
+			if(iteration == maxActionSteps && redBalls.length > 0) {
 				textSize(30)
 				if(white) fill(0)
 				else fill(255)
 				text("You have lost this episode!", 300, 250)
-				episodes[episodeCounter].push(-10)
-				agent.rlagent.learn(-10)
-			} else if(iteration < 200 && redBalls.length <= 0) {
+				//episodes[episodeCounter].push(-10)
+				//agent.rlagent.learn(-10)
+			} else if(iteration < maxActionSteps && redBalls.length <= 0) {
 				agent.rlagent.learn(10)
 				textSize(30)
 				if(white) fill(0)
 				else fill(255)
 				text("You won this episode!", 300, 250)
-				episodes[episodeCounter].push(10)
+				//episodes[episodeCounter].push(10)
 			}
 			let meanEpisodeReward = computeMeanRewardForEpisode(episodes[episodeCounter])
 			plotEpisodeSuccess(episodeCounter+1, meanEpisodeReward)
@@ -1099,7 +1105,9 @@ Discount:
 <label>Frame Rate: 
 <input type="number" id="framesize" min="1" max="100" step="1" value="30"></label>
 <label>Speed: 
-<input type="number" id="speed" min="10" max="50" step="1" value="1"></label>
+<input type="number" id="speed" min="1" max="50" step="1" value="1"></label>
+<label>Max. Action Steps:
+<input type="number" id="maxActionSteps" min="1" step="1" value="100"></label>
 <br><br>
 <label>Moving Apples:
 <select id="moving" size="2">
