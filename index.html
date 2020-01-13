@@ -230,7 +230,7 @@ let episodeCounter = 0
 	}
 	
 function preload() {
-	actions = [moveUp, moveDown, moveLeft, moveRight/*, moveRightUp, moveRightDown, moveLeftUp, moveLeftDown*/]
+	actions = [moveUp, moveDown, moveLeft, moveRight, moveRightUp, moveRightDown, moveLeftUp, moveLeftDown]
 	env.getNumStates = function() { return 8 * 6}
 	env.getMaxNumActions = function() { return actions.length; }
 	spec["alpha"] = learnRate
@@ -336,7 +336,7 @@ function draw() {
 		  prevAngle.angle = angle
 		  prevAngle.action = agent.performedAction
 		
-		if(!training && redBalls.length == 0 || iteration == maxActionSteps) {
+		if(!training) {
 			if(iteration == maxActionSteps && redBalls.length > 0) {
 				textSize(30)
 				if(white) fill(0)
@@ -344,21 +344,29 @@ function draw() {
 				text("You have lost this episode!", 300, 250)
 				//episodes[episodeCounter].push(-10)
 				//agent.rlagent.learn(-10)
-			} else if(iteration < maxActionSteps && redBalls.length <= 0) {
+				let meanEpisodeReward = computeMeanRewardForEpisode(episodes[episodeCounter])
+				plotEpisodeSuccess(meanEpisodeReward)
+				episodeCounter += 1
+				agent.score = 0
+				iteration = 0
+				episodes[episodeCounter] = []
+				createApples()
+			} else if(iteration <= maxActionSteps && redBalls.length <= 0) {
 				agent.rlagent.learn(10)
 				textSize(30)
 				if(white) fill(0)
 				else fill(255)
 				text("You won this episode!", 300, 250)
 				//episodes[episodeCounter].push(10)
+				let meanEpisodeReward = computeMeanRewardForEpisode(episodes[episodeCounter])
+				plotEpisodeSuccess(meanEpisodeReward)
+				episodeCounter += 1
+				agent.score = 0
+				iteration = 0
+				episodes[episodeCounter] = []
+				createApples()
 			}
-			let meanEpisodeReward = computeMeanRewardForEpisode(episodes[episodeCounter])
-			plotEpisodeSuccess(meanEpisodeReward)
-			episodeCounter += 1
-			agent.score = 0
-			iteration = 0
-			episodes[episodeCounter] = []
-			createApples()
+			
 		}
 		
 	}
