@@ -286,10 +286,7 @@ function draw() {
 		  if(!training)
 		  	episodes[episodeCounter].push(rew)
 		
-			if(iteration == 0)
-				image(img, (width/2)-50, (height/2)-50, agentWidth, agentHeight)
-			else 
-				image(img, agent.centerX - 50, agent.centerY - 50, agentWidth, agentHeight)
+		  image(img, agent.centerX - 50, agent.centerY - 50, agentWidth, agentHeight)
 		  iteration += 1
 
 		  let angle = undefined
