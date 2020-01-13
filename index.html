@@ -637,7 +637,6 @@ class Agent {
 		action = this.rlagent.act(state)
 		let name = this.actions[action].name
 		this.actions[action](this)
-		this.performedAction = this.actions[action].name
 		this.currentState = state
 		if(this.contradictingActions[this.performedAction] !== name){
 			this.rlagent.learn(reward)
@@ -661,12 +660,12 @@ class Agent {
 				y = this.centerY + agentHeight/2 +5
 			text("Contradicting Action: -1", x, y)
 		}
+		this.performedAction = this.actions[action].name
 			
 	} else {
 		action = this.rlagent.act(this.currentState)
 		let name = this.actions[action].name
 		this.actions[action](this)
-		this.performedAction = this.actions[action].name
 		const {reward, state} = this.checkCollisionBySensors()
 		this.currentState = state
 		
@@ -692,6 +691,7 @@ class Agent {
 				y = this.centerY + agentHeight/2 +5
 			text("Contradicting Action: -1", x, y)
 		}
+		this.performedAction = this.actions[action].name
 	
 	}  return rew
 }
