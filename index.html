@@ -106,12 +106,16 @@ let episodeCounter = 0
 		
 		if(document.getElementById('removeApples').value != "") {
 			if(document.getElementById('removeApples').value == 'compete') {
-				if(training)
+				if(training) {
 					recreatePlot()
+					episodeCounter = 0
+				}
 				training = false
 			} else { 
-				if(!training)
+				if(!training) {
 					recreatePlot()
+					episodeCounter = 0
+				}
 				training = true
 			}
 		}
