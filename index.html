@@ -394,7 +394,16 @@ class Agent {
 		this.rlagent = rlagent
 		this.performedAction = undefined
 		this.currentState = undefined
-		this.contradictingActions = {'moveUp': 'moveDown', 'moveDown': 'moveUp', 'moveLeft': 'moveRight', 'moveRight': 'moveLeft'}
+		this.contradictingActions = {
+			'moveUp': 'moveDown', 
+			'moveDown': 'moveUp', 
+			'moveLeft': 'moveRight', 
+			'moveRight': 'moveLeft',
+			'moveRightUp' : 'moveLeftDown',
+			'moveLeftDown': 'moveRightUp',
+			'moveLeftUp': 'moveRightDown',
+			'moveRightDown': 'moveLeftUp'
+		}
 	}
 	
 	euklideanDistance(ball) {
