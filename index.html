@@ -157,15 +157,15 @@ let episodeCounter = 0
 	}
 
 	function moveUp(bot) {
-		if(bot.centerY < agentHeight /2 + 5) {
-			bot.centerY = agentHeight / 2 + 5
+		if(bot.centerY < agentHeight /2) {
+			bot.centerY = agentHeight / 2
 		}
 		bot.centerY -= stepSize
 	}
 	
 	function moveRightUp(bot) {
-		if(bot.centerY < agentHeight /2 + 5) {
-			bot.centerY = agentHeight / 2 + 5
+		if(bot.centerY < agentHeight /2) {
+			bot.centerY = agentHeight / 2
 		}
 		
 		if(bot.centerX < agentWidth / 2) {
@@ -176,8 +176,8 @@ let episodeCounter = 0
 	}
 	
 	function moveDown(bot) {
-		if(bot.centerY > 500 - (agentHeight /2 + 5)) {
-			bot.centerY = 500 - (agentHeight / 2 + 5)
+		if(bot.centerY > 500 - (agentHeight /2)) {
+			bot.centerY = 500 - (agentHeight / 2)
 		}
 		bot.centerY += stepSize
 	}
@@ -186,8 +186,8 @@ let episodeCounter = 0
 		if(bot.centerX < agentWidth / 2) {
 			bot.centerX = agentWidth / 2
 		}
-		if(bot.centerY > 500 - (agentHeight /2 + 5)) {
-			bot.centerY = 500 - (agentHeight / 2 + 5)
+		if(bot.centerY > 500 - (agentHeight /2)) {
+			bot.centerY = 500 - (agentHeight / 2)
 		}
 		bot.centerX += stepSize
 		bot.centerY += stepSize
@@ -197,8 +197,8 @@ let episodeCounter = 0
 		if(bot.centerX > 720 - (agentWidth / 2)) {
 			bot.centerX = 720 - (agentWidth / 2)
 		}
-		if(bot.centerY < agentHeight / 2 + 5) {
-			bot.centerY = agentHeight / 2 + 5
+		if(bot.centerY < agentHeight / 2) {
+			bot.centerY = agentHeight / 2
 		}
 		bot.centerX -= stepSize
 		bot.centerY -= stepSize
@@ -209,8 +209,8 @@ let episodeCounter = 0
 		if(bot.centerX > 720 - agentWidth / 2) {
 			bot.centerX = 720  - agentWidth / 2
 		} 
-		if(bot.centerY > 500-agentHeight /2 - 5) {
-			bot.centerY = 500 - agentHeight / 2 - 5
+		if(bot.centerY > 500-agentHeight /2) {
+			bot.centerY = 500 - agentHeight / 2 
 		}
 		bot.centerX -= stepSize
 		bot.centerY += stepSize
@@ -401,7 +401,7 @@ class Agent {
 		let numGood = 0
 		let numBad = 0
 		if(this.centerX >= 720 - agentWidth / 2 || this.centerX  <= agentWidth / 2
-		|| this.centerY >= 500 - agentHeight /2 - 5|| this.centerY <= agentHeight /2 + 5) {
+		|| this.centerY >= 500 - agentHeight /2 || this.centerY <= agentHeight /2) {
 			numBad += 1
 			minusOne += 1
 			if(training)
@@ -417,10 +417,10 @@ class Agent {
 				x = this.centerX - agentWidth / 2
 			else if(this.centerX  <= agentWidth / 2)
 				x = this.centerX + agentWidth / 2
-			else if(this.centerY >= height - agentHeight /2 - 5)
-				y = this.centerY - agentHeight/2 - 5
-			else if(this.centerY <= agentHeight /2 + 5)
-				y = this.centerY + agentHeight/2 +5
+			else if(this.centerY >= height - agentHeight / 2)
+				y = this.centerY - agentHeight/2
+			else if(this.centerY <= agentHeight /2)
+				y = this.centerY + agentHeight/2 
 			text("Autsch: -1", x, y)
 				
 		}
