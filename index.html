@@ -23,7 +23,7 @@ let env = {}
 let spec = {}
 let learnRate = 0.01
 let epsilon = 0.2
-let gamma = 0.3
+let gamma = 0.6
 let jsonFile = 'dqnn.json'
 let rlagent = undefined
 let actions;
@@ -168,34 +168,34 @@ let episodeCounter = 0
 			bot.centerY = agentHeight / 2 + 5
 		}
 		
-		if(bot.centerX < agentWidth) {
-			bot.centerX = agentWidth
+		if(bot.centerX < agentWidth / 2) {
+			bot.centerX = agentWidth / 2
 		}
 		bot.centerX += stepSize
 		bot.centerY -= stepSize
 	}
 	
 	function moveDown(bot) {
-		if(bot.centerY > height - (agentHeight /2 + 5)) {
-			bot.centerY = height - (agentHeight / 2 + 5)
+		if(bot.centerY > 500 - (agentHeight /2 + 5)) {
+			bot.centerY = 500 - (agentHeight / 2 + 5)
 		}
 		bot.centerY += stepSize
 	}
 	
 	function moveRightDown(bot) {
-		if(bot.centerX < agentWidth) {
-			bot.centerX = agentWidth
+		if(bot.centerX < agentWidth / 2) {
+			bot.centerX = agentWidth / 2
 		}
-		if(bot.centerY > height- (agentHeight /2 + 5)) {
-			bot.centerY = height - (agentHeight / 2 + 5)
+		if(bot.centerY > 500 - (agentHeight /2 + 5)) {
+			bot.centerY = 500 - (agentHeight / 2 + 5)
 		}
 		bot.centerX += stepSize
 		bot.centerY += stepSize
 	}
 	
 	function moveLeftUp(bot) {
-		if(bot.centerX > width - (agentWidth)) {
-			bot.centerX = width - (agentWidth)
+		if(bot.centerX > 720 - (agentWidth / 2)) {
+			bot.centerX = 720 - (agentWidth / 2)
 		}
 		if(bot.centerY < agentHeight / 2 + 5) {
 			bot.centerY = agentHeight / 2 + 5
@@ -206,26 +206,26 @@ let episodeCounter = 0
 	
 	function moveLeftDown(bot) {
 		
-		if(bot.centerX > width - agentWidth) {
-			bot.centerX = width  - agentWidth
+		if(bot.centerX > 720 - agentWidth / 2) {
+			bot.centerX = 720  - agentWidth / 2
 		} 
-		if(bot.centerY > height-agentHeight /2 - 5) {
-			bot.centerY = height - agentHeight / 2 - 5
+		if(bot.centerY > 500-agentHeight /2 - 5) {
+			bot.centerY = 500 - agentHeight / 2 - 5
 		}
 		bot.centerX -= stepSize
 		bot.centerY += stepSize
 	}
 	
 	function moveLeft(bot) { 
-		if(bot.centerX > width - agentWidth) {
-			bot.centerX = width - agentWidth
+		if(bot.centerX > 720 - agentWidth / 2) {
+			bot.centerX = 720 - agentWidth / 2
 		}
 		bot.centerX -= stepSize
 	}
 	
 	function moveRight(bot) {
-		if(bot.centerX  < agentWidth) {
-			bot.centerX  = agentWidth
+		if(bot.centerX  < agentWidth / 2) {
+			bot.centerX  = agentWidth / 2
 		}
 		bot.centerX += stepSize
 	}
@@ -400,8 +400,8 @@ class Agent {
 		let collide = false
 		let numGood = 0
 		let numBad = 0
-		if(this.centerX >= width - agentWidth || this.centerX  <= agentWidth
-		|| this.centerY >= height - agentHeight /2 - 5|| this.centerY <= agentHeight /2 + 5) {
+		if(this.centerX >= 720 - agentWidth / 2 || this.centerX  <= agentWidth / 2
+		|| this.centerY >= 500 - agentHeight /2 - 5|| this.centerY <= agentHeight /2 + 5) {
 			numBad += 1
 			minusOne += 1
 			if(training)
@@ -413,10 +413,10 @@ class Agent {
 			else fill(255)
 			let x = this.centerX
 			let y = this.centerY + 55
-			if(this.centerX >= width - agentWidth)
-				x = this.centerX - agentWidth
-			else if(this.centerX  <= agentWidth)
-				x = this.centerX + agentWidth
+			if(this.centerX >= 720 - agentWidth / 2)
+				x = this.centerX - agentWidth / 2
+			else if(this.centerX  <= agentWidth / 2)
+				x = this.centerX + agentWidth / 2
 			else if(this.centerY >= height - agentHeight /2 - 5)
 				y = this.centerY - agentHeight/2 - 5
 			else if(this.centerY <= agentHeight /2 + 5)
@@ -851,7 +851,7 @@ Learning Rate:
 Greedy:
 <input type="number" id="greedy" min="0.0" max="1.0" step="0.1" value="0.2">
 Discount:
-<input type="number" id="gamma" min="0.0" max="1.0" step="0.1" value="0.3">
+<input type="number" id="gamma" min="0.0" max="1.0" step="0.1" value="0.6">
 </fieldset><br>
 <div align="center">
 <input type="submit" value="Submit" onclick="setHyperParams();">
