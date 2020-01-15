@@ -24,7 +24,7 @@ The SMAPPI agent has two different sensors (distance and color sensor) pointing 
 
 | Sensor/Range     | Distance to Wall | Measure available | Distance to red apple | Measure available | Distance to green apple | Measure available |
 |------------------|------------------|-------------------|-----------------------|-------------------|-------------------------|-------------------|
-| S1 (0°-44°)    | <= 100 px        | 1 or 0            | <= 100 px             | 1 or 0            | <= 100 px               | 1 or 0            |
+| S1 (0°-44°)    | <= 300 px        | 1 or 0            | <= 300 px             | 1 or 0            | <= 300 px               | 1 or 0            |
 | S2 (45°-89°)   |                  |                   |                       |                   |                         |                   |
 | S3 (90°-134°)  |                  |                   |                       |                   |                         |                   |
 | S4 (135°-179°) |                  |                   |                       |                   |                         |                   |
