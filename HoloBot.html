@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AutoGenHR Demo</title>
+<script src="plotly-2.32.0.min.js" charset="utf-8"></script>
+<style>
+    .pdf {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+    }
+
+    .pdf,
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+datalist {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  writing-mode: horizontal-tb;
+  width: 200px;
+}
+
+option {
+  padding: 0;
+}
+
+input[type="range"] {
+  width: 200px;
+  margin: 0;
+}
+</style>
+<script>
+const holobot = new Image();
+
+function init() {
+  holobot.src = "robot_wiki.png";
+  window.requestAnimationFrame(draw);
+}
+
+function draw() {
+  const ctx = document.getElementById("canvas").getContext("2d");
+
+  ctx.globalCompositeOperation = "destination-over";
+  ctx.clearRect(0, 0, 500, 200); // clear canvas
+  ctx.save();
+
+  /*ctx.fillStyle = "rgb(0 0 0 / 40%)";
+  ctx.strokeStyle = "rgb(0 153 255 / 40%)";
+  ctx.save();
+  ctx.translate(150, 150);*/
+
+  // Earth
+  /*const time = new Date();
+  ctx.rotate(
+    ((2 * Math.PI) / 60) * time.getSeconds() +
+      ((2 * Math.PI) / 60000) * time.getMilliseconds(),
+  );*/
+  //ctx.translate(-100, 100);
+  ctx.drawImage(holobot, 0, 0, 200, 200);
+
+  ctx.restore();
+
+  /*ctx.beginPath();
+  ctx.arc(150, 150, 105, 0, Math.PI * 2, false); // Earth orbit
+  ctx.stroke();*/
+
+  window.requestAnimationFrame(draw);
+}
+//init()
+
+const socket = new WebSocket("ws://192.168.2.109:8001/");
+// Connection opened
+socket.addEventListener("open", (event) => {
+	console.log("Connection to WebsocketServer opened")
+});
+
+// Listen for messages
+socket.addEventListener("message", (event) => {
+	console.log("Message from server ", event.data);
+	const msg = JSON.parse(event.data)
+	if(msg['type'] === "pdf"){
+		const embed = document.querySelector("embed");
+		embed.setAttribute("src", msg.src);
+		const f = msg.src.substring(msg.src.lastIndexOf('/')+1)
+		console.log(f)
+		const del = {type: "delete", file: f}
+		const delTxt = JSON.stringify(del)
+		socket.send(delTxt)
+	}
+	else if(msg.type === "sample") {
+		for(let obj in msg) {
+			if(obj === "Patient ID") {
+				document.getElementById("patientID").value = msg[obj]
+			}
+			if(obj === "Age") {
+				document.getElementById("age").value = msg[obj]
+			}
+			if(obj === "Sex") {
+				const sexes = document.getElementsByName("sex")
+				sexes.forEach((e) => {
+					if(e.value === msg[obj].toLowerCase()) {
+						e.checked = true
+					}
+				})
+			}
+			if(obj === "Cholesterol") {
+				document.getElementById("cholesterol").value = msg[obj]
+
+			}
+			if(obj === "Diabetes") {
+                        	const isDiabetes = document.getElementsByName("diabetes")
+				isDiabetes.forEach((e) => {
+					if(parseInt(e.value) === msg[obj]) {
+						e.checked = true
+					}
+				})
+
+      			}
+			if(obj === "Family History") {
+				const isHist = document.getElementsByName("history")
+				isHist.forEach((e) => {
+					if(parseInt(e.value) === msg[obj]) {
+						e.checked = true
+					}
+				})
+
+			}
+			if(obj === "Smoking") {
+				const isSmoking = document.getElementsByName("smoking")
+				isSmoking.forEach((e) => {
+					if(parseInt(e.value) === msg[obj]) {
+						e.checked = true
+					}
+				})
+			}
+			if(obj === "Obesity") {
+				const isObese = document.getElementsByName("obesity")
+				isObese.forEach((e) => {
+					if(parseInt(e.value) === msg[obj]) {
+						e.checked = true
+					}
+				})
+			}
+			if(obj === "Alcohol Consumption") {
+				
+				const alcoholConsumption = document.getElementById("alcohol").options
+				const len = document.getElementById("alcohol").options.length
+				for(let i = 0; i < len; i++) {
+					if(parseInt(alcoholConsumption[i].value) === msg[obj])
+						alcoholConsumption[i].selected = true
+				}
+			}
+			if(obj === "Exercise Hours Per Week") {
+				document.getElementById("excerciseHours").value = msg[obj]
+			}
+			if(obj === "Diet") {
+				const diet = document.getElementById("diet").options
+				const len = diet.length
+				for(let i = 0; i < len; i++) {
+					if(diet[i].value === msg[obj])
+						diet[i].selected = true
+				}
+
+			}
+			if(obj === "Previous Heart Problems") {
+				const isPrevHeartProblems = document.getElementsByName("heartProblems")
+				isPrevHeartProblems.forEach((e) => {
+					if(parseInt(e.value) === msg[obj]) {
+						e.checked = true
+					}
+				})
+
+			}
+			if(obj === "Medication Use") {
+				const isMedication = document.getElementsByName("medicationUse")
+				isMedication.forEach((e) => {
+					if(parseInt(e.value) === msg[obj]) {
+						e.checked = true
+					}
+				})
+
+			}
+			if(obj === "Sedentary Hours Per Day") {
+				document.getElementById("sedentaryHours").value = msg[obj]
+			}
+			if(obj === "Income") {
+				document.getElementById("income").value = msg[obj]
+			}
+			if(obj === "BMI") {
+				document.getElementById("bmi").value = msg[obj]
+			}
+			if(obj === "Triglycerides") {
+				document.getElementById("triglycerid").value = msg[obj]
+
+			}
+			if(obj === "Physical Activity Days Per Week") {
+				document.getElementById("activityDays").value = msg[obj]
+			}
+			if(obj === "Sleep Hours Per Day") {
+				document.getElementById("sleepHoursPerDay").value = msg[obj]
+			}
+			if(obj === "Country") {
+				document.getElementById("country").value = msg[obj]
+			}
+			if(obj === "Continent") {
+				document.getElementById("continent").value = msg[obj]
+			}
+			if(obj === "Blood Pressure") {
+				const values = msg[obj].split("/")
+				document.getElementById("systolicStart").value = parseInt(values[0])
+				document.getElementById("systolicEnd"). value = parseInt(values[0]) + 10
+				document.getElementById("diastolicStart").value = parseInt(values[1])
+				document.getElementById("diastolicEnd").value = parseInt(values[1]) + 10
+
+			}
+			if(obj === "Heart Rate") {
+				document.getElementById("hrStart").value = msg[obj]
+				document.getElementById("hrEnd").value = msg[obj] + 10
+
+			}
+			if(obj === "Stress Level") {
+				document.getElementById("stressLevelStart").value = msg[obj]
+				document.getElementById("stressLevelEnd").value = (msg[obj]+3) <= 10 ? msg[obj] + 3 : 10
+
+			}
+		}
+	}
+
+});
+
+function execDemo() {
+	const configData = {
+		firstName: undefined, 
+		lastName: undefined,
+		patientID: undefined, 
+		age: undefined,  
+		sex: undefined, 
+		income: undefined, 
+		country: undefined, 
+		continent: undefined, 
+		cholesterol: undefined, 
+		triglycerid: undefined,
+		diabetes: undefined, 
+		familyHistory: undefined,
+		smoker: undefined,
+		obesity: undefined,
+		exerciseHours: undefined,
+		activityDays: undefined,
+		sedentaryHours: undefined,
+		heartProblems: undefined,
+		medicationUse: undefined,
+		bmi: undefined,
+		sleepHoursPerDay: undefined,
+		alcoholConsumption: undefined,
+		diet: undefined,
+		systolicValue: [],
+		diastolicValue: [],
+		heartRate: [],
+		stressLevel: [],
+		simulationSteps: undefined,
+		id: undefined, 
+		meanSystolicValue: undefined,
+		meanDiastolicValue: undefined,
+		meanHR: undefined,
+		meanStress: undefined
+	}
+	configData.firstName = document.getElementById('firstName').value
+	configData.lastName = document.getElementById("surName").value
+	configData.patientID = document.getElementById("patientID").value
+	configData.age = parseFloat(document.getElementById("age").value)
+	const gender = document.getElementsByName("sex")
+	gender.forEach((el) => {
+		if(el.checked) {
+			configData.sex = el.value
+		}
+	})
+	configData.income = parseFloat(document.getElementById("income").value)
+	configData.country = document.getElementById("country").value
+	configData.continent = document.getElementById("continent").value
+	configData.cholesterol = parseFloat(document.getElementById("cholesterol").value)
+	configData.triglycerid = parseFloat(document.getElementById("triglycerid").value)
+	const diabetes = document.getElementsByName("diabetes")
+	diabetes.forEach((el) => {
+		if(el.checked) {
+			configData.diabetes = el.value
+		}
+	})
+	const familyHistory = document.getElementsByName("history")
+	familyHistory.forEach((el) => {
+		if(el.checked) {
+			configData.familyHistory = el.value
+		}
+	})
+	const smoking = document.getElementsByName("smoking")
+	smoking.forEach((el) => {
+		if(el.checked){
+			configData.smoker = el.value
+		}
+	})
+	const obesity = document.getElementsByName("obesity")
+	obesity.forEach((el)=> {
+		if(el.checked) {
+			configData.obesity = el.value
+		}
+	})
+	configData.exerciseHours = parseFloat(document.getElementById("excerciseHours").value)
+	configData.activityDays = parseFloat(document.getElementById("activityDays").value)
+	configData.sedentaryHours = parseFloat(document.getElementById("sedentaryHours").value)
+	//const stressLevel = parseFloat(document.getElementById("stress").value)
+	const heartProblems = document.getElementsByName("heartProblems")
+	heartProblems.forEach((e) => {
+		if(e.checked) {
+			configData.heartProblems = e.value
+		}
+	})
+	const mediUse = document.getElementsByName("medicationUse")
+	mediUse.forEach((e) => {
+		if(e.checked) {
+			configData.medicationUse = e.value
+		}
+	})
+	configData.bmi = parseFloat(document.getElementById("bmi").value)
+	configData.sleepHoursPerDay = parseFloat(document.getElementById("sleepHoursPerDay").value)
+	const alcoholConsumption = document.getElementById("alcohol").options
+        const len = alcoholConsumption.length
+	for(let i = 0; i < len; i++) {
+		if(alcoholConsumption[i].selected) 
+			configData.alcoholConsumption = alcoholConsumption[i].text
+	}
+	const diet = document.getElementById("diet").options
+	const lens = diet.length
+	for(let i = 0; i < lens; i++) {
+		if(diet[i].selected)
+			configData.diet = diet[i].value
+	}
+	configData.systolicValue[0] = parseFloat(document.getElementById("systolicStart").value)
+	configData.systolicValue[1] = parseFloat(document.getElementById("systolicEnd").value)
+	configData.diastolicValue[0] = parseFloat(document.getElementById("diastolicStart").value)
+	configData.diastolicValue[1] = parseFloat(document.getElementById("diastolicEnd").value)
+	configData.heartRate[0] = parseFloat(document.getElementById("hrStart").value)
+	configData.heartRate[1] = parseFloat(document.getElementById("hrEnd").value)
+        configData.stressLevel[0] = parseFloat(document.getElementById("stressLevelStart").value)
+	configData.stressLevel[1] = parseFloat(document.getElementById("stressLevelEnd").value)
+	configData.simulationSteps = parseFloat(document.getElementById("simulationSteps").value)
+	
+	// Generation of values between the set ranges
+	const simulate = plotSuccess()
+	configData.id = setInterval(simulate, 500, configData)	
+}
+
+const configs = {xAxisLabels: ["Measurements", "Measurements", "Measurements"], 
+				yAxisLabels: ["Blood Pressure","Heart Rate", "Stresslevel"]}
+
+function generatePlots() {
+	const bpData = [{
+		mode: "lines+markers",
+		name: "Systolic Value",
+		type: "scatter",
+		line: {color: "red"},
+		y: []
+	},
+	{
+		mode: "lines+markers",
+		name: "Diastolic Value",
+		type: "scatter",
+		line: {color: 'blue'},
+		y: []	
+	}]
+	
+	const bpBar = [{
+			type: "bar",
+			name: "Low",
+			y: [],
+			x: ["BP: < 100/70"],
+			marker: {
+				color: "blue"
+			}
+			},
+			{
+			type: "bar",
+			name: "Normal",
+			x: ["BP: 100 - 150/70 - 90"],
+			y: [],
+			marker: {
+				color: "green"
+			}
+			},
+			{
+				type: "bar",
+				name: "High",
+				x: ["BP: > 150/90"],
+				y: [],
+				marker: {
+					color: "red"
+				}
+			}]
+	const bpBarLayout = {title: "Bloodpressure Bar Chart", font: {size: 10}, xaxis: {title: "BP Distribution", showgrid: true, zeroline: true}, yaxis:{title: "Measurements"}}
+	Plotly.newPlot("bar0", bpBar, bpBarLayout)
+		
+	const bpLayout = {
+		title: `Development of Bloodpressure`, 
+		font: {size: 10}, 
+		line: {linewidth: 1},
+		xaxis: {title: configs.xAxisLabels[0], showgrid: true, zeroline: true},
+		yaxis:{title: configs.yAxisLabels[0]}
+	}
+	Plotly.newPlot("stats0", bpData, bpLayout)
+	
+	// HR Data
+	const hrBar = [{
+			type: "bar",
+			name: "Low",
+			y: [],
+			x: ["HR: < 55"],
+			marker: {
+				color: "blue"
+			}
+			},
+			{
+			type: "bar",
+			name: "Normal",
+			x: ["HR: 55 - 90"],
+			y: [],
+			marker: {
+				color: "green"
+			}
+			},
+			{
+				type: "bar",
+				name: "High",
+				x: ["HR: >90"],
+				y: [],
+				marker: {
+					color: "red"
+				}
+			}]
+	const hrBarLayout = {title: "Heartrate Bar Chart", font: {size: 10}, xaxis: {title: "HR Distribution", showgrid: true, zeroline: true}, yaxis:{title: "Measurements"}}
+	Plotly.newPlot("bar1", hrBar, hrBarLayout)
+	
+	const hrData = [{
+		mode: "lines+markers",
+		name: "Heartrate",
+		type: "scatter",
+		line: {color: "magenta"},
+		y: []
+	}]
+		
+	const hrLayout = {
+		title: `Development of Heartrate`, 
+		font: {size: 10}, 
+		line: {linewidth: 1},
+		xaxis: {title: configs.xAxisLabels[1], showgrid: true, zeroline: true},
+		yaxis:{title: configs.yAxisLabels[1]}
+	}
+	Plotly.newPlot("stats1", hrData, hrLayout)
+	
+	//Stress Level Data
+	stressBar = [{
+			type: "bar",
+			name: "Low",
+			y: [],
+			x: ["Stress Level: < 3"],
+			marker: {
+				color: "blue"
+			}
+			},
+			{
+			type: "bar",
+			name: "Normal",
+			x: ["Stress Level: 3 - 6"],
+			y: [],
+			marker: {
+				color: "green"
+			}
+			},
+			{
+				type: "bar",
+				name: "High",
+				x: ["Stress Level: > 6"],
+				y: [],
+				marker: {
+					color: "red"
+				}
+			}]
+	const stressBarLayout = {title: "Stress Level Bar Chart", font: {size: 10}, xaxis: {title: "Stress Distribution", showgrid: true, zeroline: true}, yaxis:{title: "Measurements"}}
+	Plotly.newPlot("bar2", stressBar, stressBarLayout)
+	
+	const stressData = [{
+		mode: "lines+markers",
+		name: "Stress Level",
+		type: "scatter",
+		line: {color: "cyan"},
+		y: []
+	}]
+		
+	const stressLayout = {
+		title: `Development of Stress Level`, 
+		font: {size: 10}, 
+		line: {linewidth: 1},
+		xaxis: {title: configs.xAxisLabels[2], showgrid: true, zeroline: true},
+		yaxis:{title: configs.yAxisLabels[2]}
+	}
+	Plotly.newPlot("stats2", stressData, stressLayout)
+	
+}
+
+function plotSuccess() {
+	let counter = 0
+	let bpLow = 0
+	let bpNormal = 0
+	let bpHigh = 0
+	let hrLow = 0
+	let hrNormal = 0
+	let hrHigh = 0
+	let stressLow = 0
+	let stressHigh = 0
+	let stressNormal = 0
+	const systolicList = []
+	const diastolicList = []
+	const hrList = []
+	const stressList = []
+	return (config) => {
+		const maxLength = config.simulationSteps
+		const systolicVal = getRandomInt(config.systolicValue[0], config.systolicValue[1])
+		const diastolicVal = getRandomInt(config.diastolicValue[0], config.diastolicValue[1])
+		const hr = getRandomInt(config.heartRate[0], config.heartRate[1])
+		const stress = getRandomInt(config.stressLevel[0], config.stressLevel[1])
+		
+		systolicList.push(systolicVal)
+		diastolicList.push(diastolicVal)
+		hrList.push(hr)
+		stressList.push(stress)
+		
+		bpHigh += systolicVal >= 150 || diastolicVal >= 90 ? 1 : 0
+		bpNormal += (systolicVal >= 100 && systolicVal < 150) && (diastolicVal >= 70 && diastolicVal < 90) ? 1: 0
+		bpLow += systolicVal < 100 || diastolicVal < 70 ? 1 : 0
+		hrLow += hr < 55 ? 1 : 0
+		hrNormal += hr >= 55 && hr <= 90 ? 1 : 0
+		hrHigh += hr > 90 ? 1 : 0
+		stressLow += stress <=2 ? 1 : 0
+		stressNormal += stress > 2 && stress <= 6 ? 1 : 0
+		stressHigh += stress > 6 ? 1 : 0
+		
+		if(counter < maxLength) {
+			Plotly.extendTraces("stats0", {y: [[systolicVal], [diastolicVal]]}, [0, 1], maxLength)
+			Plotly.extendTraces("stats1", {y: [[hr]]}, [0], maxLength)
+			Plotly.extendTraces("stats2", {y: [[stress]]}, [0], maxLength)
+			Plotly.extendTraces("bar0", {y: [[bpLow], [bpNormal], [bpHigh]]}, [0, 1, 2], 1)
+			Plotly.extendTraces("bar1", {y: [[hrLow], [hrNormal], [hrHigh]]}, [0, 1, 2], 1)
+			Plotly.extendTraces("bar2", {y: [[stressLow], [stressNormal], [stressHigh]]}, [0, 1, 2], 1)
+			counter += 1
+		} else {
+			config.meanSystolicValue = systolicList.reduce((a, b) => a+b) / systolicList.length
+			config.meanDiastolicValue = diastolicList.reduce((a, b) => a+b) / diastolicList.length
+			config.meanHR = hrList.reduce((a, b) => a+b) / hrList.length
+			config.meanStress = stressList.reduce((a, b) => a+b) / stressList.length
+			const date = new Date()
+			const currentdate = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`
+			config['date'] = currentdate
+			config['systolicValues'] = systolicList
+			config['diastolicValues'] = diastolicList
+			config['hrValues'] = hrList
+			config['stressValues'] = stressList
+			config['bpHigh'] = bpHigh
+			config['bpNormal'] = bpNormal
+			config['bpLow'] = bpLow
+			config['hrLow'] = hrLow
+			config['hrNormal'] = hrNormal
+			config['hrHigh'] = hrHigh
+			config['stressLow'] = stressLow
+			config['stressNormal'] = stressNormal
+			config['stressHigh'] = stressHigh
+			config['type'] = "pdf"
+			const json = JSON.stringify(config)
+			socket.send(json);
+			clearInterval(config.id)
+		}
+	}
+}
+
+function getRandomInt(min, max) {
+  const minCeiled = Math.ceil(min);
+  const maxFloored = Math.floor(max);
+  return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
+}
+
+function sampleData() {
+	console.log("Sampled Data")
+	const m = {type: "sample"}
+	const sendMsg = JSON.stringify(m)
+	socket.send(sendMsg)
+}
+
+function rateHR() {
+	const msg = {type: "rating", rating: undefined}
+	const rating = document.getElementById("rating").value
+	msg['rating'] = rating
+	const js = JSON.stringify(msg)
+	socket.send(js)
+}
+</script>
+</head>
+<body onload="generatePlots();">
+<div align="center"><h1 style="color:blue">AutoGenHR Demo Application</h1></div>
+<div id="main" style="width: 100%;margin-left: 10px;margin-right: 10px;">
+<div id="controlElements" style="width: 50%;float: left">
+<h3 align="center"><u>Settings</u></h3>
+<fieldset>
+<legend><b>Patient Profile</b></legend>
+<label>
+First Name: <input type="text" id="firstName" value="">
+Surname: <input type="text" id="surName" value="">
+Patient-ID: <input type="text" id="patientID" value="" required>
+</label><br><br>
+<label>
+Age: <input type="number" id="age" min="1" required>
+</label>
+<label>
+Sex:
+<input type="radio" id="male" name="sex" value="male"> Male
+<input type="radio" id="female" name="sex" value="female"> Female
+</label><br><br>
+<label>
+Income per Year: <input type="number" id="income"  value="" required>
+</label>
+<label>
+Country:
+<input type="text" id="country" value="" required>
+</label>
+<label>
+Continent:
+<input type="text" id="continent" value="" required>
+</label>
+<br><br>
+<label>
+Cholesterol Value (mg/dl): <input type="number" id="cholesterol" min="0"  value="" required>
+</label>
+<label>
+Triglycerid Value (mg/dl): <input type="number" id="triglycerid" min="0"  value="" required>
+</label>
+<label>
+Diabetes: <input type="radio" id="diabetesTrue" name="diabetes" value="1">Yes
+<input type="radio" id="diabetesFalse" name="diabetes" value="0">No
+</label><br><br>
+<label>
+Heart Disesease in Family History: 
+<input type="radio" id="familyHistoryYes" name="history" value="1">Yes
+<input type="radio" id="familyHistoryNo" name="history" value="0">No
+</label>
+<label>
+Smoking: <input type="radio" id="smokingYes" name="smoking" value="1">Yes
+<input type="radio" id="smokingNo" name="smoking" value="0">No 
+</label>
+<label>
+Obesity: <input type="radio" id="obeseYes" name="obesity" value="1">Yes
+<input type="radio" id="obeseNo" name="obesity" value="0">No 
+</label><br><br>
+<label>Excercise Hours per Week:
+<input type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" id="excerciseHours" value="" required></label>
+<label>
+<label>Physical Activity Days per Week:
+<input type="number" id="activityDays" min="0" max="7" value="" required></label><br><br>
+<label>
+Sedentary Hours per Day: 
+<input type="text" inputmode="decimal"  pattern="[0-9]*[.,]?[0-9]*" id="sedentaryHours"  value="" required>
+</label>
+<!--<label>
+Stress Level (1-10): 
+<input type="number" id="stress" min="1" max="10" step="1" value="5">
+</label><br><br>-->
+<label>
+Previous Heartproblems: <input type="radio" id="heartProblemsYes" name="heartProblems" value="1">Yes
+<input type="radio" id="heartProblemsNo" name="heartProblems" value="0">No
+</label>
+<label>
+Medication Use: <input type="radio" id="medicationUseYes" name="medicationUse" value="1">Yes
+<input type="radio" id="medicationUseNo" name="medicationUse" value="0">No
+</label><br><br>
+<label>
+BMI: <input type="text" id="bmi" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" value="" required>
+</label>
+<label>
+Sleep Hours per Day: <input type="text" inputmode="decimal"  id="sleepHoursPerDay"  pattern="[0-9]*[.,]?[0-9]*" value="" required>
+</label><br><br>
+<label>
+Alcohol Consumption:  
+<select id="alcohol" name="alcohol"  size="4" required>
+<option selected value="0">None</option>
+<option value="1">Light</option>
+<option value="2">Moderate</option>
+<option value="3">Heavy</option>
+</select>
+</label>
+<label>
+Diet: 
+<select id="diet" name="diet" size="3" required>
+<option selected value="Healthy">Healthy</option>
+<option value="Average">Average</option>
+<option value="Unhealthy">Unhealthy</option>
+</select>
+</label><br><br>
+</fieldset><br><br>
+<fieldset>
+<legend><b>Simulated Vital Sign Sensor Measurements</b></legend>
+<label><u>Bloodpressure:</u><br><br>
+Systolic Value in mmHg range from: 
+<input type="number" id="systolicStart" min="0" value="" required> to:
+<input type="number" id="systolicEnd" min="0" value="" required><br><br>
+</label>
+<label>Diastolic Value in mmHg range from:
+<input type="number" id="diastolicStart" min="0" value="" required> to:
+<input type="number" id="diastolicEnd" min="0" value="" required><br><br>
+</label>
+<label>Heartrate Value in bpm range from:
+<input type="number" id="hrStart" min="0" value="" required> to:
+<input type="number" id="hrEnd" min="0" value="" required><br><br>
+</label>
+<label>Stress Level range from:
+<input type="number" id="stressLevelStart" max="10" min="0" value="" required> to:
+<input type="number" id="stressLevelEnd" max="10" min="0" value="" required>
+</label><br><br>
+<label>
+Number of Sensor Measurements: <input type="number" min="1" id="simulationSteps" step="1" value="60" required>
+</label>
+</fieldset>
+<!--</form>-->
+<br>
+<div align="center" style="padding: 15px;margin-left:15px;margin-right:10px"><button type="submit" onclick="sampleData()">Init Random Patient Data</button>
+<button type="submit" onclick="execDemo()">Submit Data for Generating a Health Report</button></div>
+</div>
+
+<!--Holobot avatar and PDF embedded-->
+<!--<div id="holo" align="center" style="width:50%; float: right;">
+<canvas id="canvas" width="500px" height="200px"></canvas>
+</div>-->
+<h3 align="center"><u>Generated Health Report</u></h3>
+<div id="embed" align="center" style="width: 50%; height: 100%;float: right;">
+<embed class="pdf" id="healthReportPdf" src="">
+</div><br><br>
+<div align="center"><label for="rating"><b>Rate Quality of Health Report</b></label><br><br>
+<input type="range" id="rating" name="rating" min="0" max="5" step="1" value="0" list="values">
+<datalist id="values">
+  <option value="0" label="0"></option>
+  <option value="1" label="1"></option>
+  <option value="2" label="2"></option>
+  <option value="3" label="3"></option>
+  <option value="4" label="4"></option>
+  <option value="5" label="5"></option>
+</datalist><br>
+<button type="submit" onclick="rateHR();">Submit Rating</button>
+</div>
+</div> <!-- Main DIV-->
+<br><br><br>
+<!--Plots with Vital Sign Parameters-->
+<div id="vitalPlots" style="width: 100%;float: left">
+<h3 align="center"><u>Simulation of Vital Sign Measurements<u></h3>
+	<!--<div id="stats0" style="width: 33%; float: left"></div>
+	<div id="stats1" style="width: 33%; float: left"></div>
+	<div id="stats2" style="width: 33%; float: right"></div>-->
+	<div id="stats0" style="width: 33%; float: left"></div>
+	<div id="stats1" style="width: 33%; float: left"></div>
+	<div id="stats2" style="width: 33%; float: right"></div>
+	<div id="bar0" style="width: 33%; float: left"></div>
+	<div id="bar1" style="width: 33%; float: left"></div>
+	<div id="bar2" style="width: 33%; float: right"></div>
+</div>
+</body>
+</html>
