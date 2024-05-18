@@ -87,6 +87,7 @@ socket.addEventListener("message", (event) => {
   		const fileName = msg.file;
 		const embed = document.querySelector("iframe");
 		embed.setAttribute("src", msg.src);
+		embed.setAttribute("type", "application/pdf")
 		console.log(msg.src)
 		const del = {type: "delete", file: fileName}
 		const delTxt = JSON.stringify(del)
@@ -740,7 +741,7 @@ Number of Sensor Measurements: <input type="number" min="1" id="simulationSteps"
 </div>-->
 <h3 align="center"><u>Generated Health Report</u></h3>
 <div id="embed" align="center" style="width: 50%; height: 100%;float: right;">
-<iframe class="pdf" id="healthReportPdf" src=""></iframe>
+<embed class="pdf" id="healthReportPdf" src="">
 </div><br><br>
 <div align="center"><label for="rating"><b>Rate Quality of Health Report</b></label><br><br>
 <input type="range" id="rating" name="rating" min="0" max="5" step="1" value="0" list="values">
