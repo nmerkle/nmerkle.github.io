@@ -86,11 +86,12 @@ socket.addEventListener("message", (event) => {
 	if(msg['type'] === "pdf"){
 		const embed = document.querySelector("embed");
 		embed.setAttribute("src", msg.src);
-		const f = msg.src.substring(msg.src.lastIndexOf('/')+1)
-		console.log(f)
-		const del = {type: "delete", file: f}
-		const delTxt = JSON.stringify(del)
-		socket.send(delTxt)
+		console.log(msg.src)
+		//const f = msg.src.substring(msg.src.lastIndexOf('/')+1)
+		//console.log(f)
+		//const del = {type: "delete", file: f}
+		//const delTxt = JSON.stringify(del)
+		//socket.send(delTxt)
 	}
 	else if(msg.type === "sample") {
 		for(let obj in msg) {
