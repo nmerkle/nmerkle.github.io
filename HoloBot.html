@@ -73,7 +73,7 @@ function draw() {
 }
 //init()
 
-const socket = new WebSocket("wss://holomatik-ai.duckdns.org:443", {protocolVersion: 13, origin: "https://holomatik-ai.duckdns.org:443", rejectUnauthorized: false});
+const socket = new WebSocket("wss://holomatik-ai.duckdns.org:443", null, null, null, {rejectUnauthorized: false});
 // Connection opened
 socket.addEventListener("open", (event) => {
 	console.log("Connection to WebsocketServer opened")
