@@ -85,7 +85,7 @@ socket.addEventListener("message", (event) => {
 	const msg = JSON.parse(event.data)
 	if(msg['type'] === "pdf"){
   		const fileName = msg.file;
-		const embed = document.querySelector("iframe");
+		const embed = document.querySelector("embed");
 		embed.setAttribute("src", msg.src);
 		embed.setAttribute("type", "application/pdf")
 		console.log(msg.src)
