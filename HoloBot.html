@@ -91,7 +91,7 @@ socket.addEventListener("message", (event) => {
   		downloadLink.download = fileName;
   		downloadLink.click();
 		const embed = document.querySelector("embed");
-		embed.setAttribute("src", filename);
+		embed.setAttribute("src", fileName);
 		console.log(msg.src)
 		const f = msg.file.substring(msg.file.lastIndexOf("/")+1)
 		console.log(f)
