@@ -87,11 +87,11 @@ socket.addEventListener("message", (event) => {
 		const embed = document.querySelector("embed");
 		embed.setAttribute("src", msg.src);
 		console.log(msg.src)
-		//const f = msg.src.substring(msg.src.lastIndexOf('/')+1)
-		//console.log(f)
-		//const del = {type: "delete", file: f}
-		//const delTxt = JSON.stringify(del)
-		//socket.send(delTxt)
+		const f = msg.file.substring(msg.file.lastIndexOf("/")+1)
+		console.log(f)
+		const del = {type: "delete", file: f}
+		const delTxt = JSON.stringify(del)
+		socket.send(delTxt)
 	}
 	else if(msg.type === "sample") {
 		for(let obj in msg) {
