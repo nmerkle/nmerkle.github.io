@@ -48,7 +48,8 @@ socket.addEventListener("message", (event) => {
 	if(msg['type'] === "pdf"){
   		const fileName = msg.file;
 		const embed = document.querySelector("embed");
-		embed.setAttribute("src", msg.src);
+		const url = base64ToBlob(msg.src)
+		embed.setAttribute("src", url);
 		//embed.setAttribute("type", "application/pdf")
 		console.log(msg.src)
 		const del = {type: "delete", file: fileName}
@@ -195,6 +196,18 @@ socket.addEventListener("message", (event) => {
 	}
 
 });
+
+function base64ToBlob(bs64) {
+	const bString = atob(bs64)
+	const len = bString.length
+	const arr = new Uint8Array(len)
+	for(let i = 0; i < len; i++) {
+		arr[i] = bString.charCodeAt(i);
+	}
+	const blob = new Blob([arr], {type: "application/pdf"})
+	const url = URL.createObjectURL(blob)
+	return url
+}
 
 function execDemo() {
 	const configData = {
