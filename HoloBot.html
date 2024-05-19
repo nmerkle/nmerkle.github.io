@@ -48,7 +48,8 @@ socket.addEventListener("message", (event) => {
 	if(msg['type'] === "pdf"){
   		const fileName = msg.file;
 		const embed = document.querySelector("embed");
-		const url = base64ToBlob(msg.src)
+		b64Str = msg.src.substring(msg.src.indexOf(',')+1)
+		const url = base64ToBlob(b64Str)
 		embed.setAttribute("src", url);
 		//embed.setAttribute("type", "application/pdf")
 		console.log(msg.src)
