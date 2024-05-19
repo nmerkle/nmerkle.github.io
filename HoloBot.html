@@ -48,8 +48,8 @@ socket.addEventListener("message", (event) => {
 	if(msg['type'] === "pdf"){
   		const fileName = msg.file;
 		const embed = document.querySelector("embed");
-		embed.setAttribute("src", msg.src);
-		embed.setAttribute("type", "application/pdf")
+		embed.setAttribute("src", `"{msg.src}"`);
+		//embed.setAttribute("type", "application/pdf")
 		console.log(msg.src)
 		const del = {type: "delete", file: fileName}
 		const delTxt = JSON.stringify(del)
