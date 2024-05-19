@@ -579,7 +579,7 @@ function rateHR() {
 	msg['rating'] = rating
 	const js = JSON.stringify(msg)
 	alert("Thank you. Your rating has been submitted.")
-	rating.value = 0
+	rating.value = "0"
 	socket.send(js)
 }
 </script>
