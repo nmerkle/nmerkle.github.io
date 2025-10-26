@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MirrAI.me – Dein AI-Assistent für Frauengesundheit</title>
+  <meta name="description" content="MirrAI.me bietet dir einen einfühlsamen AI-Assistenten, der dich bei Themen rund um Frauengesundheit unterstützt – diskret, empathisch und intelligent.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --accent: #eecbff;
+      --accent-dark: #d1a5f0;
+      --text: #333;
+      --muted: #666;
+      --radius: 14px;
+    }
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      text-align: center;
+      padding: 4rem 1rem 3rem;
+      background: linear-gradient(180deg, #f7e8ff, #ffffff);
+    }
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 0.5rem;
+    }
+    p.lead {
+      font-size: 1.2rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .cta-button {
+      background-color: var(--accent-dark);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 0.9rem 2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .cta-button:hover {
+      background-color: var(--accent);
+    }
+
+    section.features {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      padding: 3rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .feature {
+      background: #faf7ff;
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+    .feature span {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 0.8rem;
+    }
+    section.mission {
+      text-align: center;
+      padding: 3rem 2rem;
+      background-color: #f9f4ff;
+    }
+    section.mission p {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+      color: var(--muted);
+    }
+
+    section.newsletter {
+      text-align: center;
+      padding: 3rem 2rem 4rem;
+    }
+    form {
+      margin-top: 1rem;
+    }
+    input[type="email"] {
+      padding: 0.8rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: var(--radius);
+      width: 250px;
+      font-size: 1rem;
+    }
+    button[type="submit"] {
+      margin-left: 0.5rem;
+      background-color: var(--accent-dark);
+      border: none;
+      color: #fff;
+      padding: 0.8rem 1.5rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button[type="submit"]:hover {
+      background-color: var(--accent);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      border-top: 1px solid #eee;
+    }
+    footer a {
+      color: var(--accent-dark);
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MirrAI.me</h1>
+    <p class="lead">Dein persönlicher AI-Assistent für Frauengesundheit.</p>
+    <button class="cta-button" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Warteliste beitreten</button>
+  </header>
+
+  <section class="features">
+    <div class="feature">
+      <span>💬</span>
+      <h3>Empathischer Dialog</h3>
+      <p>Stelle Fragen zu deinem Wohlbefinden – MirrAI hört zu und antwortet mit Feingefühl.</p>
+    </div>
+    <div class="feature">
+      <span>🔒</span>
+      <h3>Datenschutz zuerst</h3>
+      <p>Deine Daten bleiben privat. Sicherheit und Vertrauen stehen bei uns an erster Stelle.</p>
+    </div>
+    <div class="feature">
+      <span>📊</span>
+      <h3>Personalisierte Insights</h3>
+      <p>Erhalte Empfehlungen, die auf dich und deinen Körper abgestimmt sind.</p>
+    </div>
+    <div class="feature">
+      <span>🌙</span>
+      <h3>Immer für dich da</h3>
+      <p>MirrAI begleitet dich rund um die Uhr – wann immer du Fragen hast.</p>
+    </div>
+  </section>
+
+  <section class="mission">
+    <h2>Unsere Vision</h2>
+    <p>Wir glauben, dass jede Frau Zugang zu smarter, respektvoller Gesundheitsberatung verdient – 
+      jederzeit, ohne Scham, mit KI, die versteht.</p>
+  </section>
+
+  <section class="newsletter" id="waitlist">
+    <h2>Jetzt auf die Warteliste setzen lassen</h2>
+    <p>Erhalte als Erste Zugang, sobald MirrAI.me startet.</p>
+    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <input type="email" name="email" placeholder="E-Mail-Adresse eingeben" required>
+      <button type="submit">Warteliste beitreten</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>© 2025 MirrAI.me | <a href="#">Impressum</a> | <a href="#">Datenschutz</a></p>
+    <p>Kontakt: <a href="mailto:info@mirrai.me">info@mirrai.me</a></p>
+  </footer>
+</body>
+</html>
